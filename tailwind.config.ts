@@ -73,7 +73,12 @@ const config = {
       },
     },
   },
-  plugins: [require('tailwindcss-animate'), require('@tailwindcss/typography'), require('tailwindcss-debug-screens')],
+  plugins: [
+    require('tailwindcss-animate'),
+    require('@tailwindcss/typography'),
+    require('@tailwindcss/forms'),
+    require('tailwindcss-debug-screens'),
+  ],
 } satisfies Config;
 
 export default config;
