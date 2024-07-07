@@ -1,3 +1,14 @@
 {
-  "extends": "next/core-web-vitals"
+  "extends": ["plugin:tailwindcss/recommended", "plugin:@typescript-eslint/recommended", "next/core-web-vitals"],
+  "rules": {
+    "no-console": "warn",
+    "no-empty-pattern": "warn",
+    "no-unused-vars": "warn",
+    "@typescript-eslint/no-unused-vars": "off",
+    "@typescript-eslint/no-empty-interface": "warn",
+    "@typescript-eslint/no-explicit-any": "warn",
+    "@typescript-eslint/consistent-type-imports": "warn",
+    "tailwindcss/no-custom-classname": "off",
+    "@next/next/no-html-link-for-pages": "warn"
+  }
 }

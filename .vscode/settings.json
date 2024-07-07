@@ -1,0 +1,4 @@
+{
+  "typescript.tsdk": "node_modules\\typescript\\lib",
+  "cSpell.words": ["classname", "clsx", "lucide", "nextjs", "Parens", "tailwindcss", "trivago"]
+}
