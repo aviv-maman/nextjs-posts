@@ -1,4 +1,7 @@
 import type { Metadata } from 'next';
+import { Providers } from '@/components/providers';
+import { Toaster as SonnerToaster } from '@/components/ui/sonner';
+import { Toaster } from '@/components/ui/toaster';
 import { GeistMono, GeistSans } from '@/lib/fonts';
 import { cn } from '@/lib/utils';
 import '@/styles/globals.css';
@@ -23,7 +26,9 @@ export default function RootLayout({
         className={cn('min-h-screen bg-background antialiased', {
           'debug-screens': process.env.NODE_ENV === 'development',
         })}>
-        {children}
+        <Providers>{children}</Providers>
+        <Toaster />
+        <SonnerToaster />
       </body>
     </html>
   );
