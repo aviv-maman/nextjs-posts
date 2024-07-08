@@ -88,8 +88,7 @@ export function SessionProvider({ children, session = null }: SessionProviderPro
  *
  * ##### Example:
  * ```ts
- * import { redirect } from 'next/navigation';
- * import { lucia, validateRequest } from '@/lib/auth';
+ * import { useSession } from '@/components/session-provider';
  *
  * export default async function Page() {
  * const { session, user, accounts, isLoading, error } = useSession();

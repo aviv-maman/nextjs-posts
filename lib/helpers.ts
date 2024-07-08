@@ -5,11 +5,14 @@ import { redirect } from 'next/navigation';
 import { lucia, validateRequest } from '@/lib/auth';
 
 export const getSession = async () => {
-  try {
-    return await validateRequest();
-  } catch (error) {
-    throw error;
+  // NOTE: Here try-catch block is not good practice because at build time Next.js
+  // can catch the error and know not to try and statically generate pages that
+  // require a auth session.
+  const validationResult = await validateRequest();
+  if (!validationResult || !validationResult.session) {
+    return { session: null, user: null, accounts: null };
   }
+  return validationResult;
 };
 
 export const logout = async () => {
