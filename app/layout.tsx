@@ -1,4 +1,6 @@
 import type { Metadata } from 'next';
+import Footer from '@/components/footer';
+import { Header } from '@/components/header';
 import { Providers } from '@/components/providers';
 import { Toaster as SonnerToaster } from '@/components/ui/sonner';
 import { Toaster } from '@/components/ui/toaster';
@@ -15,18 +17,18 @@ export const metadata: Metadata = {
   metadataBase: new URL(process.env.BASE_URL!),
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang='en' suppressHydrationWarning className={`${GeistSans.variable} ${GeistMono.variable}`}>
       <body
         className={cn('min-h-screen bg-background antialiased', {
           'debug-screens': process.env.NODE_ENV === 'development',
         })}>
-        <Providers>{children}</Providers>
+        <Providers>
+          <Header />
+          <main className='container min-h-[calc(100vh-154px)] py-6 sm:min-h-[calc(100vh-146px)]'>{children}</main>
+          <Footer />
+        </Providers>
         <Toaster />
         <SonnerToaster />
       </body>

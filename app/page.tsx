@@ -21,7 +21,6 @@ import { HoverCardDemo } from '@/components/examples/HoverCardDemo';
 import { InputOTPDemo } from '@/components/examples/InputOTPPattern';
 import { LabelDemo } from '@/components/examples/LabelDemo';
 import { MenubarDemo } from '@/components/examples/MenubarDemo';
-import { ModeToggle } from '@/components/examples/ModeToggle';
 import { NavigationMenuDemo } from '@/components/examples/NavigationMenuDemo';
 import { PaginationDemo } from '@/components/examples/PaginationDemo';
 import { PopoverDemo } from '@/components/examples/PopoverDemo';
@@ -45,60 +44,52 @@ import { TooltipDemo } from '@/components/examples/TooltipDemo';
 
 export default function Home() {
   return (
-    <main className='flex min-h-screen flex-col items-center overflow-hidden p-24'>
-      <div className='z-10 w-full max-w-5xl items-center justify-between text-sm lg:flex'>
-        <p className='fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30'>
-          Examples&nbsp;
-        </p>
-        <code className='font-bold'>mono font npm run dev</code>
-      </div>
-
-      <div className='flex flex-col gap-y-10'>
-        <ModeToggle />
-        <AccordionDemo />
-        <AlertDemo />
-        <AlertDialogDemo />
-        <AspectRatioDemo />
-        <AvatarDemo />
-        <BadgeDemo />
-        <BreadcrumbDemo />
-        <ButtonDemo />
-        <CalendarDemo />
-        <CardDemo />
-        <ChartDemo />
-        <CheckboxDemo />
-        <CollapsibleDemo />
-        <ComboboxDemo />
-        <CommandDialogDemo />
-        <ContextMenuDemo />
-        <DateRangePickerDemo />
-        <DrawerDialogDemo />
-        <DropdownMenuDemo />
-        <HoverCardDemo />
-        <InputOTPDemo />
-        <LabelDemo />
-        <MenubarDemo />
-        <NavigationMenuDemo />
-        <PaginationDemo />
-        <PopoverDemo />
-        <ProgressDemo />
-        <RadioGroupDemo />
-        <ResizableDemo />
-        <ScrollAreaDemo />
-        <SelectScrollable />
-        <SeparatorDemo />
-        <SheetDemo />
-        <SkeletonDemo />
-        <SliderDemo />
-        <SonnerDemo />
-        <SwitchDemo />
-        <TabsDemo />
-        <TextareaDemo />
-        <ToastDemo />
-        <ToggleDemo />
-        <ToggleGroupDemo />
-        <TooltipDemo />
-      </div>
-    </main>
+    // <main className='flex min-h-screen flex-col items-center overflow-hidden p-24'>
+    <div className='flex flex-col items-start gap-y-10'>
+      <AccordionDemo />
+      <AlertDemo />
+      <AlertDialogDemo />
+      <AspectRatioDemo />
+      <AvatarDemo />
+      <BadgeDemo />
+      <BreadcrumbDemo />
+      <ButtonDemo />
+      <CalendarDemo />
+      <CardDemo />
+      <ChartDemo />
+      <CheckboxDemo />
+      <CollapsibleDemo />
+      <ComboboxDemo />
+      <CommandDialogDemo />
+      <ContextMenuDemo />
+      <DateRangePickerDemo />
+      <DrawerDialogDemo />
+      <DropdownMenuDemo />
+      <HoverCardDemo />
+      <InputOTPDemo />
+      <LabelDemo />
+      <MenubarDemo />
+      <NavigationMenuDemo />
+      <PaginationDemo />
+      <PopoverDemo />
+      <ProgressDemo />
+      <RadioGroupDemo />
+      <ResizableDemo />
+      <ScrollAreaDemo />
+      <SelectScrollable />
+      <SeparatorDemo />
+      <SheetDemo />
+      <SkeletonDemo />
+      <SliderDemo />
+      <SonnerDemo />
+      <SwitchDemo />
+      <TabsDemo />
+      <TextareaDemo />
+      <ToastDemo />
+      <ToggleDemo />
+      <ToggleGroupDemo />
+      <TooltipDemo />
+    </div>
+    // </main>
   );
 }
