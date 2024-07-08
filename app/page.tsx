@@ -1,3 +1,5 @@
+'use client';
+
 import { AccordionDemo } from '@/components/examples/AccordionDemo';
 import { AlertDemo } from '@/components/examples/AlertDemo';
 import { AlertDialogDemo } from '@/components/examples/AlertDialogDemo';
@@ -41,11 +43,34 @@ import { ToastDemo } from '@/components/examples/ToastDemo';
 import { ToggleDemo } from '@/components/examples/ToggleDemo';
 import { ToggleGroupDemo } from '@/components/examples/ToggleGroupDemo';
 import { TooltipDemo } from '@/components/examples/TooltipDemo';
+import { useSession } from '@/components/session-provider';
+import { logout } from '@/lib/helpers';
 
 export default function Home() {
+  const { session, user, accounts, isLoading, error } = useSession();
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
   return (
-    // <main className='flex min-h-screen flex-col items-center overflow-hidden p-24'>
     <div className='flex flex-col items-start gap-y-10'>
+      {session?.id && (
+        <div>
+          <h1>Hi, {user?.username}!</h1>
+          <p>
+            {user?.name}, your last login was on {String(user?.lastLogin)}.
+          </p>
+
+          <p>Provider Name: {accounts?.[0].provider_name}</p>
+          <p>User ID:{accounts?.[0].user_id}</p>
+
+          <form action={logout}>
+            <button>Sign out</button>
+          </form>
+        </div>
+      )}
+
       <AccordionDemo />
       <AlertDemo />
       <AlertDialogDemo />
@@ -90,6 +115,5 @@ export default function Home() {
       <ToggleGroupDemo />
       <TooltipDemo />
     </div>
-    // </main>
   );
 }
