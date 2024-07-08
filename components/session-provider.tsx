@@ -12,7 +12,7 @@ function now() {
 }
 
 const SessionContext = createContext({
-  session: null as Awaited<ReturnType<typeof validateRequest>>['session'] | undefined,
+  session: null as Awaited<ReturnType<typeof validateRequest>>['session'],
   user: null as Awaited<ReturnType<typeof validateRequest>>['user'],
   accounts: null as Awaited<ReturnType<typeof validateRequest>>['accounts'],
   isLoading: false,
@@ -23,69 +23,97 @@ interface SessionProviderProps {
   children: Readonly<React.ReactNode>;
   session?: Awaited<ReturnType<typeof validateRequest>>['session'] | null;
 }
-export function SessionProvider(props: SessionProviderProps) {
+export function SessionProvider({ children, session = null }: SessionProviderProps) {
   if (!SessionContext) {
     throw new Error('React Context is unavailable in Server Components');
   }
 
-  const hasInitialSession = props.session !== undefined;
+  const hasInitialSession = session !== null;
 
   const initialState = {
+    /** If session was passed, initialize as not loading */
     isLoading: !hasInitialSession,
     lastSync: hasInitialSession ? now() : 0,
-    session: props.session,
-    user: null,
-    accounts: null,
-    error: null,
+    session,
+    user: null as Awaited<ReturnType<typeof validateRequest>>['user'] | null,
+    accounts: null as Awaited<ReturnType<typeof validateRequest>>['accounts'] | null,
+    error: null as Error | null,
   };
 
-  const [session, setSession] = useState(() => {
-    if (hasInitialSession) return props.session;
-  });
-
-  const [user, setUser] = useState<Awaited<ReturnType<typeof validateRequest>>['user'] | null>(null);
-  const [accounts, setAccounts] = useState<Awaited<ReturnType<typeof validateRequest>>['accounts'] | null>(null);
-
-  /** If session was passed, initialize as not loading */
-  const [isLoading, setIsLoading] = useState(initialState.isLoading);
-
-  const [lastSync, setLastSync] = useState(initialState.lastSync);
-
-  const [error, setError] = useState<Error | null>(initialState.error);
+  const [contextState, setContextState] = useState(initialState);
 
   useEffect(() => {
-    setIsLoading(() => true);
-    setError(() => null);
+    setContextState((prevState) => ({ ...prevState, isLoading: true, error: null }));
     try {
-      if (now() < lastSync || !session) {
+      if (now() < contextState.lastSync || !contextState.session) {
         // Return early if the client session is not initialized yet
         return;
       }
       // An event or session staleness occurred, update the client session.
-      setLastSync(() => now());
+      setContextState((prevState) => ({ ...prevState, lastSync: now() }));
       getSession().then((res) => {
-        setSession(() => res.session), setUser(() => res.user), setAccounts(() => res.accounts);
+        setContextState((prevState) => ({
+          ...prevState,
+          session: res.session,
+          user: res.user,
+          accounts: res.accounts,
+        }));
       });
     } catch (error) {
       console.error((error as Error).name, (error as Error).message);
-      setError(() => error as Error);
+      setContextState((prevState) => ({ ...prevState, error: error as Error }));
     } finally {
-      setIsLoading(() => false);
+      setContextState((prevState) => ({ ...prevState, isLoading: false }));
     }
   }, []);
 
   const value = useMemo(
     () => ({
-      session,
-      user,
-      accounts,
-      isLoading,
-      error,
+      session: contextState.session,
+      user: contextState.user,
+      accounts: contextState.accounts,
+      isLoading: contextState.isLoading,
+      error: contextState.error,
     }),
-    [session, user, accounts, isLoading, error],
+    [contextState.session, contextState.user, contextState.accounts, contextState.isLoading, contextState.error],
   );
 
-  return <SessionContext.Provider value={value}>{props.children}</SessionContext.Provider>;
+  return <SessionContext.Provider value={value}>{children}</SessionContext.Provider>;
 }
 
-export const useSession = () => useContext(SessionContext);
+/**`Client Only`
+ *
+ * Validates the current session and returns the associated user, its session and its linked accounts if the session is valid.
+ * Otherwise, returns null for all.
+ *
+ * ##### Example:
+ * ```ts
+ * import { redirect } from 'next/navigation';
+ * import { lucia, validateRequest } from '@/lib/auth';
+ *
+ * export default async function Page() {
+ * const { session, user, accounts, isLoading, error } = useSession();
+
+ * if (isLoading) {
+ *    return <div>Loading...</div>;
+ * }
+
+ *  return (
+ *    <div className='flex flex-col items-start gap-y-10'>
+ *      {session && (
+ *        <div>
+ *          <h1>Hi, {user?.username}!</h1>
+ *          <p>Your last login was on {String(user?.lastLogin)}.</p>
+ *        </div>
+ *      )}
+ *    </div>
+ *   );
+ * }
+ * ```
+ *
+ * */
+export const useSession = () => {
+  const context = useContext(SessionContext);
+  if (context === undefined) throw new Error('useSession was used outside of <SessionProvider />');
+  return context;
+};

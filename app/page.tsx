@@ -55,16 +55,12 @@ export default function Home() {
 
   return (
     <div className='flex flex-col items-start gap-y-10'>
-      {session?.id && (
+      {session && (
         <div>
           <h1>Hi, {user?.username}!</h1>
-          <p>
-            {user?.name}, your last login was on {String(user?.lastLogin)}.
-          </p>
-
+          <p>Your last login was on {String(user?.lastLogin)}.</p>
           <p>Provider Name: {accounts?.[0].provider_name}</p>
           <p>User ID:{accounts?.[0].user_id}</p>
-
           <form action={logout}>
             <button>Sign out</button>
           </form>
