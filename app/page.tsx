@@ -1,5 +1,7 @@
 'use client';
 
+//import { validateRequest } from '@/lib/auth';
+import { useAuth } from '@/components/auth-provider';
 import { AccordionDemo } from '@/components/examples/AccordionDemo';
 import { AlertDemo } from '@/components/examples/AlertDemo';
 import { AlertDialogDemo } from '@/components/examples/AlertDialogDemo';
@@ -43,11 +45,11 @@ import { ToastDemo } from '@/components/examples/ToastDemo';
 import { ToggleDemo } from '@/components/examples/ToggleDemo';
 import { ToggleGroupDemo } from '@/components/examples/ToggleGroupDemo';
 import { TooltipDemo } from '@/components/examples/TooltipDemo';
-import { useSession } from '@/components/session-provider';
-import { logout } from '@/lib/helpers';
+import { clearSession } from '@/lib/actions';
 
 export default function Home() {
-  const { session, user, accounts, isLoading, error } = useSession();
+  const { session, user, accounts, isLoading, error } = useAuth();
+  //const { session, user, accounts } = await validateRequest();
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -61,7 +63,7 @@ export default function Home() {
           <p>Your last login was on {String(user?.lastLogin)}.</p>
           <p>Provider Name: {accounts?.[0].provider_name}</p>
           <p>User ID:{accounts?.[0].user_id}</p>
-          <form action={logout}>
+          <form action={clearSession}>
             <button>Sign out</button>
           </form>
         </div>

@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from './ui/sheet';
 
 interface HamburgerMenuProps {
-  components?: { title: string; href: string; description: string }[];
+  components?: { title: string; href?: string; action?: () => void; description: string }[];
 }
 
 export const HamburgerMenu: React.FC<HamburgerMenuProps> = ({ components }) => {
@@ -25,14 +25,23 @@ export const HamburgerMenu: React.FC<HamburgerMenuProps> = ({ components }) => {
         <div className='relative h-[calc(100vh-8rem)] overflow-hidden pb-10'>
           <div className='flex flex-col space-y-2 pl-6'>
             <span className='mt-2 w-fit text-left'>Menu</span>
-            {components?.map((component) => (
-              <Link
-                key={component.title}
-                href={component.href}
-                className='mt-2 w-fit text-left text-sm text-muted-foreground'>
-                {component.title}
-              </Link>
-            ))}
+            {components?.map((component) =>
+              component.href ? (
+                <Link
+                  key={component.title}
+                  href={component.href}
+                  className='mt-2 w-fit text-left text-sm text-muted-foreground'>
+                  {component.title}
+                </Link>
+              ) : (
+                <span
+                  key={component.title}
+                  onClick={component.action}
+                  className='mt-2 w-fit cursor-pointer text-left text-sm text-muted-foreground'>
+                  {component.title}
+                </span>
+              ),
+            )}
           </div>
           <div className='mt-2 flex flex-col border-t-2 pl-6'>
             <Link href='/about' className='mt-2 w-fit text-left text-sm text-muted-foreground'>

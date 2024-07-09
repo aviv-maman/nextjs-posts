@@ -4,6 +4,7 @@ import { Github, Home, Linkedin } from 'lucide-react';
 import Link from 'next/link';
 import { forwardRef } from 'react';
 import { HamburgerMenu } from './hamburger-menu';
+import { useAuth } from '@/components/auth-provider';
 import { ThemeToggle } from '@/components/theme-toggle';
 import { Button } from '@/components/ui/button';
 import {
@@ -18,14 +19,16 @@ import {
 import { cn } from '@/lib/utils';
 
 export const Header: React.FC = () => {
-  const guestComponents: { title: string; href: string; description: string }[] = [
+  const { user, isLoading, logout } = useAuth();
+
+  const guestComponents: { title: string; href?: string; action?: () => void; description: string }[] = [
     {
       title: 'Sign In',
-      href: '/api/auth/login',
+      href: '/login',
       description: 'Login to an existing account or register a new account.',
     },
   ];
-  const userComponents: { title: string; href: string; description: string }[] = [
+  const userComponents: { title: string; href?: string; action?: () => void; description: string }[] = [
     {
       title: 'Profile',
       href: '/profile',
@@ -33,12 +36,14 @@ export const Header: React.FC = () => {
     },
     {
       title: 'Logout',
-      href: '/api/auth/logout',
+      action: logout,
       description: 'Logout the current session.',
     },
   ];
 
-  const { user, isLoading } = { user: null, isLoading: false };
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <header className='sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60'>
@@ -66,16 +71,28 @@ export const Header: React.FC = () => {
                       </NavigationMenuLink>
                     </li>
                     {user
-                      ? userComponents.map((component) => (
-                          <ListItem key={component.title} title={component.title} href={component.href}>
-                            {component.description}
-                          </ListItem>
-                        ))
-                      : guestComponents.map((component) => (
-                          <ListItem key={component.title} title={component.title} href={component.href}>
-                            {component.description}
-                          </ListItem>
-                        ))}
+                      ? userComponents.map((component) =>
+                          component.href ? (
+                            <ListItemA key={component.title} title={component.title} href={component.href}>
+                              {component.description}
+                            </ListItemA>
+                          ) : (
+                            <ListItemSpan key={component.title} title={component.title} onClick={component.action}>
+                              {component.description}
+                            </ListItemSpan>
+                          ),
+                        )
+                      : guestComponents.map((component) =>
+                          component.href ? (
+                            <ListItemA key={component.title} title={component.title} href={component.href}>
+                              {component.description}
+                            </ListItemA>
+                          ) : (
+                            <ListItemSpan key={component.title} title={component.title} onClick={component.action}>
+                              {component.description}
+                            </ListItemSpan>
+                          ),
+                        )}
                   </ul>
                 </NavigationMenuContent>
               </NavigationMenuItem>
@@ -114,7 +131,7 @@ export const Header: React.FC = () => {
   );
 };
 
-const ListItem = forwardRef<React.ElementRef<'a'>, React.ComponentPropsWithoutRef<'a'>>(
+const ListItemA = forwardRef<React.ElementRef<'a'>, React.ComponentPropsWithoutRef<'a'>>(
   ({ className, title, children, ...props }, ref) => {
     return (
       <li>
@@ -134,4 +151,26 @@ const ListItem = forwardRef<React.ElementRef<'a'>, React.ComponentPropsWithoutRe
     );
   },
 );
-ListItem.displayName = 'ListItem';
+ListItemA.displayName = 'ListItemA';
+
+const ListItemSpan = forwardRef<React.ElementRef<'span'>, React.ComponentPropsWithoutRef<'span'>>(
+  ({ className, title, children, ...props }, ref) => {
+    return (
+      <li>
+        <NavigationMenuLink asChild>
+          <span
+            ref={ref}
+            className={cn(
+              'cursor-pointer block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground',
+              className,
+            )}
+            {...props}>
+            <div className='text-sm font-medium leading-none'>{title}</div>
+            <p className='line-clamp-2 text-sm leading-snug text-muted-foreground'>{children}</p>
+          </span>
+        </NavigationMenuLink>
+      </li>
+    );
+  },
+);
+ListItemSpan.displayName = 'ListItemSpan';

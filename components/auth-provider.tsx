@@ -1,39 +1,41 @@
 'use client';
 
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import { clearSession, getSession } from '@/lib/actions';
 import type { validateRequest } from '@/lib/auth';
-import { getSession } from '@/lib/helpers';
 
-type SessionProviderState =
+type AuthProviderState =
   | {
       isLoading: boolean;
       session: Awaited<ReturnType<typeof validateRequest>>['session'];
       user: Awaited<ReturnType<typeof validateRequest>>['user'];
       accounts: Awaited<ReturnType<typeof validateRequest>>['accounts'];
       error: Error | null;
+      logout: () => Promise<void>;
     }
   | undefined;
 
-const SessionContext = createContext<SessionProviderState>(undefined);
+const AuthContext = createContext<AuthProviderState>(undefined);
 
-interface SessionProviderProps {
+interface AuthProviderProps {
   children: Readonly<React.ReactNode>;
   session?: Awaited<ReturnType<typeof validateRequest>>['session'] | null;
 }
-export function SessionProvider({ children, session = null }: SessionProviderProps) {
-  if (!SessionContext) {
+export function AuthProvider({ children, session = null }: AuthProviderProps) {
+  if (!AuthContext) {
     throw new Error('React Context is unavailable in Server Components');
   }
 
   const hasInitialSession = session !== null;
 
-  const initialState: SessionProviderState = {
+  const initialState: AuthProviderState = {
     /** If session was passed, initialize as not loading */
     isLoading: !hasInitialSession,
     session,
     user: null,
     accounts: null,
     error: null,
+    logout: async () => {},
   };
 
   const [contextState, setContextState] = useState(initialState);
@@ -46,6 +48,24 @@ export function SessionProvider({ children, session = null }: SessionProviderPro
 
   const getCachedSession = useCallback(async () => {
     return await getSession();
+  }, []);
+
+  const logout = useCallback(async () => {
+    setContextState((prevState) => ({ ...prevState, isLoading: true, error: null }));
+    try {
+      const res = await clearSession();
+      const err = res && res.error ? res.error : null;
+      if (err) {
+        setContextState((prevState) => ({ ...prevState, error: err }));
+      } else {
+        setContextState((prevState) => ({ ...prevState, session: null, user: null, accounts: null }));
+      }
+    } catch (error) {
+      console.error((error as Error).name, (error as Error).message);
+      setContextState((prevState) => ({ ...prevState, error: error as Error }));
+    } finally {
+      setContextState((prevState) => ({ ...prevState, isLoading: false }));
+    }
   }, []);
 
   useEffect(() => {
@@ -71,16 +91,13 @@ export function SessionProvider({ children, session = null }: SessionProviderPro
 
   const contextValue = useMemo(
     () => ({
-      session: contextState.session,
-      user: contextState.user,
-      accounts: contextState.accounts,
-      isLoading: contextState.isLoading,
-      error: contextState.error,
+      ...contextState,
+      logout,
     }),
-    [contextState],
+    [contextState, logout],
   );
 
-  return <SessionContext.Provider value={contextValue}>{children}</SessionContext.Provider>;
+  return <AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>;
 }
 
 /**`Client Only`
@@ -90,10 +107,10 @@ export function SessionProvider({ children, session = null }: SessionProviderPro
  *
  * ##### Example:
  * ```ts
- * import { useSession } from '@/components/session-provider';
+ * import { useAuth } from '@/components/auth-provider';
  *
  * export default async function Page() {
- * const { session, user, accounts, isLoading, error } = useSession();
+ * const { session, user, accounts, isLoading, error } = useAuth();
 
  * if (isLoading) {
  *    return <div>Loading...</div>;
@@ -113,8 +130,8 @@ export function SessionProvider({ children, session = null }: SessionProviderPro
  * ```
  *
  * */
-export const useSession = () => {
-  const context = useContext(SessionContext);
-  if (context === undefined) throw new Error('useSession was used outside of <SessionProvider />');
+export const useAuth = () => {
+  const context = useContext(AuthContext);
+  if (context === undefined) throw new Error('useAuth was used outside of <AuthProvider />');
   return context;
 };
