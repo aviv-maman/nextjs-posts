@@ -11,7 +11,7 @@ function now() {
   return Math.floor(Date.now() / 1000);
 }
 
-const SessionContext = createContext<
+type SessionProviderState =
   | {
       isLoading: boolean;
       session: Awaited<ReturnType<typeof validateRequest>>['session'] | null;
@@ -19,8 +19,9 @@ const SessionContext = createContext<
       accounts: Awaited<ReturnType<typeof validateRequest>>['accounts'] | null;
       error: Error | null;
     }
-  | undefined
->(undefined);
+  | undefined;
+
+const SessionContext = createContext<SessionProviderState>(undefined);
 
 interface SessionProviderProps {
   children: Readonly<React.ReactNode>;
@@ -33,14 +34,14 @@ export function SessionProvider({ children, session = null }: SessionProviderPro
 
   const hasInitialSession = session !== null;
 
-  const initialState = {
+  const initialState: SessionProviderState & { lastSync: number } = {
     /** If session was passed, initialize as not loading */
     isLoading: !hasInitialSession,
     lastSync: hasInitialSession ? now() : 0,
     session,
-    user: null as Awaited<ReturnType<typeof validateRequest>>['user'] | null,
-    accounts: null as Awaited<ReturnType<typeof validateRequest>>['accounts'] | null,
-    error: null as Error | null,
+    user: null,
+    accounts: null,
+    error: null,
   };
 
   const [contextState, setContextState] = useState(initialState);
