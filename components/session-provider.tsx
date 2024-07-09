@@ -1,6 +1,6 @@
 'use client';
 
-import { createContext, useContext, useEffect, useMemo, useState } from 'react';
+import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import type { validateRequest } from '@/lib/auth';
 import { getSession } from '@/lib/helpers';
 
@@ -46,6 +46,12 @@ export function SessionProvider({ children, session = null }: SessionProviderPro
 
   const [contextState, setContextState] = useState(initialState);
 
+  const getCachedSession = useCallback(async () => {
+    const newContextState = await getSession();
+    const { session, user, accounts } = newContextState;
+    setContextState((prevState) => ({ ...prevState, session, user, accounts }));
+  }, []);
+
   useEffect(() => {
     setContextState((prevState) => ({ ...prevState, isLoading: true, error: null }));
     try {
@@ -55,14 +61,7 @@ export function SessionProvider({ children, session = null }: SessionProviderPro
       }
       // An event or session staleness occurred, update the client session.
       setContextState((prevState) => ({ ...prevState, lastSync: now() }));
-      getSession().then((res) => {
-        setContextState((prevState) => ({
-          ...prevState,
-          session: res.session,
-          user: res.user,
-          accounts: res.accounts,
-        }));
-      });
+      getCachedSession();
     } catch (error) {
       console.error((error as Error).name, (error as Error).message);
       setContextState((prevState) => ({ ...prevState, error: error as Error }));
