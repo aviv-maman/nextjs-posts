@@ -11,13 +11,16 @@ function now() {
   return Math.floor(Date.now() / 1000);
 }
 
-const SessionContext = createContext({
-  session: null as Awaited<ReturnType<typeof validateRequest>>['session'],
-  user: null as Awaited<ReturnType<typeof validateRequest>>['user'],
-  accounts: null as Awaited<ReturnType<typeof validateRequest>>['accounts'],
-  isLoading: false,
-  error: null as Error | null,
-});
+const SessionContext = createContext<
+  | {
+      isLoading: boolean;
+      session: Awaited<ReturnType<typeof validateRequest>>['session'] | null;
+      user: Awaited<ReturnType<typeof validateRequest>>['user'] | null;
+      accounts: Awaited<ReturnType<typeof validateRequest>>['accounts'] | null;
+      error: Error | null;
+    }
+  | undefined
+>(undefined);
 
 interface SessionProviderProps {
   children: Readonly<React.ReactNode>;
