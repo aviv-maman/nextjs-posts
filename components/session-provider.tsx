@@ -4,13 +4,6 @@ import { createContext, useCallback, useContext, useEffect, useMemo, useState } 
 import type { validateRequest } from '@/lib/auth';
 import { getSession } from '@/lib/helpers';
 
-/**
- * Returns the number of seconds elapsed since January 1, 1970 00:00:00 UTC.
- */
-function now() {
-  return Math.floor(Date.now() / 1000);
-}
-
 type SessionProviderState =
   | {
       isLoading: boolean;
@@ -34,10 +27,9 @@ export function SessionProvider({ children, session = null }: SessionProviderPro
 
   const hasInitialSession = session !== null;
 
-  const initialState: SessionProviderState & { lastSync: number } = {
+  const initialState: SessionProviderState = {
     /** If session was passed, initialize as not loading */
     isLoading: !hasInitialSession,
-    lastSync: hasInitialSession ? now() : 0,
     session,
     user: null,
     accounts: null,
@@ -55,12 +47,6 @@ export function SessionProvider({ children, session = null }: SessionProviderPro
   useEffect(() => {
     setContextState((prevState) => ({ ...prevState, isLoading: true, error: null }));
     try {
-      if (now() < contextState.lastSync) {
-        // Return early if the client session is not initialized yet
-        return;
-      }
-      // An event or session staleness occurred, update the client session.
-      setContextState((prevState) => ({ ...prevState, lastSync: now() }));
       getCachedSession();
     } catch (error) {
       console.error((error as Error).name, (error as Error).message);
@@ -68,7 +54,7 @@ export function SessionProvider({ children, session = null }: SessionProviderPro
     } finally {
       setContextState((prevState) => ({ ...prevState, isLoading: false }));
     }
-  }, []);
+  }, [getCachedSession]);
 
   const contextValue = useMemo(
     () => ({
@@ -78,7 +64,7 @@ export function SessionProvider({ children, session = null }: SessionProviderPro
       isLoading: contextState.isLoading,
       error: contextState.error,
     }),
-    [contextState.session, contextState.user, contextState.accounts, contextState.isLoading, contextState.error],
+    [contextState],
   );
 
   return <SessionContext.Provider value={contextValue}>{children}</SessionContext.Provider>;
