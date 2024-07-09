@@ -53,7 +53,7 @@ export const Header: React.FC = () => {
           <NavigationMenu>
             <NavigationMenuList className='hidden sm:flex'>
               <NavigationMenuItem>
-                <NavigationMenuTrigger>Menu</NavigationMenuTrigger>
+                <NavigationMenuTrigger className='bg-transparent'>Menu</NavigationMenuTrigger>
                 <NavigationMenuContent>
                   <ul className='grid gap-3 p-6 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]'>
                     <li className='row-span-3'>
@@ -97,12 +97,12 @@ export const Header: React.FC = () => {
         <div className='flex flex-1 items-center justify-between space-x-2 md:justify-end'>
           <nav className='flex items-center space-x-2'>
             <Link href='https://github.com/aviv-maman/todo-auth0' target='_blank' referrerPolicy='no-referrer'>
-              <Button aria-label='GitHub' variant='outline' size='icon' className='size-9'>
+              <Button aria-label='GitHub' variant='ghost' size='icon' className='size-9 bg-transparent'>
                 <Github className='size-5' />
               </Button>
             </Link>
             <Link href='https://www.linkedin.com/in/aviv-maman-914a95223' target='_blank' referrerPolicy='no-referrer'>
-              <Button aria-label='LinkedIn' variant='outline' size='icon' className='size-9'>
+              <Button aria-label='LinkedIn' variant='ghost' size='icon' className='size-9 bg-transparent'>
                 <Linkedin className='size-5 text-blue-500' />
               </Button>
             </Link>
