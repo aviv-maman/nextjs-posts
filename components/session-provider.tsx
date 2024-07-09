@@ -14,9 +14,9 @@ function now() {
 type SessionProviderState =
   | {
       isLoading: boolean;
-      session: Awaited<ReturnType<typeof validateRequest>>['session'] | null;
-      user: Awaited<ReturnType<typeof validateRequest>>['user'] | null;
-      accounts: Awaited<ReturnType<typeof validateRequest>>['accounts'] | null;
+      session: Awaited<ReturnType<typeof validateRequest>>['session'];
+      user: Awaited<ReturnType<typeof validateRequest>>['user'];
+      accounts: Awaited<ReturnType<typeof validateRequest>>['accounts'];
       error: Error | null;
     }
   | undefined;
@@ -71,7 +71,7 @@ export function SessionProvider({ children, session = null }: SessionProviderPro
     }
   }, []);
 
-  const value = useMemo(
+  const contextValue = useMemo(
     () => ({
       session: contextState.session,
       user: contextState.user,
@@ -82,7 +82,7 @@ export function SessionProvider({ children, session = null }: SessionProviderPro
     [contextState.session, contextState.user, contextState.accounts, contextState.isLoading, contextState.error],
   );
 
-  return <SessionContext.Provider value={value}>{children}</SessionContext.Provider>;
+  return <SessionContext.Provider value={contextValue}>{children}</SessionContext.Provider>;
 }
 
 /**`Client Only`
