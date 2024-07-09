@@ -38,22 +38,35 @@ export function SessionProvider({ children, session = null }: SessionProviderPro
 
   const [contextState, setContextState] = useState(initialState);
 
+  // const getCachedSession = useCallback(async () => {
+  //   const newContextState = await getSession();
+  //   const { session, user, accounts } = newContextState;
+  //   setContextState((prevState) => ({ ...prevState, session, user, accounts }));
+  // }, []);
+
   const getCachedSession = useCallback(async () => {
-    const newContextState = await getSession();
-    const { session, user, accounts } = newContextState;
-    setContextState((prevState) => ({ ...prevState, session, user, accounts }));
+    return await getSession();
   }, []);
 
   useEffect(() => {
+    let ignore = false;
     setContextState((prevState) => ({ ...prevState, isLoading: true, error: null }));
     try {
-      getCachedSession();
+      getCachedSession().then((res) => {
+        const { session, user, accounts } = res;
+        if (!ignore) {
+          setContextState((prevState) => ({ ...prevState, session, user, accounts }));
+        }
+      });
     } catch (error) {
       console.error((error as Error).name, (error as Error).message);
       setContextState((prevState) => ({ ...prevState, error: error as Error }));
     } finally {
       setContextState((prevState) => ({ ...prevState, isLoading: false }));
     }
+    return () => {
+      ignore = true;
+    };
   }, [getCachedSession]);
 
   const contextValue = useMemo(
