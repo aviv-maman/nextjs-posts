@@ -45,7 +45,7 @@ export function SessionProvider({ children, session = null }: SessionProviderPro
   useEffect(() => {
     setContextState((prevState) => ({ ...prevState, isLoading: true, error: null }));
     try {
-      if (now() < contextState.lastSync || !contextState.session) {
+      if (now() < contextState.lastSync) {
         // Return early if the client session is not initialized yet
         return;
       }
