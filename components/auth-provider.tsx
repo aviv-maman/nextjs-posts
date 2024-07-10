@@ -26,8 +26,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
   }
 
   const initialState: AuthProviderState = {
-    /** If session was passed, initialize as not loading */
-    isLoading: true,
+    isLoading: false,
     session: null,
     user: null,
     accounts: null,
@@ -48,7 +47,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
   }, []);
 
   const logout = useCallback(async () => {
-    setContextState((prevState) => ({ ...prevState, error: null }));
+    setContextState((prevState) => ({ ...prevState, isLoading: true, error: null }));
     try {
       const res = await clearSession();
       const err = res && res.error ? res.error : null;
@@ -67,7 +66,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   useEffect(() => {
     let ignore = false;
-    setContextState((prevState) => ({ ...prevState, error: null }));
+    setContextState((prevState) => ({ ...prevState, isLoading: true, error: null }));
     try {
       getCachedSession().then((res) => {
         const { session, user, accounts } = res;
