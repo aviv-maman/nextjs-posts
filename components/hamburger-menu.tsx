@@ -16,9 +16,11 @@ export const HamburgerMenu: React.FC<HamburgerMenuProps> = ({ components }) => {
       </SheetTrigger>
       <SheetContent side='left'>
         <SheetHeader className='items-start'>
-          <SheetTitle className='flex items-center gap-x-2'>
-            <Home className='size-5' />
-            <span className='font-bold'>ToDoz</span>
+          <SheetTitle className='flex items-center gap-x-2' asChild>
+            <Link href='/'>
+              <Home className='size-5' />
+              <span className='font-bold'>ToDoz</span>
+            </Link>
           </SheetTitle>
           <SheetDescription className='sr-only'>Choose a page you would like to navigate to.</SheetDescription>
         </SheetHeader>
