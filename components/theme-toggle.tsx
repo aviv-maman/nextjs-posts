@@ -5,13 +5,13 @@ import { useTheme } from 'next-themes';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
+  DropdownMenuCheckboxItem,
   DropdownMenuContent,
-  DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 
 export function ThemeToggle() {
-  const { setTheme } = useTheme();
+  const { setTheme, theme } = useTheme();
 
   const items = [
     { label: 'Light', icon: <Sun className='size-4' /> },
@@ -31,13 +31,14 @@ export function ThemeToggle() {
       <DropdownMenuContent align='end'>
         {items.map((item) => {
           return (
-            <DropdownMenuItem
+            <DropdownMenuCheckboxItem
               key={item.label}
               className='cursor-pointer justify-between'
-              onClick={() => setTheme(item.label.toLowerCase())}>
+              onClick={() => setTheme(item.label.toLowerCase())}
+              checked={item.label.toLowerCase() === theme}>
               <span>{item.label}</span>
               {item.icon}
-            </DropdownMenuItem>
+            </DropdownMenuCheckboxItem>
           );
         })}
       </DropdownMenuContent>
