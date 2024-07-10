@@ -47,6 +47,7 @@ export interface User extends LuciaUser {
 }
 export interface Account extends Omit<DatabaseAccount, 'provider_user_id'> {}
 
+interface Permission extends Omit<DatabasePermission, 'user_id'> {}
 /**`Server Only`
  *
  * Validates the current session and returns the associated user and its session if the session is valid. Otherwise, returns null for both.
@@ -107,10 +108,10 @@ export const validateRequest = cache(
         .all(validationResult?.session?.userId) as Account[] | undefined;
       requestResult.accounts = existingAccounts || null;
 
-      const role = db
+      const permission = db
         .prepare('SELECT role FROM permission WHERE user_id = ?')
-        .get(validationResult?.session?.userId) as User['role'] | undefined;
-      requestResult.user.role = role || 'user';
+        .get(validationResult?.session?.userId) as Permission | undefined;
+      requestResult.user.role = permission?.role || 'user';
 
       if (validationResult.session && validationResult.session.fresh) {
         const sessionCookie = lucia.createSessionCookie(validationResult.session.id);
