@@ -11,5 +11,9 @@ export function ProgressDemo() {
     return () => clearTimeout(timer);
   }, []);
 
-  return <Progress value={progress} className='w-3/5' />;
+  return (
+    <section className='w-full sm:w-[384px]'>
+      <Progress value={progress} className='w-full' />
+    </section>
+  );
 }

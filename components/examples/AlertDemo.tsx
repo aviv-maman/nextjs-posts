@@ -3,7 +3,7 @@ import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 
 export function AlertDemo() {
   return (
-    <section className='flex flex-col gap-y-4'>
+    <section className='flex w-full flex-col gap-y-4 sm:w-[384px]'>
       <Alert>
         <Terminal className='size-4' />
         <AlertTitle>Heads up!</AlertTitle>

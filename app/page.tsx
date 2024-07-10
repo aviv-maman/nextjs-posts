@@ -24,7 +24,6 @@ import { HoverCardDemo } from '@/components/examples/HoverCardDemo';
 import { InputOTPDemo } from '@/components/examples/InputOTPPattern';
 import { LabelDemo } from '@/components/examples/LabelDemo';
 import { MenubarDemo } from '@/components/examples/MenubarDemo';
-import { NavigationMenuDemo } from '@/components/examples/NavigationMenuDemo';
 import { PaginationDemo } from '@/components/examples/PaginationDemo';
 import { PopoverDemo } from '@/components/examples/PopoverDemo';
 import { ProgressDemo } from '@/components/examples/ProgressDemo';
@@ -50,7 +49,7 @@ export default async function Home() {
   //const { user, accounts } = await validateProtectedRoute({ role: 'guest', redirectUrl: '/login' });
 
   return (
-    <div className='flex flex-col items-start gap-y-10'>
+    <div className='flex flex-col items-center gap-y-10'>
       <Suspense fallback={<div>Loading User...</div>}>
         <ProfileBlock />
       </Suspense>
@@ -78,7 +77,6 @@ export default async function Home() {
       <InputOTPDemo />
       <LabelDemo />
       <MenubarDemo />
-      <NavigationMenuDemo />
       <PaginationDemo />
       <PopoverDemo />
       <ProgressDemo />
