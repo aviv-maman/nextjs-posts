@@ -38,12 +38,19 @@ db.exec(`CREATE TABLE IF NOT EXISTS oauth_account (
 //   PRIMARY KEY (id, code)
 // )`);
 
+// db.exec(`CREATE TABLE IF NOT EXISTS permission (
+//   subject TEXT NOT NULL,
+//   actions JSONB NOT NULL,
+//   conditions JSONB NOT NULL,
+//   user_id TEXT NOT NULL,
+//   PRIMARY KEY (subject, user_id),
+//   FOREIGN KEY (user_id) REFERENCES user(id)
+// )`);
+
 db.exec(`CREATE TABLE IF NOT EXISTS permission (
-  subject TEXT NOT NULL,
-  actions JSONB NOT NULL,
-  conditions JSONB NOT NULL,
+  role TEXT NOT NULL,
   user_id TEXT NOT NULL,
-  PRIMARY KEY (subject, user_id),
+  PRIMARY KEY (role, user_id),
   FOREIGN KEY (user_id) REFERENCES user(id)
 )`);
 
@@ -74,12 +81,8 @@ export interface DatabaseAccount {
 
 /**A record (row) in the `permission` table */
 export interface DatabasePermission {
-  /**The affected subject by those permissions */
-  subject: string;
-  /**read_self, create_self, update_self, delete_self, read_foreign, update_foreign, delete_foreign */
-  actions: string;
-  /**  can_mutate_self: 1, can_mutate_foreign: 0 */
-  conditions: string;
+  /**The current role of the user */
+  role: 'user' | 'admin';
   /**An `internal` ID of a user in the user table */
   user_id: string;
 }

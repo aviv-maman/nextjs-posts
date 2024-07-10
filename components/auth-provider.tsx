@@ -19,19 +19,16 @@ const AuthContext = createContext<AuthProviderState>(undefined);
 
 interface AuthProviderProps {
   children: Readonly<React.ReactNode>;
-  session?: Awaited<ReturnType<typeof validateRequest>>['session'] | null;
 }
-export function AuthProvider({ children, session = null }: AuthProviderProps) {
+export function AuthProvider({ children }: AuthProviderProps) {
   if (!AuthContext) {
     throw new Error('React Context is unavailable in Server Components');
   }
 
-  const hasInitialSession = session !== null;
-
   const initialState: AuthProviderState = {
     /** If session was passed, initialize as not loading */
-    isLoading: !hasInitialSession,
-    session,
+    isLoading: true,
+    session: null,
     user: null,
     accounts: null,
     error: null,
@@ -51,7 +48,7 @@ export function AuthProvider({ children, session = null }: AuthProviderProps) {
   }, []);
 
   const logout = useCallback(async () => {
-    setContextState((prevState) => ({ ...prevState, isLoading: true, error: null }));
+    setContextState((prevState) => ({ ...prevState, error: null }));
     try {
       const res = await clearSession();
       const err = res && res.error ? res.error : null;
@@ -70,7 +67,7 @@ export function AuthProvider({ children, session = null }: AuthProviderProps) {
 
   useEffect(() => {
     let ignore = false;
-    setContextState((prevState) => ({ ...prevState, isLoading: true, error: null }));
+    setContextState((prevState) => ({ ...prevState, error: null }));
     try {
       getCachedSession().then((res) => {
         const { session, user, accounts } = res;
@@ -111,11 +108,11 @@ export function AuthProvider({ children, session = null }: AuthProviderProps) {
  *
  * export default async function Page() {
  * const { session, user, accounts, isLoading, error } = useAuth();
-
+ *
  * if (isLoading) {
  *    return <div>Loading...</div>;
  * }
-
+ *
  *  return (
  *    <div className='flex flex-col items-start gap-y-10'>
  *      {session && (

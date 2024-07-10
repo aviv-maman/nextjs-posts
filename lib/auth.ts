@@ -5,7 +5,7 @@ import type { User as LuciaUser, Session } from 'lucia';
 import { cookies } from 'next/headers';
 import { cache } from 'react';
 import { db } from './db';
-import type { DatabaseAccount, DatabaseUser } from './db';
+import type { DatabaseAccount, DatabasePermission, DatabaseUser } from './db';
 
 const adapter = new BetterSqlite3Adapter(db, {
   user: 'user',
@@ -38,10 +38,14 @@ declare module 'lucia' {
   }
 }
 
-interface User extends LuciaUser {
-  permissions: string[];
+export interface User extends LuciaUser {
+  // permissions: {
+  //subject: 'generic_item' | 'advanced_item';
+  //actions: { create?: 0 | 1; read: 0 | 1; update?: 0 | 1; delete?: 0 | 1 };
+  // };
+  role: Omit<DatabasePermission, 'user_id'>['role'];
 }
-interface Account extends Omit<DatabaseAccount, 'provider_user_id'> {}
+export interface Account extends Omit<DatabaseAccount, 'provider_user_id'> {}
 
 /**`Server Only`
  *
@@ -102,7 +106,12 @@ export const validateRequest = cache(
         .prepare('SELECT provider_name, user_id FROM oauth_account WHERE user_id = ?')
         .all(validationResult?.session?.userId) as Account[] | undefined;
       requestResult.accounts = existingAccounts || null;
-      //requestResult.user.permissions = ['']
+
+      const role = db
+        .prepare('SELECT role FROM permission WHERE user_id = ?')
+        .get(validationResult?.session?.userId) as User['role'] | undefined;
+      requestResult.user.role = role || 'user';
+
       if (validationResult.session && validationResult.session.fresh) {
         const sessionCookie = lucia.createSessionCookie(validationResult.session.id);
         cookies().set(sessionCookie.name, sessionCookie.value, sessionCookie.attributes);

@@ -5,6 +5,19 @@ import { github, lucia } from '@/lib/auth';
 import { db } from '@/lib/db';
 import type { DatabaseAccount, DatabaseUser } from '@/lib/db';
 
+const getMainEmail = async (accessToken: string) => {
+  const emailRes = await fetch('https://api.github.com/user/emails', {
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+      'User-Agent': 'lucia-playground',
+    },
+  });
+  if (emailRes.ok) {
+    const emails = (await emailRes.json()) as GitHubEmailRes[];
+    return emails.find((email) => email.primary) ?? emails[0];
+  }
+};
+
 export async function GET(request: Request): Promise<Response> {
   const url = new URL(request.url);
   const code = url.searchParams.get('code');
@@ -18,7 +31,7 @@ export async function GET(request: Request): Promise<Response> {
 
   try {
     const tokens = await github.validateAuthorizationCode(code);
-    const githubUser: GitHubUser & { email_verified: boolean } = await fetch('https://api.github.com/user', {
+    const githubUser: GitHubUser & { email_verified?: boolean } = await fetch('https://api.github.com/user', {
       headers: {
         Authorization: `Bearer ${tokens.accessToken}`,
         'User-Agent': 'lucia-playground',
@@ -27,15 +40,8 @@ export async function GET(request: Request): Promise<Response> {
     if (!githubUser.email) {
       // If the user does not have a public email, get another via the GitHub API
       // See https://docs.github.com/en/rest/users/emails#list-public-email-addresses-for-the-authenticated-user
-      const emailRes = await fetch('https://api.github.com/user/emails', {
-        headers: {
-          Authorization: `Bearer ${tokens.accessToken}`,
-          'User-Agent': 'lucia-playground',
-        },
-      });
-      if (emailRes.ok) {
-        const emails = (await emailRes.json()) as GitHubEmailRes[];
-        const mainEmail = emails.find((email) => email.primary) ?? emails[0];
+      const mainEmail = await getMainEmail(tokens.accessToken);
+      if (mainEmail) {
         githubUser.email = mainEmail.email;
         githubUser.email_verified = mainEmail.verified ?? false;
       }
@@ -70,18 +76,13 @@ export async function GET(request: Request): Promise<Response> {
 
     const userId = existingUser ? existingUser.id : generateIdFromEntropySize(15);
 
-    if (existingUser?.email_verified) {
-      db.prepare('INSERT INTO oauth_account (provider_name, provider_user_id, user_id) VALUES (?, ?, ?)').run(
-        'github',
-        githubUser.id,
-        existingUser.id,
-      );
-    } else {
-      if (!githubUser.email_verified) {
-        return new Response('Unverified email', {
-          status: 400,
-        });
+    if (!existingUser) {
+      const mainEmail = await getMainEmail(tokens.accessToken);
+      if (mainEmail) {
+        githubUser.email = mainEmail.email;
+        githubUser.email_verified = mainEmail.verified ?? false;
       }
+
       db.prepare(
         'INSERT INTO user (id, username, name, email, email_verified, image_url) VALUES (?, ?, ?, ?, ?, ?)',
       ).run(
@@ -98,6 +99,30 @@ export async function GET(request: Request): Promise<Response> {
         String(githubUser.id),
         userId,
       );
+
+      db.prepare('INSERT INTO permission (role, user_id) VALUES (?, ?)').run('user', userId);
+    } else {
+      if (existingUser.email_verified) {
+        db.prepare('INSERT INTO oauth_account (provider_name, provider_user_id, user_id) VALUES (?, ?, ?)').run(
+          'github',
+          githubUser.id,
+          existingUser.id,
+        );
+      } else {
+        const mainEmail = await getMainEmail(tokens.accessToken);
+        if (mainEmail) {
+          githubUser.email = mainEmail.email;
+          githubUser.email_verified = mainEmail.verified ?? false;
+        }
+      }
+
+      if (githubUser.email_verified) {
+        db.prepare('UPDATE user SET email_verified = ? WHERE id = ?').run(1, existingUser.id);
+      } else {
+        return new Response('Unverified email', {
+          status: 400,
+        });
+      }
     }
 
     const session = await lucia.createSession(userId, {});
