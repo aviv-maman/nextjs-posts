@@ -1,9 +1,9 @@
 'use client';
 
-import { Github, Home, Linkedin } from 'lucide-react';
 import Link from 'next/link';
 import { forwardRef } from 'react';
 import { HamburgerMenu } from './hamburger-menu';
+import { GitHub, LinkedIn, Logo } from '@/assets/icons';
 import { useAuth } from '@/components/auth-provider';
 import { ThemeToggle } from '@/components/theme-toggle';
 import { Button } from '@/components/ui/button';
@@ -51,8 +51,8 @@ export const Header: React.FC = () => {
         <div className='mr-4 hidden md:flex'>
           <div className='mr-6 flex items-center space-x-2'>
             <Link href='/' className='mr-6 flex items-center space-x-2' passHref>
-              <Home className='size-5' />
-              <span>ToDoz</span>
+              <Logo className='size-5' />
+              <span>FeedZ</span>
             </Link>
           </div>
           <NavigationMenu>
@@ -64,9 +64,8 @@ export const Header: React.FC = () => {
                     <li className='row-span-3'>
                       <NavigationMenuLink asChild>
                         <div className='flex size-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-muted/50 to-muted p-6 no-underline outline-none focus:shadow-md'>
-                          <Home className='size-6' />
-                          <div className='mb-2 mt-4 text-lg font-medium'>ToDoz</div>
-                          <p className='text-sm leading-tight text-muted-foreground'>Next.js. Auth0. Open Source.</p>
+                          <span className='mb-2 mt-4 text-lg font-medium'>FeedZ</span>
+                          <p className='text-sm leading-tight text-muted-foreground'>Feeds and much more 🥲</p>
                         </div>
                       </NavigationMenuLink>
                     </li>
@@ -112,15 +111,15 @@ export const Header: React.FC = () => {
         </div>
 
         <div className='flex flex-1 items-center justify-between space-x-2 md:justify-end'>
-          <nav className='flex items-center space-x-2'>
+          <nav className='flex items-center'>
             <Link href='https://github.com/aviv-maman/todo-auth0' target='_blank' referrerPolicy='no-referrer'>
-              <Button aria-label='GitHub' variant='ghost' size='icon' className='size-9 bg-transparent'>
-                <Github className='size-5' />
+              <Button aria-label='github' variant='ghost' size='icon' className='size-8 bg-transparent'>
+                <GitHub className='size-4' />
               </Button>
             </Link>
             <Link href='https://www.linkedin.com/in/aviv-maman-914a95223' target='_blank' referrerPolicy='no-referrer'>
-              <Button aria-label='LinkedIn' variant='ghost' size='icon' className='size-9 bg-transparent'>
-                <Linkedin className='size-5 text-blue-500' />
+              <Button aria-label='linkedin' variant='ghost' size='icon' className='size-8 bg-transparent'>
+                <LinkedIn className='size-4 text-blue-500' />
               </Button>
             </Link>
             <ThemeToggle />

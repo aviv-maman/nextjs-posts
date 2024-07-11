@@ -1,8 +1,8 @@
 'use client';
 
-import { Home, Menu } from 'lucide-react';
 import Link from 'next/link';
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from './ui/sheet';
+import { Logo, Menu } from '@/assets/icons';
 
 interface HamburgerMenuProps {
   components?: { title: string; href?: string; action?: () => void; description: string }[];
@@ -11,15 +11,15 @@ interface HamburgerMenuProps {
 export const HamburgerMenu: React.FC<HamburgerMenuProps> = ({ components }) => {
   return (
     <Sheet>
-      <SheetTrigger asChild>
+      <SheetTrigger>
         <Menu className='size-5 hover:cursor-pointer hover:text-indigo-300' />
       </SheetTrigger>
       <SheetContent side='left'>
         <SheetHeader className='items-start'>
           <SheetTitle className='flex items-center gap-x-2' asChild>
             <Link href='/'>
-              <Home className='size-5' />
-              <span className='font-bold'>ToDoz</span>
+              <Logo className='size-5' />
+              <span className='font-bold'>FeedZ</span>
             </Link>
           </SheetTitle>
           <SheetDescription className='sr-only'>Choose a page you would like to navigate to.</SheetDescription>

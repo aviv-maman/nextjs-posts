@@ -26,9 +26,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         })}>
         <Providers>
           <Header />
-          <main className='min-h-[calc(100vh-154px)] px-6 py-3 animate-in sm:min-h-[calc(100vh-146px)]'>
-            {children}
-          </main>
+          <main className='min-h-[calc(100vh-154px)] animate-in sm:min-h-[calc(100vh-146px)]'>{children}</main>
           <Footer />
         </Providers>
         <Toaster />
