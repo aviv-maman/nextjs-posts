@@ -24,7 +24,7 @@ export default async function Page() {
                 <GitHub className='mr-2 size-5' />
                 <span>Continue with GitHub</span>
               </Button>
-              <Button type='button' variant='default' className='bg-red-600 hover:bg-red-500'>
+              <Button type='button' variant='default' className='bg-red-600 hover:bg-red-400'>
                 <Google className='mr-2 size-5' />
                 <span>Continue with Google</span>
               </Button>
