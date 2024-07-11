@@ -18,7 +18,7 @@ export const Feed: React.FC = async () => {
     </div>
   ) : (
     <div className='mt-10 flex w-full flex-col overflow-hidden md:justify-evenly lg:flex-row'>
-      <h1 className='text-center'>Create your first todo to get started</h1>
+      <h1 className='text-center'>Create your first item to get started</h1>
     </div>
   );
 };

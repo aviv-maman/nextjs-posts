@@ -16,7 +16,7 @@ export default function Footer() {
           <span>&copy; {range} FeedZ. All rights reserved.</span>
         </div>
         <div className='flex items-center gap-1'>
-          <Link href='https://github.com/aviv-maman/todo-auth0' target='_blank' referrerPolicy='no-referrer'>
+          <Link href='https://github.com/aviv-maman' target='_blank' referrerPolicy='no-referrer'>
             <Button
               aria-label='GitHub'
               variant='ghost'
