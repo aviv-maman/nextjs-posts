@@ -1,20 +1,15 @@
 'use server';
 
-import GenericCard from '@/components/generic-card';
-import { fakeDelay } from '@/lib/utils';
-import mockData from '@/mock_data.json';
+import FeedBlock from '@/components/feed-block';
+import type { GenericItem } from '@/components/generic-card';
 
 export const Feed: React.FC = async () => {
-  const data = await fakeDelay(5000).then(async () => mockData);
+  const response = await fetch(`${process.env.BASE_URL}/api/external/feed`, { cache: 'no-cache' });
+  const { data } = (await response.json()) as { total: number; data: GenericItem[]; message: string };
 
   return data ? (
-    <div id='feed-block' className='flex w-full flex-col'>
-      <h2 title='Complete' className='rounded border px-4 py-2 text-center text-2xl font-bold tracking-tight'>
-        General Feed
-      </h2>
-      {data.map((item) => (
-        <GenericCard key={item.id} value={item} className='mt-6' />
-      ))}
+    <div id='feed-block' className='flex w-96 flex-col sm:w-[28rem]'>
+      <FeedBlock data={data} />
     </div>
   ) : (
     <div className='mt-10 flex w-full flex-col overflow-hidden md:justify-evenly lg:flex-row'>

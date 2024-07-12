@@ -1,31 +1,31 @@
 'use client';
 
-import { CheckIcon, UserIcon, XIcon } from 'lucide-react';
+import { UserIcon } from 'lucide-react';
 import Image from 'next/image';
-import { AspectRatio } from './ui/aspect-ratio';
-import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
-import { Button } from './ui/button';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from './ui/card';
+import { AspectRatio } from '@/components/ui/aspect-ratio';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
 
-type GenericCardProps = React.ComponentProps<typeof Card> & {
-  value: {
-    id: string;
-    title: string;
-    content: string;
-    is_published: boolean;
-    is_private: boolean;
-    images: string[];
-    tags: string[];
-    website: string;
-    created_at: string;
-    updated_at: string;
-    owner_id?: string | null;
-    owner_email?: string | null;
-    owner_name?: string | null;
-    owner_picture?: string | null;
-  };
+export type GenericItem = {
+  id: string;
+  title: string;
+  content: string;
+  is_published: boolean;
+  is_private: boolean;
+  images: string[];
+  tags: string[];
+  website: string;
+  created_at: string;
+  updated_at: string;
+  owner_id?: string | null;
+  owner_email?: string | null;
+  owner_name?: string | null;
+  owner_picture?: string | null;
 };
+interface GenericCardProps extends React.ComponentProps<typeof Card> {
+  value: GenericItem;
+}
 
 const GenericCard: React.FC<GenericCardProps> = ({ value, ...props }) => {
   return (

@@ -1,18 +1,19 @@
 'use client';
 
+import type { Route } from 'next';
 import Link from 'next/link';
-import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from './ui/sheet';
 import { Logo, Menu } from '@/assets/icons';
+import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 
 interface HamburgerMenuProps {
-  components?: { title: string; href?: string; action?: () => void; description: string }[];
+  components?: { title: string; href?: Route<string> | string; action?: () => void; description: string }[];
 }
 
 export const HamburgerMenu: React.FC<HamburgerMenuProps> = ({ components }) => {
   return (
     <Sheet>
-      <SheetTrigger>
-        <Menu className='size-5 hover:cursor-pointer hover:text-indigo-300' />
+      <SheetTrigger className='flex size-8 items-center justify-center rounded-md hover:cursor-pointer hover:bg-accent hover:text-accent-foreground'>
+        <Menu className='size-5' />
       </SheetTrigger>
       <SheetContent side='left'>
         <SheetHeader className='items-start'>
@@ -31,7 +32,7 @@ export const HamburgerMenu: React.FC<HamburgerMenuProps> = ({ components }) => {
               component.href ? (
                 <Link
                   key={component.title}
-                  href={component.href}
+                  href={component.href as Route}
                   className='mt-2 w-fit text-left text-sm text-muted-foreground'>
                   {component.title}
                 </Link>

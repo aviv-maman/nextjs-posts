@@ -1,7 +1,6 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import Link from 'next/link';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { Button } from '@/components/ui/button';
@@ -75,10 +74,7 @@ export function CheckboxReactHookFormSingle() {
               </FormControl>
               <div className='space-y-1 leading-none'>
                 <FormLabel>Use different settings for my mobile devices</FormLabel>
-                <FormDescription>
-                  You can manage your mobile notifications in the <Link href='/examples/forms'>mobile settings</Link>{' '}
-                  page.
-                </FormDescription>
+                <FormDescription>You can manage your mobile notifications in the mobile settings page.</FormDescription>
               </div>
             </FormItem>
           )}

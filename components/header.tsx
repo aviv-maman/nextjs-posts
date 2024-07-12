@@ -2,9 +2,9 @@
 
 import Link from 'next/link';
 import { forwardRef } from 'react';
-import { HamburgerMenu } from './hamburger-menu';
 import { GitHub, LinkedIn, Logo } from '@/assets/icons';
 import { useAuth } from '@/components/auth-provider';
+import { HamburgerMenu } from '@/components/hamburger-menu';
 import { ThemeToggle } from '@/components/theme-toggle';
 import { Button } from '@/components/ui/button';
 import {
