@@ -1,3 +1,5 @@
+'use server';
+
 import { redirect } from 'next/navigation';
 import { GitHub, Google, Mail } from '@/assets/icons';
 import { Button } from '@/components/ui/button';
@@ -10,8 +12,7 @@ export default async function Page() {
   if (user) redirect('/');
 
   return (
-    <section className='container relative flex h-[calc(100vh-150px)] flex-col space-y-6 p-6 sm:h-[calc(100vh-142px)] sm:justify-center sm:px-8'>
-      <div id='particles-js'></div>
+    <section className='container relative flex h-[calc(100vh-150px)] flex-col p-6 sm:h-[calc(100vh-142px)] sm:justify-center sm:px-8'>
       <Card className='mx-auto max-w-sm'>
         <CardHeader>
           <CardTitle className='text-center text-2xl'>Login to FeedZ</CardTitle>

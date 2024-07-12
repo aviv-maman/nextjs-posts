@@ -46,8 +46,8 @@ export const HamburgerMenu: React.FC<HamburgerMenuProps> = ({ components }) => {
             )}
           </div>
           <div className='mt-2 flex flex-col border-t-2 pl-6'>
-            <Link href='/about' className='mt-2 w-fit text-left text-sm text-muted-foreground'>
-              About
+            <Link href='/feed' className='mt-2 w-fit text-left text-sm text-muted-foreground'>
+              Feed
             </Link>
           </div>
         </div>

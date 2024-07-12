@@ -96,8 +96,8 @@ export const Header: React.FC = () => {
                 </NavigationMenuContent>
               </NavigationMenuItem>
               <NavigationMenuItem>
-                <Link href='/about' legacyBehavior passHref>
-                  <NavigationMenuLink className={navigationMenuTriggerStyle()}>About</NavigationMenuLink>
+                <Link href='/feed' legacyBehavior passHref>
+                  <NavigationMenuLink className={navigationMenuTriggerStyle()}>Feed</NavigationMenuLink>
                 </Link>
               </NavigationMenuItem>
             </NavigationMenuList>

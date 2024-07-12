@@ -1,3 +1,5 @@
+'use server';
+
 import { Suspense } from 'react';
 //import { validateProtectedRoute } from '@/lib/actions';
 import ProfileBlock from './profile-block';
@@ -44,12 +46,12 @@ import { ToggleDemo } from '@/components/examples/ToggleDemo';
 import { ToggleGroupDemo } from '@/components/examples/ToggleGroupDemo';
 import { TooltipDemo } from '@/components/examples/TooltipDemo';
 
-export default async function Home() {
+export default async function HomePage() {
   //const { session, user, accounts, isLoading, error } = useAuth();
   //const { user, accounts } = await validateProtectedRoute({ role: 'guest', redirectUrl: '/login' });
 
   return (
-    <div className='flex flex-col items-center gap-y-10'>
+    <div className='flex flex-col items-center'>
       <Suspense fallback={<div>Loading User...</div>}>
         <ProfileBlock />
       </Suspense>

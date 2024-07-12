@@ -86,3 +86,30 @@ export interface DatabasePermission {
   /**An `internal` ID of a user in the user table */
   user_id: string;
 }
+
+/**A record (row) in the `generic_item` table */
+export interface DatabaseGenericItem {
+  id: string;
+  title: string;
+  content: string;
+  is_published: boolean;
+  is_private: boolean;
+  images: string[];
+  /**Tags to describe the content */
+  tags: string[] | null;
+  website: string | null;
+  created_at: Date;
+  updated_at: Date;
+  owner_id: string;
+}
+
+/**A record (row) in the `generic_item_comments` table */
+export interface DatabaseGenericItemComments {
+  id: string;
+  title: string;
+  content: string;
+  item_id: string;
+  created_at: Date;
+  updated_at: Date;
+  author_id: string;
+}
