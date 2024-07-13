@@ -14,6 +14,7 @@ const config = {
   plugins: ['@trivago/prettier-plugin-sort-imports', 'prettier-plugin-tailwindcss'],
   importOrder: ['<THIRD_PARTY_MODULES>', '^./(.*)$'],
   importOrderSortSpecifiers: true,
+  tailwindFunctions: ['cn'],
 };
 
 export default config;
