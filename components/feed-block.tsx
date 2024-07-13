@@ -12,7 +12,7 @@ const FeedBlock: React.FC<{ data: GenericItem[] }> = ({ data }) => {
 
   useEffect(() => {
     let ignore = false;
-    if (!observer?.isIntersecting || !observerTarget.current) return;
+    if (!observer?.isIntersecting || !observerTarget.current || !window.location.origin) return;
     fetch(`${process.env.BASE_URL}/api/external/feed`).then((response) => {
       response.json().then((response) => {
         const { data } = response as { total: number; data: GenericItem[]; message: string };
