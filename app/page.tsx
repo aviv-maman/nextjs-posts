@@ -51,7 +51,7 @@ export default async function HomePage() {
   //const { user, accounts } = await validateProtectedRoute({ role: 'guest', redirectUrl: '/login' });
 
   return (
-    <div className='flex flex-col items-center'>
+    <section className='container relative flex min-h-[calc(100vh-150px)] flex-col items-center space-y-4 p-6 sm:min-h-[calc(100vh-142px)] sm:px-8'>
       <Suspense fallback={<div>Loading User...</div>}>
         <ProfileBlock />
       </Suspense>
@@ -98,6 +98,6 @@ export default async function HomePage() {
       <ToggleDemo />
       <ToggleGroupDemo />
       <TooltipDemo />
-    </div>
+    </section>
   );
 }

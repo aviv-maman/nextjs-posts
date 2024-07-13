@@ -1,14 +1,14 @@
 import '@/styles/spinkit.css';
 
-const SpinnerWave: React.FC = () => {
+const SpinnerWave: React.FC<React.ComponentPropsWithoutRef<'div'>> = (props) => {
   return (
-    <div className='flex justify-center' aria-label='loading'>
+    <div className='flex justify-center' aria-label='loading' {...props}>
       <div className='sk-wave'>
-        <div className='sk-wave-rect'></div>
-        <div className='sk-wave-rect'></div>
-        <div className='sk-wave-rect'></div>
-        <div className='sk-wave-rect'></div>
-        <div className='sk-wave-rect'></div>
+        <div className='sk-wave-rect' />
+        <div className='sk-wave-rect' />
+        <div className='sk-wave-rect' />
+        <div className='sk-wave-rect' />
+        <div className='sk-wave-rect' />
       </div>
     </div>
   );
