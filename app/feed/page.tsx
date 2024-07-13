@@ -1,8 +1,8 @@
 'use server';
 
 import { Suspense } from 'react';
-import { Feed } from '@/components/feed';
-import FeedBlockSkeleton from '@/components/feed-block-skeleton';
+import FeedWrapper from '@/components/feed-wrapper';
+import FeedWrapperSkeleton from '@/components/feed-wrapper-skeleton';
 
 export default async function FeedPage() {
   return (
@@ -10,8 +10,8 @@ export default async function FeedPage() {
       <h2 title='Infinite Feed' className='rounded border px-4 py-2 text-center text-2xl font-bold tracking-tight'>
         Infinite Feed
       </h2>
-      <Suspense fallback={<FeedBlockSkeleton />}>
-        <Feed />
+      <Suspense fallback={<FeedWrapperSkeleton />}>
+        <FeedWrapper />
       </Suspense>
     </section>
   );

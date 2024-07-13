@@ -6,13 +6,13 @@ import type { GenericItem } from '@/components/generic-card';
 import { useIntersectionObserver } from '@/hooks/use-intersection-observer';
 
 const FeedBlock: React.FC<{ data: GenericItem[] }> = ({ data }) => {
-  const observerTarget = useRef<HTMLDivElement>(null);
+  const observerTarget = useRef<HTMLDivElement | null>(null);
   const observer = useIntersectionObserver(observerTarget, {});
   const [items, setItems] = useState(data);
 
   useEffect(() => {
     let ignore = false;
-    if (!observer?.isIntersecting) return;
+    if (!observer?.isIntersecting || !observerTarget.current) return;
     fetch(`${process.env.BASE_URL}/api/external/feed`).then((response) => {
       response.json().then((response) => {
         const { data } = response as { total: number; data: GenericItem[]; message: string };
