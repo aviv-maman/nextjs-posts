@@ -1,3 +1,4 @@
+import { Search } from 'lucide-react';
 import Bitbucket from './Bitbucket';
 import Computer from './Computer';
 import GitHub from './GitHub';
@@ -12,6 +13,7 @@ import Logo from './Logo';
 import Mail from './Mail';
 import Menu from './Menu';
 import Moon from './Moon';
+import Search2 from './Search2';
 import Sun from './Sun';
 
 export {
@@ -30,4 +32,6 @@ export {
   Home,
   LinkedIn2,
   GitHub3,
+  Search,
+  Search2,
 };

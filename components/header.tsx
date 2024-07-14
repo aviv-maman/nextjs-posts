@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { forwardRef } from 'react';
+import SearchDialogAndDrawer from './search-dialog-and-drawer';
 import { GitHub, LinkedIn, Logo } from '@/assets/icons';
 import { useAuth } from '@/components/auth-provider';
 import { HamburgerMenu } from '@/components/hamburger-menu';
@@ -112,6 +113,8 @@ export const Header: React.FC = () => {
 
         <div className='flex flex-1 items-center justify-between space-x-2 md:justify-end'>
           <nav className='flex items-center'>
+            {/* <SearchButton className='mr-2' /> */}
+            <SearchDialogAndDrawer />
             <Link href='https://github.com/aviv-maman' target='_blank' referrerPolicy='no-referrer'>
               <Button aria-label='github' variant='ghost' size='icon' className='size-8 bg-transparent'>
                 <GitHub className='size-4' />
