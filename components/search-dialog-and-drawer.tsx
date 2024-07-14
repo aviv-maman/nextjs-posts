@@ -42,7 +42,7 @@ const SearchDialogAndDrawer: React.FC = () => {
 
   return isDesktop ? (
     <Fragment>
-      <SearchButton id='search-btn-desk' onClick={() => setOpen(() => true)} className='mr-2' />
+      <SearchButton id='search-btn-desk' onClick={() => setOpen(() => true)} />
       <CommandDialog open={open} onOpenChange={setOpen}>
         <DialogTitle className='sr-only'>Search</DialogTitle>
         <DialogDescription className='sr-only'>Search for anything...</DialogDescription>
@@ -60,7 +60,7 @@ const SearchDialogAndDrawer: React.FC = () => {
   ) : (
     <Drawer open={open} onOpenChange={setOpen}>
       <DrawerTrigger asChild>
-        <SearchButton id='search-btn-mob' className='mr-2' />
+        <SearchButton id='search-btn-mob' className='w-44' />
       </DrawerTrigger>
       <DrawerContent className='h-3/4 p-3'>
         <DrawerHeader>
