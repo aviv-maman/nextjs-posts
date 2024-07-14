@@ -1,5 +1,5 @@
 import { Fragment, useEffect, useState } from 'react';
-import { Search2 } from '@/assets/icons';
+import SearchButton from '@/components/search-button';
 import { Button } from '@/components/ui/button';
 import {
   CommandDialog,
@@ -25,7 +25,7 @@ import { useMediaQuery } from '@/hooks/use-media-query';
 
 const SearchDialogAndDrawer: React.FC = () => {
   const [open, setOpen] = useState(false);
-  const isDesktop = useMediaQuery('(min-width: 768px)');
+  const isDesktop = useMediaQuery('(min-width: 640px)');
 
   useEffect(() => {
     const down = (e: KeyboardEvent) => {
@@ -42,20 +42,7 @@ const SearchDialogAndDrawer: React.FC = () => {
 
   return isDesktop ? (
     <Fragment>
-      <Button
-        id='search-btn-desk'
-        suppressHydrationWarning
-        type='button'
-        onClick={() => setOpen(() => true)}
-        className='relative inline-flex h-8 w-full items-center justify-between whitespace-nowrap rounded-[0.5rem] border border-input bg-muted/50 p-2 text-sm font-normal text-muted-foreground shadow-none transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 md:w-40 lg:w-64'>
-        <div className='inline-flex items-center space-x-1'>
-          <Search2 className='size-4' />
-          <span>Search</span>
-        </div>
-        <kbd className='pointer-events-none select-none items-center rounded border bg-muted px-1.5 font-mono text-xs font-medium text-muted-foreground opacity-100'>
-          CTRL/⌘ K
-        </kbd>
-      </Button>
+      <SearchButton id='search-btn-desk' onClick={() => setOpen(() => true)} className='mr-2' />
       <CommandDialog open={open} onOpenChange={setOpen}>
         <DialogTitle className='sr-only'>Search</DialogTitle>
         <DialogDescription className='sr-only'>Search for anything...</DialogDescription>
@@ -73,19 +60,7 @@ const SearchDialogAndDrawer: React.FC = () => {
   ) : (
     <Drawer open={open} onOpenChange={setOpen}>
       <DrawerTrigger asChild>
-        <Button
-          id='search-btn-mob'
-          suppressHydrationWarning
-          type='button'
-          className='relative inline-flex h-8 w-full items-center justify-between whitespace-nowrap rounded-[0.5rem] border border-input bg-muted/50 p-2 text-sm font-normal text-muted-foreground shadow-none transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 md:w-40 lg:w-64'>
-          <div className='inline-flex items-center space-x-1'>
-            <Search2 className='size-4' />
-            <span>Search</span>
-          </div>
-          <kbd className='pointer-events-none select-none items-center rounded border bg-muted px-1.5 font-mono text-xs font-medium text-muted-foreground opacity-100'>
-            CTRL/⌘ K
-          </kbd>
-        </Button>
+        <SearchButton id='search-btn-mob' className='mr-2' />
       </DrawerTrigger>
       <DrawerContent className='h-3/4 p-3'>
         <DrawerHeader>

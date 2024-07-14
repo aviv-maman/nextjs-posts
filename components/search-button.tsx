@@ -1,15 +1,20 @@
+import { forwardRef } from 'react';
 import { Search2 } from '@/assets/icons';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 
-const SearchButton: React.FC<React.ComponentPropsWithoutRef<typeof Button>> = ({ className, ...props }) => {
+interface SearchButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {}
+
+const SearchButton = forwardRef<HTMLButtonElement, SearchButtonProps>(({ className, ...props }, ref) => {
   return (
     <Button
+      suppressHydrationWarning
       type='button'
       className={cn(
-        'relative inline-flex h-8 w-full items-center justify-between whitespace-nowrap rounded-[0.5rem] border border-input bg-muted/50 p-2 text-sm font-normal text-muted-foreground shadow-none transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 md:w-40 lg:w-64',
+        'relative inline-flex h-8 w-full items-center justify-between whitespace-nowrap rounded-[0.5rem] border border-input bg-muted/50 p-2 text-sm font-normal text-muted-foreground shadow-none transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 md:w-64',
         className,
       )}
+      ref={ref}
       {...props}>
       <div className='inline-flex items-center space-x-1'>
         <Search2 className='size-4' />
@@ -20,6 +25,7 @@ const SearchButton: React.FC<React.ComponentPropsWithoutRef<typeof Button>> = ({
       </kbd>
     </Button>
   );
-};
+});
+SearchButton.displayName = 'SearchButton';
 
 export default SearchButton;
