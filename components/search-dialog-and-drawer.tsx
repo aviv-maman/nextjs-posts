@@ -20,6 +20,7 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from '@/components/ui/drawer';
+import { Input } from '@/components/ui/input';
 import { useMediaQuery } from '@/hooks/use-media-query';
 
 const SearchDialogAndDrawer: React.FC = () => {
@@ -42,6 +43,8 @@ const SearchDialogAndDrawer: React.FC = () => {
   return isDesktop ? (
     <Fragment>
       <Button
+        id='search-btn-desk'
+        suppressHydrationWarning
         type='button'
         onClick={() => setOpen(() => true)}
         className='relative inline-flex h-8 w-full items-center justify-between whitespace-nowrap rounded-[0.5rem] border border-input bg-muted/50 p-2 text-sm font-normal text-muted-foreground shadow-none transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 md:w-40 lg:w-64'>
@@ -71,6 +74,8 @@ const SearchDialogAndDrawer: React.FC = () => {
     <Drawer open={open} onOpenChange={setOpen}>
       <DrawerTrigger asChild>
         <Button
+          id='search-btn-mob'
+          suppressHydrationWarning
           type='button'
           className='relative inline-flex h-8 w-full items-center justify-between whitespace-nowrap rounded-[0.5rem] border border-input bg-muted/50 p-2 text-sm font-normal text-muted-foreground shadow-none transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 md:w-40 lg:w-64'>
           <div className='inline-flex items-center space-x-1'>
@@ -82,14 +87,17 @@ const SearchDialogAndDrawer: React.FC = () => {
           </kbd>
         </Button>
       </DrawerTrigger>
-      <DrawerContent>
-        <DrawerHeader className='text-left'>
-          <DrawerTitle>Edit profile</DrawerTitle>
-          <DrawerDescription>Make changes to your profile here. Click save when you are done.</DrawerDescription>
+      <DrawerContent className='h-3/4 p-3'>
+        <DrawerHeader>
+          <DrawerTitle className='sr-only'>Search</DrawerTitle>
+          <DrawerDescription className='sr-only'>Search for anything...</DrawerDescription>
         </DrawerHeader>
-        <DrawerFooter className='pt-2'>
-          <DrawerClose asChild>
-            <Button variant='outline'>Cancel</Button>
+        <Input placeholder='Type to search...' />
+        <DrawerFooter className='items-center p-0 pt-3'>
+          <DrawerClose asChild className='p-2'>
+            <Button variant='outline' className='w-fit'>
+              Close
+            </Button>
           </DrawerClose>
         </DrawerFooter>
       </DrawerContent>
