@@ -17,7 +17,7 @@ import {
   NavigationMenuTrigger,
   navigationMenuTriggerStyle,
 } from '@/components/ui/navigation-menu';
-import { UserAvatar } from '@/components/user-avatar';
+import { UserDropdownMenu } from '@/components/user-dropdown-menu';
 import { cn } from '@/lib/utils';
 
 export const Header: React.FC = () => {
@@ -127,7 +127,7 @@ export const Header: React.FC = () => {
             </Link>
             <ThemeToggle />
           </div>
-          <UserAvatar />
+          <UserDropdownMenu />
         </div>
       </div>
     </header>

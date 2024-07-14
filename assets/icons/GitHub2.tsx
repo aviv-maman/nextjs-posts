@@ -5,12 +5,12 @@ const GitHub2: React.FC<SVGProps<SVGSVGElement>> = (props) => {
   return (
     <svg
       aria-label='github'
-      width='24'
-      height='24'
+      width={24}
+      height={24}
       viewBox='0 0 24 24'
       fill='none'
       stroke='currentColor'
-      strokeWidth='1.5'
+      strokeWidth={1.5}
       strokeLinecap='round'
       strokeLinejoin='round'
       {...props}>

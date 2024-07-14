@@ -1,7 +1,7 @@
 'use client';
 
-import { UserIcon } from 'lucide-react';
 import Image from 'next/image';
+import { User } from '@/assets/icons';
 import { AspectRatio } from '@/components/ui/aspect-ratio';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
@@ -39,7 +39,7 @@ const GenericCard: React.FC<GenericCardProps> = ({ value, ...props }) => {
         <Avatar>
           <AvatarImage src={value.owner_picture || undefined} />
           <AvatarFallback>
-            <UserIcon className='size-5' />
+            <User className='size-5' />
           </AvatarFallback>
         </Avatar>
         <div className='flex flex-col'>
