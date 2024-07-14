@@ -60,7 +60,7 @@ const SearchDialogAndDrawer: React.FC = () => {
   ) : (
     <Drawer open={open} onOpenChange={setOpen}>
       <DrawerTrigger asChild>
-        <SearchButton id='search-btn-mob' className='w-44' />
+        <SearchButton id='search-btn-mob' isIconOnly />
       </DrawerTrigger>
       <DrawerContent className='h-3/4 p-3'>
         <DrawerHeader>
