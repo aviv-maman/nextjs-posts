@@ -73,7 +73,7 @@ function PaginationNumber({
 }) {
   return isActive ? (
     <PaginationItem className='bg-slate-300/50 dark:bg-slate-800/50'>
-      <span>{page}</span>
+      <span className='font-medium'>{page}</span>
     </PaginationItem>
   ) : position === 'middle' ? (
     <PaginationItem>
