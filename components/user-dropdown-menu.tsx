@@ -1,4 +1,5 @@
-import { Fragment } from 'react';
+import Link from 'next/link';
+import { useEffect, useState } from 'react';
 import { CircleUser, LogIn, LogOut, Settings } from '@/assets/icons';
 import { useAuth } from '@/components/auth-provider';
 import {
@@ -12,47 +13,58 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Skeleton } from '@/components/ui/skeleton';
 import { UserAvatar } from '@/components/user-avatar';
+import { useMediaQuery } from '@/hooks/use-media-query';
 
 export function UserDropdownMenu() {
   const { isLoading, session } = useAuth();
+  const isDesktop = useMediaQuery('(min-width: 640px)');
+  const [isClient, setIsClient] = useState(false);
 
-  if (isLoading) {
+  useEffect(() => {
+    setIsClient(() => true);
+  }, []);
+
+  if (isLoading || !isClient) {
     return <Skeleton className='size-7 rounded-full' />;
   }
 
-  return (
+  return session ? (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <UserAvatar />
       </DropdownMenuTrigger>
       <DropdownMenuContent className='w-56'>
-        {session ? (
-          <Fragment>
-            <DropdownMenuLabel>My Account</DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <DropdownMenuGroup>
-              <DropdownMenuItem className='cursor-pointer'>
-                <CircleUser className='mr-2 size-4' />
-                <span>Profile</span>
-              </DropdownMenuItem>
-              <DropdownMenuItem className='cursor-pointer'>
-                <Settings className='mr-2 size-4' />
-                <span>Settings</span>
-              </DropdownMenuItem>
-            </DropdownMenuGroup>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem className='cursor-pointer'>
-              <LogOut className='mr-2 size-4' />
-              <span>Log Out</span>
-            </DropdownMenuItem>
-          </Fragment>
-        ) : (
+        <DropdownMenuLabel>My Account</DropdownMenuLabel>
+        <DropdownMenuSeparator />
+        <DropdownMenuGroup>
           <DropdownMenuItem className='cursor-pointer'>
-            <LogIn className='mr-2 size-4' />
-            <span>Log In</span>
+            <CircleUser className='mr-2 size-4' />
+            <span>Profile</span>
           </DropdownMenuItem>
-        )}
+          <DropdownMenuItem className='cursor-pointer'>
+            <Settings className='mr-2 size-4' />
+            <span>Settings</span>
+          </DropdownMenuItem>
+        </DropdownMenuGroup>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem className='cursor-pointer'>
+          <LogOut className='mr-2 size-4' />
+          <span>Log Out</span>
+        </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
+  ) : isDesktop ? (
+    <Link
+      aria-label='login'
+      href='/login'
+      className='h-8 content-center rounded-md border bg-transparent px-2 text-sm hover:bg-muted'>
+      Log In
+    </Link>
+  ) : (
+    <Link aria-label='login' href='/login' passHref legacyBehavior>
+      <span className='flex size-8 items-center justify-center rounded-md border bg-transparent hover:bg-muted'>
+        <LogIn className='size-4' />
+      </span>
+    </Link>
   );
 }
