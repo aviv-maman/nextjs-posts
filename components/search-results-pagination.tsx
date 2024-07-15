@@ -1,7 +1,6 @@
 'use client';
 
 import { usePathname, useSearchParams } from 'next/navigation';
-import { ChevronLeft, ChevronRight } from '@/assets/icons';
 import {
   Pagination,
   PaginationContent,
@@ -101,14 +100,14 @@ function PaginationArrow({
         className={cn({
           'bg-slate-300/50 dark:bg-slate-800/50': isDisabled,
         })}>
-        {isDisabled ? <ChevronLeft className='size-4' /> : <PaginationPrevious href={href} />}
+        <PaginationPrevious href={href} isDisabled={isDisabled} />
       </PaginationItem>
     ) : (
       <PaginationItem
         className={cn({
           'bg-slate-300/50 dark:bg-slate-800/50': isDisabled,
         })}>
-        {isDisabled ? <ChevronRight className='size-4' /> : <PaginationNext href={href} />}
+        <PaginationNext href={href} isDisabled={isDisabled} />
       </PaginationItem>
     );
 

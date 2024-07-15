@@ -49,18 +49,32 @@ const PaginationLink = ({ className, isActive, size = 'icon', ...props }: Pagina
 );
 PaginationLink.displayName = 'PaginationLink';
 
-const PaginationPrevious = ({ className, ...props }: React.ComponentProps<typeof PaginationLink>) => (
-  <PaginationLink aria-label='Go to previous page' size='default' className={className} {...props}>
+const PaginationPrevious = ({
+  className,
+  isDisabled,
+  ...props
+}: React.ComponentProps<typeof PaginationLink> & { isDisabled?: boolean }) =>
+  isDisabled ? (
     <ChevronLeft className='size-4' />
-  </PaginationLink>
-);
+  ) : (
+    <PaginationLink aria-label='Go to previous page' size='default' className={className} {...props}>
+      <ChevronLeft className='size-4' />
+    </PaginationLink>
+  );
 PaginationPrevious.displayName = 'PaginationPrevious';
 
-const PaginationNext = ({ className, ...props }: React.ComponentProps<typeof PaginationLink>) => (
-  <PaginationLink aria-label='Go to next page' size='default' className={className} {...props}>
+const PaginationNext = ({
+  className,
+  isDisabled,
+  ...props
+}: React.ComponentProps<typeof PaginationLink> & { isDisabled?: boolean }) =>
+  isDisabled ? (
     <ChevronRight className='size-4' />
-  </PaginationLink>
-);
+  ) : (
+    <PaginationLink aria-label='Go to next page' size='default' className={className} {...props}>
+      <ChevronRight className='size-4' />
+    </PaginationLink>
+  );
 PaginationNext.displayName = 'PaginationNext';
 
 const PaginationEllipsis = ({ className, ...props }: React.ComponentProps<'span'>) => (
