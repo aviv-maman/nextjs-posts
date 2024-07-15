@@ -28,8 +28,8 @@ const FeedBlock: React.FC<{ data: GenericItem[] }> = ({ data }) => {
 
   return (
     <Fragment>
-      {items.map((item) => (
-        <GenericCard key={item.id} value={item} className='mt-6' />
+      {items.map((item, index) => (
+        <GenericCard key={`${item.id}-${index}`} value={item} className='mt-6' />
       ))}
       <div id='feed-observer' ref={observerTarget} className='w-full' />
     </Fragment>
