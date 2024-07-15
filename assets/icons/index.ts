@@ -1,4 +1,6 @@
 import Bitbucket from './Bitbucket';
+import ChevronLeft from './ChevronLeft';
+import ChevronRight from './ChevronRight';
 import CircleUser from './CircleUser';
 import Computer from './Computer';
 import GitHub from './GitHub';
@@ -44,4 +46,6 @@ export {
   CircleUser,
   LogIn,
   LogOut,
+  ChevronLeft,
+  ChevronRight,
 };

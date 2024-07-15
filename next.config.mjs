@@ -1,8 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  experimental: {
-    typedRoutes: true,
-  },
+  // experimental: {
+  //   typedRoutes: true,
+  // },
   env: {
     // NOTE: Use VERCEL_URL to dynamically set BASE_URL for Vercel deployments,
     // falling back to localhost for local development.
