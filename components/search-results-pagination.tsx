@@ -11,6 +11,7 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from '@/components/ui/pagination';
+import { useMediaQuery } from '@/hooks/use-media-query';
 import { cn, generatePagination } from '@/lib/utils';
 
 export default function SearchResultsPagination({ totalPages }: { totalPages: number }) {
@@ -72,7 +73,7 @@ function PaginationNumber({
   isActive: boolean;
 }) {
   return isActive ? (
-    <PaginationItem className='size-10 cursor-default content-center rounded-md bg-primary/90 text-center text-sm'>
+    <PaginationItem className='size-10 cursor-default content-center rounded-md bg-slate-500/50 text-center text-sm dark:bg-slate-800/50'>
       <span>{page}</span>
     </PaginationItem>
   ) : position === 'middle' ? (
@@ -97,6 +98,8 @@ function PaginationArrow({
   direction: 'left' | 'right';
   isDisabled?: boolean;
 }) {
+  const isDesktop = useMediaQuery('(min-width: 640px)');
+
   const item =
     direction === 'left' ? (
       <PaginationItem
@@ -107,10 +110,22 @@ function PaginationArrow({
         {isDisabled ? (
           <>
             <ChevronLeft className='size-4' />
-            <span className='cursor-default'>Previous</span>
+            {isDesktop && <span className='cursor-default'>Previous</span>}
           </>
         ) : (
-          <PaginationPrevious href={href} />
+          <>
+            {isDesktop ? (
+              <PaginationPrevious href={href} />
+            ) : (
+              <PaginationLink
+                aria-label='Go to previous page'
+                size='default'
+                className={cn('gap-1 pl-2.5')}
+                href={href}>
+                <ChevronLeft className='size-4' />
+              </PaginationLink>
+            )}
+          </>
         )}
       </PaginationItem>
     ) : (
@@ -121,11 +136,19 @@ function PaginationArrow({
         })}>
         {isDisabled ? (
           <>
-            <span className='cursor-default'>Next</span>
+            {isDesktop && <span className='cursor-default'>Next</span>}
             <ChevronRight className='size-4' />
           </>
         ) : (
-          <PaginationNext href={href} />
+          <>
+            {isDesktop ? (
+              <PaginationNext href={href} />
+            ) : (
+              <PaginationLink aria-label='Go to next page' size='default' className={cn('gap-1 pr-2.5')} href={href}>
+                <ChevronRight className='size-4' />
+              </PaginationLink>
+            )}
+          </>
         )}
       </PaginationItem>
     );
