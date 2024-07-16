@@ -1,8 +1,8 @@
 'use client';
 
 import * as RadioGroupPrimitive from '@radix-ui/react-radio-group';
-import { Circle } from 'lucide-react';
 import { forwardRef } from 'react';
+import { Circle } from '@/assets/icons';
 import { cn } from '@/lib/utils';
 
 const RadioGroup = forwardRef<

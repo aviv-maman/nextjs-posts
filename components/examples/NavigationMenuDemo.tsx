@@ -1,8 +1,8 @@
 'use client';
 
-import { ChevronDown } from 'lucide-react';
 import Link from 'next/link';
 import { forwardRef } from 'react';
+import { ChevronDown } from '@/assets/icons';
 import {
   NavigationMenu,
   NavigationMenuContent,

@@ -1,7 +1,7 @@
 import {
   Cloud,
   CreditCard,
-  Github,
+  GitHub,
   Keyboard,
   LifeBuoy,
   LogOut,
@@ -13,7 +13,7 @@ import {
   User,
   UserPlus,
   Users,
-} from 'lucide-react';
+} from '@/assets/icons';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -98,7 +98,7 @@ export function DropdownMenuDemo() {
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <DropdownMenuItem>
-          <Github className='mr-2 size-4' />
+          <GitHub className='mr-2 size-4' />
           <span>GitHub</span>
         </DropdownMenuItem>
         <DropdownMenuItem>

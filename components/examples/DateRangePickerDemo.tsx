@@ -1,9 +1,9 @@
 'use client';
 
 import { addDays, format } from 'date-fns';
-import { Calendar as CalendarIcon } from 'lucide-react';
 import { useState } from 'react';
 import type { DateRange } from 'react-day-picker';
+import { CalendarDays } from '@/assets/icons';
 import { Button } from '@/components/ui/button';
 import { Calendar } from '@/components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
@@ -23,7 +23,7 @@ export function DateRangePickerDemo({ className }: React.HTMLAttributes<HTMLDivE
             id='date'
             variant={'outline'}
             className={cn('w-[300px] justify-start text-left font-normal', !date && 'text-muted-foreground')}>
-            <CalendarIcon className='mr-2 size-4' />
+            <CalendarDays className='mr-2 size-4' />
             {date?.from ? (
               date.to ? (
                 <>

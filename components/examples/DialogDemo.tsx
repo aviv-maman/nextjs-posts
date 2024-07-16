@@ -1,4 +1,4 @@
-import { Copy } from 'lucide-react';
+import { Copy } from '@/assets/icons';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,

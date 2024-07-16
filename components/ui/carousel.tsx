@@ -1,8 +1,8 @@
 'use client';
 
 import useEmblaCarousel, { type UseEmblaCarouselType } from 'embla-carousel-react';
-import { ArrowLeft, ArrowRight } from 'lucide-react';
 import { createContext, forwardRef, useCallback, useContext, useEffect, useState } from 'react';
+import { ArrowLeft, ArrowRight } from '@/assets/icons';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 

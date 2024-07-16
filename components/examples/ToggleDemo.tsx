@@ -1,4 +1,4 @@
-import { Bold, Italic, Underline } from 'lucide-react';
+import { Bold, Italic, Underline } from '@/assets/icons';
 import { Toggle } from '@/components/ui/toggle';
 
 export function ToggleDemo() {

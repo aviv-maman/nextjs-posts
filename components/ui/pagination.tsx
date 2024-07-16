@@ -1,6 +1,6 @@
-import { ChevronLeft, ChevronRight, MoreHorizontal } from 'lucide-react';
 import Link from 'next/link';
 import { forwardRef } from 'react';
+import { ChevronLeft, ChevronRight, Ellipsis } from '@/assets/icons';
 import { type ButtonProps, buttonVariants } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 
@@ -79,7 +79,7 @@ PaginationNext.displayName = 'PaginationNext';
 
 const PaginationEllipsis = ({ className, ...props }: React.ComponentProps<'span'>) => (
   <span aria-hidden className={cn('flex size-8 items-center justify-center', className)} {...props}>
-    <MoreHorizontal className='size-4' />
+    <Ellipsis className='size-4' />
     <span className='sr-only'>More pages</span>
   </span>
 );

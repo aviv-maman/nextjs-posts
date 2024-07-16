@@ -1,7 +1,7 @@
 'use client';
 
-import { Calculator, Calendar, CreditCard, Settings, Smile, User } from 'lucide-react';
 import { useEffect, useState } from 'react';
+import { Calculator, CalendarDays, CreditCard, Settings, Smile, User } from '@/assets/icons';
 import {
   CommandDialog,
   CommandEmpty,
@@ -42,7 +42,7 @@ export function CommandDialogDemo() {
           <CommandEmpty>No results found.</CommandEmpty>
           <CommandGroup heading='Suggestions'>
             <CommandItem>
-              <Calendar className='mr-2 size-4' />
+              <CalendarDays className='mr-2 size-4' />
               <span>Calendar</span>
             </CommandItem>
             <CommandItem>

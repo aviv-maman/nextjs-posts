@@ -6,7 +6,7 @@ export function RadioGroupDemo() {
     <RadioGroup defaultValue='comfortable'>
       <div className='flex items-center space-x-2'>
         <RadioGroupItem value='default' id='r1' />
-        <Label htmlFor='r1'>Default</Label>
+        <Label htmlFor='r1'>Radio Group Default</Label>
       </div>
       <div className='flex items-center space-x-2'>
         <RadioGroupItem value='comfortable' id='r2' />

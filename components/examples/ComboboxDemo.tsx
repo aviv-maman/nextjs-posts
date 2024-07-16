@@ -1,7 +1,7 @@
 'use client';
 
-import { Check, ChevronsUpDown } from 'lucide-react';
 import { useState } from 'react';
+import { Check, ChevronsUpDown } from '@/assets/icons';
 import { Button } from '@/components/ui/button';
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/components/ui/command';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
@@ -56,7 +56,7 @@ export function ComboboxDemo() {
                     setValue(currentValue === value ? '' : currentValue);
                     setOpen(false);
                   }}>
-                  <Check className={cn('mr-2 h-4 w-4', value === framework.value ? 'opacity-100' : 'opacity-0')} />
+                  <Check className={cn('mr-2 size-4', value === framework.value ? 'opacity-100' : 'opacity-0')} />
                   {framework.label}
                 </CommandItem>
               ))}

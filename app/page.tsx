@@ -13,13 +13,16 @@ import { BreadcrumbDemo } from '@/components/examples/BreadcrumbDemo';
 import { ButtonDemo } from '@/components/examples/ButtonDemo';
 import { CalendarDemo } from '@/components/examples/CalendarDemo';
 import { CardDemo } from '@/components/examples/CardDemo';
+import { CarouselDemo } from '@/components/examples/CarouselDemo';
 import { ChartDemo } from '@/components/examples/ChartDemo';
 import { CheckboxReactHookFormSingle as CheckboxDemo } from '@/components/examples/CheckboxDemo';
 import { CollapsibleDemo } from '@/components/examples/CollapsibleDemo';
 import { ComboboxDemo } from '@/components/examples/ComboboxDemo';
 import { CommandDialogDemo } from '@/components/examples/CommandDialogDemo';
 import { ContextMenuDemo } from '@/components/examples/ContextMenuDemo';
+import { DatePickerDemo } from '@/components/examples/DatePickerDemo';
 import { DateRangePickerDemo } from '@/components/examples/DateRangePickerDemo';
+import { DialogDemo } from '@/components/examples/DialogDemo';
 import { DrawerDialogDemo } from '@/components/examples/DrawerDialogDemo';
 import { DropdownMenuDemo } from '@/components/examples/DropdownMenuDemo';
 import { HoverCardDemo } from '@/components/examples/HoverCardDemo';
@@ -32,6 +35,7 @@ import { ProgressDemo } from '@/components/examples/ProgressDemo';
 import { RadioGroupDemo } from '@/components/examples/RadioGroupDemo';
 import { ResizableDemo } from '@/components/examples/ResizableDemo';
 import { ScrollAreaDemo } from '@/components/examples/ScrollAreaDemo';
+import { SelectDemo } from '@/components/examples/SelectDemo';
 import { SelectScrollable } from '@/components/examples/SelectScrollable';
 import { SeparatorDemo } from '@/components/examples/SeparatorDemo';
 import { SheetDemo } from '@/components/examples/SheetDemo';
@@ -66,13 +70,16 @@ export default async function HomePage() {
       <ButtonDemo />
       <CalendarDemo />
       <CardDemo />
+      <CarouselDemo />
       <ChartDemo />
       <CheckboxDemo />
       <CollapsibleDemo />
       <ComboboxDemo />
       <CommandDialogDemo />
       <ContextMenuDemo />
+      <DatePickerDemo />
       <DateRangePickerDemo />
+      <DialogDemo />
       <DrawerDialogDemo />
       <DropdownMenuDemo />
       <HoverCardDemo />
@@ -85,6 +92,7 @@ export default async function HomePage() {
       <RadioGroupDemo />
       <ResizableDemo />
       <ScrollAreaDemo />
+      <SelectDemo />
       <SelectScrollable />
       <SeparatorDemo />
       <SheetDemo />
