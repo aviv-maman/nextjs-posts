@@ -71,7 +71,7 @@ export default async function HomePage() {
       <ButtonDemo />
       <CalendarDemo />
       <CardDemo />
-      <CarouselDemo />
+      {/* <CarouselDemo /> */}
       <ChartDemo />
       <CheckboxDemo />
       <CollapsibleDemo />
