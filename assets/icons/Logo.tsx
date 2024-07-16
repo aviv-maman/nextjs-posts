@@ -1,4 +1,4 @@
-//https://lucide.dev/icons/newspaper
+//https://tabler.io/icons/icon/square-asterisk
 import type { SVGProps } from 'react';
 
 const Logo: React.FC<SVGProps<SVGSVGElement>> = (props) => {
