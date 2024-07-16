@@ -53,7 +53,7 @@ export const Header: React.FC = () => {
         <div className='mr-4 hidden md:flex'>
           <div className='mr-6 flex items-center space-x-2'>
             <Link href='/' className='mr-6 flex items-center space-x-2' passHref>
-              <Logo className='size-5' />
+              <Logo className='size-6' />
               <span>FeedZ</span>
             </Link>
           </div>

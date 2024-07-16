@@ -25,6 +25,7 @@ import { DateRangePickerDemo } from '@/components/examples/DateRangePickerDemo';
 import { DialogDemo } from '@/components/examples/DialogDemo';
 import { DrawerDialogDemo } from '@/components/examples/DrawerDialogDemo';
 import { DropdownMenuDemo } from '@/components/examples/DropdownMenuDemo';
+import { FormDemo } from '@/components/examples/FormDemo';
 import { HoverCardDemo } from '@/components/examples/HoverCardDemo';
 import { InputOTPDemo } from '@/components/examples/InputOTPPattern';
 import { LabelDemo } from '@/components/examples/LabelDemo';
@@ -82,6 +83,7 @@ export default async function HomePage() {
       <DialogDemo />
       <DrawerDialogDemo />
       <DropdownMenuDemo />
+      <FormDemo />
       <HoverCardDemo />
       <InputOTPDemo />
       <LabelDemo />
