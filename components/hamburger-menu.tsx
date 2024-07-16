@@ -13,7 +13,7 @@ export const HamburgerMenu: React.FC<HamburgerMenuProps> = ({ components }) => {
   return (
     <Sheet>
       <SheetTrigger className='flex size-8 items-center justify-center rounded-md hover:cursor-pointer hover:bg-accent hover:text-accent-foreground'>
-        <Menu className='size-5' />
+        <Menu className='size-4' />
       </SheetTrigger>
       <SheetContent side='left'>
         <SheetHeader className='items-start'>

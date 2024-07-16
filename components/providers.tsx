@@ -8,7 +8,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
   return (
     <AuthProvider>
       <ThemeProvider>
-        <TooltipProvider>{children}</TooltipProvider>
+        <TooltipProvider delayDuration={300}>{children}</TooltipProvider>
       </ThemeProvider>
     </AuthProvider>
   );
