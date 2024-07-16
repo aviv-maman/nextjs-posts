@@ -22,7 +22,7 @@ export default function Footer() {
               variant='ghost'
               size='icon'
               className='size-8 hover:bg-neutral-300 dark:hover:bg-neutral-800'>
-              <GitHub2 className='size-5' />
+              <GitHub2 className='size-4' />
             </Button>
           </Link>
           <Link href='https://www.linkedin.com/in/aviv-maman-914a95223' target='_blank' referrerPolicy='no-referrer'>
@@ -31,7 +31,7 @@ export default function Footer() {
               variant='ghost'
               size='icon'
               className='size-8 hover:bg-neutral-300 dark:hover:bg-neutral-800'>
-              <LinkedIn2 className='text-blue-600' />
+              <LinkedIn2 className='size-4 text-blue-600' />
             </Button>
           </Link>
         </div>
