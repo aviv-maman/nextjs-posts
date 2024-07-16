@@ -1,4 +1,4 @@
-import { BellRing, Check } from 'lucide-react';
+import { BellRing, Check } from '@/assets/icons';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Switch } from '@/components/ui/switch';

@@ -1,6 +1,11 @@
+import AlertCircle from './AlertCircle';
+import BellRing from './BellRing';
 import Bitbucket from './Bitbucket';
+import CalendarDays from './CalendarDays';
+import Check from './Check';
 import ChevronLeft from './ChevronLeft';
 import ChevronRight from './ChevronRight';
+import ChevronsUpDown from './ChevronsUpDown';
 import CircleUser from './CircleUser';
 import Computer from './Computer';
 import GitHub from './GitHub';
@@ -10,6 +15,7 @@ import Google from './Google';
 import Home from './Home';
 import LinkedIn from './LinkedIn';
 import LinkedIn2 from './LinkedIn2';
+import LoaderCircle from './LoaderCircle';
 import LogIn from './LogIn';
 import LogOut from './LogOut';
 import Logo from './Logo';
@@ -19,6 +25,7 @@ import Moon from './Moon';
 import Search from './Search';
 import Search2 from './Search2';
 import Settings from './Settings';
+import Slash from './Slash';
 import Sun from './Sun';
 import User from './User';
 
@@ -46,4 +53,11 @@ export {
   Settings,
   Sun,
   User,
+  AlertCircle,
+  Slash,
+  LoaderCircle,
+  CalendarDays,
+  BellRing,
+  Check,
+  ChevronsUpDown,
 };

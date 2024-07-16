@@ -1,5 +1,5 @@
-import { ChevronRight, Loader2, Mail } from 'lucide-react';
 import Link from 'next/link';
+import { ChevronRight, LoaderCircle, Mail } from '@/assets/icons';
 import { Button, buttonVariants } from '@/components/ui/button';
 
 export function ButtonDemo() {
@@ -27,7 +27,7 @@ export function ButtonDemo() {
         <Mail className='mr-2 size-4' /> Login with Email
       </Button>
       <Button disabled>
-        <Loader2 className='mr-2 size-4 animate-spin' />
+        <LoaderCircle className='mr-2 size-4 animate-spin' />
         Please wait
       </Button>
     </section>

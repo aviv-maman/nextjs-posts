@@ -1,4 +1,4 @@
-import { Slash } from 'lucide-react';
+import { Slash } from '@/assets/icons';
 import {
   Breadcrumb,
   BreadcrumbItem,

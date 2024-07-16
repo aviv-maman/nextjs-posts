@@ -1,8 +1,8 @@
 'use client';
 
 import { Button } from '../ui/button';
-import { CalendarIcon } from 'lucide-react';
 import { useState } from 'react';
+import { CalendarDays } from '@/assets/icons';
 import { Calendar } from '@/components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { cn } from '@/lib/utils';
@@ -17,7 +17,7 @@ export function CalendarDemo() {
       <Popover>
         <PopoverTrigger asChild>
           <Button variant={'outline'} className={cn('w-[240px] pl-3 text-left font-normal')}>
-            <CalendarIcon className='ml-auto size-4 opacity-50' />
+            <CalendarDays className='ml-auto size-4 opacity-50' />
           </Button>
         </PopoverTrigger>
         <PopoverContent className='w-auto p-0' align='start'>
