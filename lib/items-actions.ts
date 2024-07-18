@@ -60,7 +60,7 @@ export const fetchGenericItems = async (perPage = 6, currentPage = 1) => {
       images: row.images ? (JSON.parse(row.images) as string[]) : null,
       tags: row.tags ? (JSON.parse(row.tags) as string[]) : null,
     }));
-    console.log(rawExistingItems);
+    //console.log(rawExistingItems);
 
     return { data: existingItems };
   } catch (error) {
