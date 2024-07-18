@@ -82,13 +82,10 @@ export function FormRadixDemo() {
       return { errors: { general: validatedFields.error.flatten().formErrors } };
     }
     if (validatedFields.data.email !== 'b@b.com') {
-      console.log('email');
-
       return { errors: { email: ['Only b@b.com is allowed'], general: ['Internal Server Error'] } };
     }
     try {
       //await signIn(validatedFields.data.provider, formData);
-      console.log('Sign In');
       return { result: { success: true } };
     } catch (error: any) {
       return {
