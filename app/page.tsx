@@ -13,7 +13,7 @@ import { BreadcrumbDemo } from '@/components/examples/BreadcrumbDemo';
 import { ButtonDemo } from '@/components/examples/ButtonDemo';
 import { CalendarDemo } from '@/components/examples/CalendarDemo';
 import { CardDemo } from '@/components/examples/CardDemo';
-import { CarouselDemo } from '@/components/examples/CarouselDemo';
+// import { CarouselDemo } from '@/components/examples/CarouselDemo';
 import { ChartDemo } from '@/components/examples/ChartDemo';
 import { CheckboxReactHookFormSingle as CheckboxDemo } from '@/components/examples/CheckboxDemo';
 import { CollapsibleDemo } from '@/components/examples/CollapsibleDemo';
@@ -26,6 +26,7 @@ import { DialogDemo } from '@/components/examples/DialogDemo';
 import { DrawerDialogDemo } from '@/components/examples/DrawerDialogDemo';
 import { DropdownMenuDemo } from '@/components/examples/DropdownMenuDemo';
 import { FormDemo } from '@/components/examples/FormDemo';
+import { FormRadixDemo } from '@/components/examples/FormRadixDemo';
 import { HoverCardDemo } from '@/components/examples/HoverCardDemo';
 import { InputOTPDemo } from '@/components/examples/InputOTPPattern';
 import { LabelDemo } from '@/components/examples/LabelDemo';
@@ -84,6 +85,7 @@ export default async function HomePage() {
       <DrawerDialogDemo />
       <DropdownMenuDemo />
       <FormDemo />
+      <FormRadixDemo />
       <HoverCardDemo />
       <InputOTPDemo />
       <LabelDemo />
