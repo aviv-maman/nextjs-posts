@@ -7,11 +7,12 @@ import SearchResultsPagination from '@/components/search-results-pagination';
 import { fetchGenericItems, fetchGenericItemsPages } from '@/lib/items-actions';
 import mockData from '@/mock_data.json';
 
-export default async function SearchPage() {
-  const { data: genericItems } = await fetchGenericItems();
+export default async function SearchPage({ searchParams }: { searchParams?: { query?: string; page?: string } }) {
+  const currentPage = Number(searchParams?.page) || 1;
+  const { data: genericItems } = await fetchGenericItems(1, currentPage);
 
   // const mockItems = [...mockData];
-  const { data: totalPages } = await fetchGenericItemsPages();
+  const { data: totalPages } = await fetchGenericItemsPages(1);
 
   return (
     <section className='container relative flex min-h-[calc(100vh-150px)] flex-col items-center justify-between gap-y-6 p-6 sm:min-h-[calc(100vh-142px)] sm:px-8'>
