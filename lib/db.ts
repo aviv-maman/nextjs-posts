@@ -54,6 +54,21 @@ db.exec(`CREATE TABLE IF NOT EXISTS permission (
   FOREIGN KEY (user_id) REFERENCES user(id)
 )`);
 
+db.exec(`CREATE TABLE IF NOT EXISTS generic_item (
+  id TEXT NOT NULL PRIMARY KEY,
+  title TEXT NOT NULL,
+  content TEXT NOT NULL,
+  is_published INTEGER NOT NULL,
+  is_private INTEGER NOT NULL,
+  images JSONB NOT NULL,
+  tags JSONB NOT NULL,
+  website VARCHAR(255),
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+  owner_id TEXT NOT NULL,
+  FOREIGN KEY (owner_id) REFERENCES user(id)
+)`);
+
 /**A record (row) in the `user` table */
 export interface DatabaseUser {
   /**An `internal` ID of a user */
@@ -94,9 +109,9 @@ export interface DatabaseGenericItem {
   content: string;
   is_published: boolean;
   is_private: boolean;
-  images: string[];
+  images: string | null; //string[] | null
   /**Tags to describe the content */
-  tags: string[] | null;
+  tags: string | null; //string[] | null
   website: string | null;
   created_at: Date;
   updated_at: Date;

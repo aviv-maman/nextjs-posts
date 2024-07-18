@@ -1,5 +1,6 @@
 'use server';
 
+import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import { GitHub, Google, Mail } from '@/assets/icons';
 import { Button } from '@/components/ui/button';
@@ -21,9 +22,11 @@ export default async function Page() {
         <CardContent>
           <div className='grid gap-4'>
             <div className='grid gap-2'>
-              <Button type='button' variant='default' className='bg-slate-700 hover:bg-slate-500'>
-                <GitHub className='mr-2 size-5' />
-                <span>Continue with GitHub</span>
+              <Button asChild type='button' variant='default' className='bg-slate-700 hover:bg-slate-500'>
+                <Link href='/api/auth/github'>
+                  <GitHub className='mr-2 size-5' />
+                  <span>Continue with GitHub</span>
+                </Link>
               </Button>
               <Button type='button' variant='default' className='bg-red-600 hover:bg-red-400'>
                 <Google className='mr-2 size-5' />

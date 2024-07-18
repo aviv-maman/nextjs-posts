@@ -15,124 +15,83 @@ import {
   FormValidityState,
 } from '@/components/ui/form-radix';
 import { Input } from '@/components/ui/input';
+import { addGenericItem } from '@/lib/items-actions';
 
-const formSchema = z.object({
-  email: z
+export const genericItemSchema = z.object({
+  title: z.string().trim().min(1, 'Zod: Please provide a title'),
+  content: z
     .string()
     .trim()
-    .min(1, 'Zod: Please provide an email address')
-    .email({ message: 'Zod: Please provide a valid email' }),
-  password: z
-    .string()
-    .trim()
-    .min(1, 'Zod: Password is required')
-    .min(6, 'Zod: Password must be at least 6 characters')
-    .max(32, 'Zod: Password must be less than 32 characters'),
-  username: z.string().min(1, 'Zod: Username is required').min(5, 'Zod: Username must be at least 5 characters'),
+    .min(1, 'Zod: Content is required')
+    .min(6, 'Zod: Content must be at least 6 characters')
+    .max(32, 'Zod: Content must be less than 32 characters'),
 });
-type FlattenedErrors = z.inferFlattenedErrors<typeof formSchema>;
+export type GenericItemSchemaErrors = z.inferFlattenedErrors<typeof genericItemSchema>;
+export type GenericItemSchemaKeys = keyof z.infer<typeof genericItemSchema>;
 
 export function FormRadixDemo() {
-  const [clientErrors, setClientErrors] = useState<FlattenedErrors>();
+  const [clientErrors, setClientErrors] = useState<GenericItemSchemaErrors>();
 
-  const customFormValidation = ({ field, value, formData }: { field: string; value: string; formData: FormData }) => {
+  const customFormValidation = ({
+    field,
+    formData,
+  }: {
+    field: GenericItemSchemaKeys;
+    value: string;
+    formData: FormData;
+  }) => {
     const rawFormData = Object.fromEntries(formData);
-    const errors = formSchema.safeParse(rawFormData).error?.flatten();
+    const errors = genericItemSchema.safeParse(rawFormData).error?.flatten();
 
-    if (field === 'email' && errors?.fieldErrors.email) {
+    if (field === 'title' && errors?.fieldErrors.title) {
       setClientErrors(() => errors);
       return true;
     }
-    if (field === 'username' && errors?.fieldErrors.username) {
-      setClientErrors(() => errors);
-      return true;
-    }
-    if (field === 'password' && errors?.fieldErrors.password) {
+    if (field === 'content' && errors?.fieldErrors.content) {
       setClientErrors(() => errors);
       return true;
     }
     return false;
   };
 
-  type ActionState =
-    | {
-        errors?: FlattenedErrors['fieldErrors'] & { general?: string[] };
-        result?: { success: boolean };
-      }
-    | undefined;
-
-  async function authenticate(prevState: ActionState, formData: FormData): Promise<ActionState> {
-    const rawFormData = Object.fromEntries(formData);
-    const validatedFields = formSchema.safeParse(rawFormData);
-    if (!validatedFields.success) {
-      return { errors: { general: validatedFields.error.flatten().formErrors } };
-    }
-    if (validatedFields.data.email !== 'b@b.com') {
-      return { errors: { email: ['Only b@b.com is allowed'], general: ['Internal Server Error'] } };
-    }
-    try {
-      //await signIn(validatedFields.data.provider, formData);
-      return { result: { success: true } };
-    } catch (error: any) {
-      return {
-        errors: { general: [String(error.message || 'Something went wrong')] },
-      };
-    }
-  }
-  const [actionState, formAction] = useFormState(authenticate, undefined);
+  const [actionState, formAction] = useFormState(addGenericItem, undefined);
 
   return (
     <section className='flex flex-col space-y-2'>
       <FormRoot className='space-y-4' action={formAction}>
-        {/* Email Field */}
-        <FormField name='email' serverInvalid={Boolean(actionState?.errors?.email)}>
-          <FormLabel>Email</FormLabel>
+        {/* Title Field */}
+        <FormField name='title' serverInvalid={Boolean(actionState?.errors?.title)}>
+          <FormLabel>Title</FormLabel>
           <FormControl>
-            <Input placeholder='Enter your email' />
+            <Input placeholder='Enter your title' />
           </FormControl>
-          <FormDescription>Your email address</FormDescription>
+          <FormDescription>Your title</FormDescription>
           <div className='flex flex-col'>
-            <FormMessage match={(value, formData) => customFormValidation({ field: 'email', value, formData })}>
-              {clientErrors?.fieldErrors?.email?.[0]}
+            <FormMessage match={(value, formData) => customFormValidation({ field: 'title', value, formData })}>
+              {clientErrors?.fieldErrors?.title?.[0]}
             </FormMessage>
-            {actionState?.errors?.email?.[0] && <FormMessage>{actionState?.errors?.email?.[0]}</FormMessage>}
+            {actionState?.errors?.title?.[0] && <FormMessage>{actionState?.errors?.title?.[0]}</FormMessage>}
           </div>
         </FormField>
 
-        {/* Username Field */}
-        <FormField name='username' serverInvalid={Boolean(actionState?.errors?.username)}>
-          <FormLabel>Username</FormLabel>
+        {/* Content Field */}
+        <FormField name='content' serverInvalid={Boolean(actionState?.errors?.content)}>
+          <FormLabel>Content</FormLabel>
           <FormValidityState>
             {(validity) => (
               <FormControl aria-invalid={validity?.valid === false}>
-                <Input type='text' placeholder='Enter your username' required />
+                <Input type='text' placeholder='Enter your content' required />
               </FormControl>
             )}
           </FormValidityState>
-          <FormDescription>Your username</FormDescription>
+          <FormDescription>Your Content</FormDescription>
           <div className='flex flex-col'>
-            <FormMessage match='typeMismatch'>typeMismatch: Please provide a valid username.</FormMessage>
-            <FormMessage match={(value, formData) => customFormValidation({ field: 'username', value, formData })}>
-              {clientErrors?.fieldErrors?.username?.[0]}
+            <FormMessage match='typeMismatch'>typeMismatch: Please provide a valid content.</FormMessage>
+            <FormMessage match={(value, formData) => customFormValidation({ field: 'content', value, formData })}>
+              {clientErrors?.fieldErrors?.content?.[0]}
             </FormMessage>
           </div>
-          {actionState?.errors?.username?.[0] && <FormMessage>{actionState.errors.username[0]}</FormMessage>}
-        </FormField>
-
-        {/* Password Field */}
-        <FormField name='password' serverInvalid={Boolean(actionState?.errors?.password)}>
-          <FormLabel>Password</FormLabel>
-          <FormControl>
-            <Input type='password' placeholder='Enter your password' />
-          </FormControl>
-          <FormDescription>Your password</FormDescription>
-          <div className='flex flex-col'>
-            <FormMessage match='typeMismatch'>typeMismatch: Please provide a valid password.</FormMessage>
-            <FormMessage match={(value, formData) => customFormValidation({ field: 'password', value, formData })}>
-              {clientErrors?.fieldErrors?.password?.[0]}
-            </FormMessage>
-          </div>
-          {actionState?.errors?.password?.[0] && <FormMessage>{actionState.errors.password[0]}</FormMessage>}
+          {actionState?.errors?.content?.[0] && <FormMessage>{actionState.errors.content[0]}</FormMessage>}
         </FormField>
 
         {/* Form Error */}
