@@ -18,9 +18,9 @@ export function ResizableDemo() {
       </ResizablePanelGroup>
 
       <ResizablePanelGroup direction='horizontal' className='min-h-[200px] max-w-md rounded-lg border'>
-        <ResizablePanel>One</ResizablePanel>
+        <ResizablePanel defaultSize={50}>One</ResizablePanel>
         <ResizableHandle withHandle />
-        <ResizablePanel>Two</ResizablePanel>
+        <ResizablePanel defaultSize={50}>Two</ResizablePanel>
       </ResizablePanelGroup>
 
       <ResizablePanelGroup direction='horizontal' className='max-w-md rounded-lg border'>
