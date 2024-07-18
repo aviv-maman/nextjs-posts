@@ -35,33 +35,19 @@ type FlattenedErrors = z.inferFlattenedErrors<typeof formSchema>;
 export function FormRadixDemo() {
   const [clientErrors, setClientErrors] = useState<FlattenedErrors>();
 
-  const customEmailValidation = (value: string, formData: FormData) => {
+  const customFormValidation = ({ field, value, formData }: { field: string; value: string; formData: FormData }) => {
     const rawFormData = Object.fromEntries(formData);
     const errors = formSchema.safeParse(rawFormData).error?.flatten();
 
-    if (errors?.fieldErrors.email) {
+    if (field === 'email' && errors?.fieldErrors.email) {
       setClientErrors(() => errors);
       return true;
     }
-    return false;
-  };
-
-  const customUsernameValidation = (value: string, formData: FormData) => {
-    const rawFormData = Object.fromEntries(formData);
-    const errors = formSchema.safeParse(rawFormData).error?.flatten();
-
-    if (errors?.fieldErrors.username) {
+    if (field === 'username' && errors?.fieldErrors.username) {
       setClientErrors(() => errors);
       return true;
     }
-    return false;
-  };
-
-  const customPasswordValidation = (value: string, formData: FormData) => {
-    const rawFormData = Object.fromEntries(formData);
-    const errors = formSchema.safeParse(rawFormData).error?.flatten();
-
-    if (errors?.fieldErrors.password) {
+    if (field === 'password' && errors?.fieldErrors.password) {
       setClientErrors(() => errors);
       return true;
     }
@@ -106,7 +92,9 @@ export function FormRadixDemo() {
           </FormControl>
           <FormDescription>Your email address</FormDescription>
           <div className='flex flex-col'>
-            <FormMessage match={customEmailValidation}>{clientErrors?.fieldErrors?.email?.[0]}</FormMessage>
+            <FormMessage match={(value, formData) => customFormValidation({ field: 'email', value, formData })}>
+              {clientErrors?.fieldErrors?.email?.[0]}
+            </FormMessage>
             {actionState?.errors?.email?.[0] && <FormMessage>{actionState?.errors?.email?.[0]}</FormMessage>}
           </div>
         </FormField>
@@ -124,7 +112,9 @@ export function FormRadixDemo() {
           <FormDescription>Your username</FormDescription>
           <div className='flex flex-col'>
             <FormMessage match='typeMismatch'>typeMismatch: Please provide a valid username.</FormMessage>
-            <FormMessage match={customUsernameValidation}>{clientErrors?.fieldErrors?.username?.[0]}</FormMessage>
+            <FormMessage match={(value, formData) => customFormValidation({ field: 'username', value, formData })}>
+              {clientErrors?.fieldErrors?.username?.[0]}
+            </FormMessage>
           </div>
           {actionState?.errors?.username?.[0] && <FormMessage>{actionState.errors.username[0]}</FormMessage>}
         </FormField>
@@ -138,7 +128,9 @@ export function FormRadixDemo() {
           <FormDescription>Your password</FormDescription>
           <div className='flex flex-col'>
             <FormMessage match='typeMismatch'>typeMismatch: Please provide a valid password.</FormMessage>
-            <FormMessage match={customPasswordValidation}>{clientErrors?.fieldErrors?.password?.[0]}</FormMessage>
+            <FormMessage match={(value, formData) => customFormValidation({ field: 'password', value, formData })}>
+              {clientErrors?.fieldErrors?.password?.[0]}
+            </FormMessage>
           </div>
           {actionState?.errors?.password?.[0] && <FormMessage>{actionState.errors.password[0]}</FormMessage>}
         </FormField>
