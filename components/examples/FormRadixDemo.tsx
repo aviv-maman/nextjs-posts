@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useFormState } from 'react-dom';
 import { z } from 'zod';
 import { Button } from '@/components/ui/button';
 import {
@@ -32,14 +33,22 @@ const formSchema = z.object({
 type FlattenedErrors = z.inferFlattenedErrors<typeof formSchema>;
 
 export function FormRadixDemo() {
-  const [zodErrors, setZodErrors] = useState<FlattenedErrors['fieldErrors']>({});
+  const [zodErrors, setZodErrors] = useState<{
+    fieldErrors?: FlattenedErrors['fieldErrors'];
+    formError?: string;
+    serverErrors?: FlattenedErrors['fieldErrors'] & { general?: string };
+  }>({});
 
   const customEmailValidation = (value: string, formData: FormData) => {
     const rawFormData = Object.fromEntries(formData);
-    const emailErrors = formSchema.safeParse(rawFormData).error?.flatten().fieldErrors.email;
+    const errors = formSchema.safeParse(rawFormData).error?.flatten();
 
-    if (emailErrors) {
-      setZodErrors((prevState) => ({ ...prevState, email: emailErrors }));
+    if (errors?.fieldErrors.email) {
+      setZodErrors((prevState) => ({
+        ...prevState,
+        formError: errors.formErrors?.[0],
+        fieldErrors: { email: errors.fieldErrors.email },
+      }));
       return true;
     }
     return false;
@@ -47,10 +56,14 @@ export function FormRadixDemo() {
 
   const customUsernameValidation = (value: string, formData: FormData) => {
     const rawFormData = Object.fromEntries(formData);
-    const usernameErrors = formSchema.safeParse(rawFormData).error?.flatten().fieldErrors.username;
+    const errors = formSchema.safeParse(rawFormData).error?.flatten();
 
-    if (usernameErrors) {
-      setZodErrors((prevState) => ({ ...prevState, username: usernameErrors }));
+    if (errors?.fieldErrors.username) {
+      setZodErrors((prevState) => ({
+        ...prevState,
+        formError: errors.formErrors?.[0],
+        fieldErrors: { username: errors.fieldErrors.username },
+      }));
       return true;
     }
     return false;
@@ -58,37 +71,79 @@ export function FormRadixDemo() {
 
   const customPasswordValidation = (value: string, formData: FormData) => {
     const rawFormData = Object.fromEntries(formData);
-    const passwordErrors = formSchema.safeParse(rawFormData).error?.flatten().fieldErrors.password;
+    const errors = formSchema.safeParse(rawFormData).error?.flatten();
 
-    if (passwordErrors) {
-      setZodErrors((prevState) => ({ ...prevState, password: passwordErrors }));
+    if (errors?.fieldErrors.password) {
+      setZodErrors((prevState) => ({
+        ...prevState,
+        formError: errors.formErrors?.[0],
+        fieldErrors: { password: errors.fieldErrors.password },
+      }));
       return true;
     }
     return false;
   };
 
-  const [serverErrors, setServerErrors] = useState({ email: false, password: false, username: false });
+  type FormState =
+    | {
+        actionErrors?: {
+          formErrors?: FlattenedErrors['fieldErrors'] & { general?: string[] };
+          serverErrors?: FlattenedErrors['fieldErrors'] & { general?: string[] };
+        };
+        result?: { success: boolean };
+      }
+    | undefined;
+  async function authenticate(prevState: FormState, formData: FormData): Promise<FormState> {
+    const rawFormData = Object.fromEntries(formData);
+    const validatedFields = formSchema.safeParse(rawFormData);
+    if (!validatedFields.success) {
+      return {
+        actionErrors: { formErrors: { general: validatedFields.error.flatten().formErrors } },
+      };
+    }
+    if (validatedFields.data.email !== 'b@b.com') {
+      console.log('email');
+
+      return {
+        actionErrors: { serverErrors: { email: ['Only b@b.com is allowed'], general: ['Internal Server Error'] } },
+      };
+    }
+    try {
+      //await signIn(validatedFields.data.provider, formData);
+      console.log('Sign In');
+      return { result: { success: true } };
+    } catch (error: any) {
+      return {
+        actionErrors: { serverErrors: { general: [String(error.message || 'Something went wrong')] } },
+      };
+    }
+  }
+  const [formState, formAction] = useFormState(authenticate, undefined);
 
   return (
     <section className='flex flex-col space-y-2'>
       <FormRoot
         className='space-y-4'
-        onClearServerErrors={() => setServerErrors({ email: false, password: false, username: false })}>
+        action={formAction}
+        onClearServerErrors={() =>
+          setZodErrors((prevState) => ({ ...prevState, formError: undefined, serverErrors: undefined }))
+        }>
         {/* Email Field */}
-        <FormField name='email' serverInvalid={serverErrors.email}>
+        <FormField name='email' serverInvalid={Boolean(formState?.actionErrors?.serverErrors?.email)}>
           <FormLabel>Email</FormLabel>
           <FormControl>
             <Input type='email' placeholder='Enter your email' />
           </FormControl>
           <FormDescription>Your email address</FormDescription>
-          <FormMessage match={customEmailValidation}>{zodErrors.email?.[0]}</FormMessage>
-          <FormMessage match='typeMismatch' forceMatch={serverErrors.email}>
-            Please provide a valid email.
-          </FormMessage>
+          <FormMessage match='typeMismatch'>Please provide a valid email.</FormMessage>
+          <FormMessage match={customEmailValidation}>{zodErrors.fieldErrors?.email?.[0]}</FormMessage>
+          {formState?.actionErrors?.serverErrors?.email?.[0] && (
+            <FormMessage>{formState?.actionErrors?.serverErrors?.email?.[0]}</FormMessage>
+          )}
         </FormField>
 
         {/* Username Field */}
-        <FormField name='username' serverInvalid={serverErrors.username}>
+        <FormField name='username' serverInvalid={Boolean(formState?.actionErrors?.serverErrors?.username)}>
           <FormLabel>Username</FormLabel>
           <FormValidityState>
             {(validity) => (
@@ -98,27 +153,33 @@ export function FormRadixDemo() {
             )}
           </FormValidityState>
           <FormDescription>Your username</FormDescription>
-          <FormMessage match='typeMismatch' forceMatch={serverErrors.username}>
-            Please provide a valid username.
-          </FormMessage>
-          <FormMessage match={customUsernameValidation}>{zodErrors.username?.[0]}</FormMessage>
+          <FormMessage match='typeMismatch'>Please provide a valid username.</FormMessage>
+          <FormMessage match={customUsernameValidation}>{zodErrors?.fieldErrors?.username?.[0]}</FormMessage>
+          {formState?.actionErrors?.serverErrors?.username?.[0] && (
+            <FormMessage>{formState.actionErrors?.serverErrors.username[0]}</FormMessage>
+          )}
         </FormField>
 
         {/* Password Field */}
-        <FormField name='password' serverInvalid={serverErrors.password}>
+        <FormField name='password' serverInvalid={Boolean(formState?.actionErrors?.serverErrors?.password)}>
           <FormLabel>Password</FormLabel>
           <FormControl>
             <Input type='password' placeholder='Enter your password' />
           </FormControl>
           <FormDescription>Your password</FormDescription>
-          <FormMessage match='typeMismatch' forceMatch={serverErrors.password}>
-            Please provide a valid password.
-          </FormMessage>
-          <FormMessage match={customPasswordValidation}>{zodErrors.password?.[0]}</FormMessage>
+          <FormMessage match='typeMismatch'>Please provide a valid password.</FormMessage>
+          <FormMessage match={customPasswordValidation}>{zodErrors?.fieldErrors?.password?.[0]}</FormMessage>
+          {formState?.actionErrors?.serverErrors?.password?.[0] && (
+            <FormMessage>{formState.actionErrors?.serverErrors.password[0]}</FormMessage>
+          )}
         </FormField>
 
         {/* Form Error */}
-        {/* <FormDescription className='text-destructive'>{serverErrors}</FormDescription> */}
+        <FormDescription className='text-destructive'>
+          {zodErrors.formError ||
+            formState?.actionErrors?.formErrors?.general?.[0] ||
+            formState?.actionErrors?.serverErrors?.general?.[0]}
+        </FormDescription>
 
         {/* Submit Button */}
         <FormSubmit asChild className='mt-2.5'>
