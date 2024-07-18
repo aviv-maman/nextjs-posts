@@ -34,7 +34,7 @@ export const FormLabel = forwardRef<
     <FormPrimitive.Label
       ref={ref}
       className={cn(
-        'text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 data-[invalid]:text-destructive',
+        'text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 data-[invalid]:text-destructive data-[valid]:text-green-400',
         className,
       )}
       {...props}
@@ -49,8 +49,18 @@ FormLabel.displayName = 'FormLabel';
 export const FormControl = forwardRef<
   React.ElementRef<typeof FormPrimitive.Control>,
   React.ComponentPropsWithoutRef<typeof FormPrimitive.Control>
->(({ asChild = true, ...props }, ref) => {
-  return <FormPrimitive.Control ref={ref} asChild={asChild} {...props} />;
+>(({ asChild = true, className, ...props }, ref) => {
+  return (
+    <FormPrimitive.Control
+      ref={ref}
+      asChild={asChild}
+      className={cn(
+        'data-[invalid]:border-destructive data-[valid]:border-green-400 data-[invalid]:text-destructive data-[valid]:text-green-400',
+        className,
+      )}
+      {...props}
+    />
+  );
 });
 FormControl.displayName = 'FormControl';
 

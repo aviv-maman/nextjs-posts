@@ -14,7 +14,6 @@ import {
   FormValidityState,
 } from '@/components/ui/form-radix';
 import { Input } from '@/components/ui/input';
-import { cn } from '@/lib/utils';
 
 const formSchema = z.object({
   email: z
@@ -78,14 +77,8 @@ export function FormRadixDemo() {
         {/* Email Field */}
         <FormField name='email' serverInvalid={serverErrors.email}>
           <FormLabel>Email</FormLabel>
-          <FormControl asChild>
-            <Input
-              type='email'
-              placeholder='Enter your email'
-              className={cn(
-                'data-[invalid]:border-destructive data-[valid]:border-green-400 data-[invalid]:text-destructive data-[valid]:text-green-400',
-              )}
-            />
+          <FormControl>
+            <Input type='email' placeholder='Enter your email' />
           </FormControl>
           <FormDescription>Your email address</FormDescription>
           <FormMessage match={customEmailValidation}>{zodErrors.email?.[0]}</FormMessage>
@@ -96,20 +89,11 @@ export function FormRadixDemo() {
 
         {/* Username Field */}
         <FormField name='username' serverInvalid={serverErrors.username}>
-          <FormLabel className='data-[valid]:text-green-400'>Username</FormLabel>
+          <FormLabel>Username</FormLabel>
           <FormValidityState>
             {(validity) => (
-              <FormControl asChild>
-                <Input
-                  type='text'
-                  placeholder='Enter your username'
-                  aria-invalid={validity?.valid === false}
-                  required
-                  className={cn({
-                    'border-destructive text-destructive': validity?.valid === false,
-                    'border-green-400 text-green-400': validity?.valid,
-                  })}
-                />
+              <FormControl aria-invalid={validity?.valid === false}>
+                <Input type='text' placeholder='Enter your username' required />
               </FormControl>
             )}
           </FormValidityState>
@@ -123,14 +107,8 @@ export function FormRadixDemo() {
         {/* Password Field */}
         <FormField name='password' serverInvalid={serverErrors.password}>
           <FormLabel>Password</FormLabel>
-          <FormControl asChild>
-            <Input
-              type='password'
-              placeholder='Enter your password'
-              className={cn(
-                'data-[invalid]:border-destructive data-[valid]:border-green-400 data-[invalid]:text-destructive data-[valid]:text-green-400',
-              )}
-            />
+          <FormControl>
+            <Input type='password' placeholder='Enter your password' />
           </FormControl>
           <FormDescription>Your password</FormDescription>
           <FormMessage match='typeMismatch' forceMatch={serverErrors.password}>
