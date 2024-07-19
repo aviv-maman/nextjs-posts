@@ -1,7 +1,8 @@
-import { forwardRef, useEffect, useState } from 'react';
+import { forwardRef } from 'react';
 import { Search2 } from '@/assets/icons';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
+import { useIsClient } from '@/hooks/use-is-client';
 import { cn } from '@/lib/utils';
 
 interface SearchButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
@@ -9,11 +10,7 @@ interface SearchButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement
 }
 
 const SearchButton = forwardRef<HTMLButtonElement, SearchButtonProps>(({ className, isIconOnly, ...props }, ref) => {
-  const [isClient, setIsClient] = useState(false);
-
-  useEffect(() => {
-    setIsClient(() => true);
-  }, []);
+  const isClient = useIsClient();
 
   if (!isClient) {
     return <Skeleton className='size-8 sm:w-64' />;

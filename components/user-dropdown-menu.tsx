@@ -1,5 +1,4 @@
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
 import { CircleUser, LogIn, LogOut, Settings } from '@/assets/icons';
 import { useAuth } from '@/components/auth-provider';
 import {
@@ -13,16 +12,13 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Skeleton } from '@/components/ui/skeleton';
 import { UserAvatar } from '@/components/user-avatar';
+import { useIsClient } from '@/hooks/use-is-client';
 import { useMediaQuery } from '@/hooks/use-media-query';
 
 export function UserDropdownMenu() {
   const { isLoading, session } = useAuth();
   const isDesktop = useMediaQuery('(min-width: 640px)');
-  const [isClient, setIsClient] = useState(false);
-
-  useEffect(() => {
-    setIsClient(() => true);
-  }, []);
+  const isClient = useIsClient();
 
   if (isLoading || !isClient) {
     return <Skeleton className='size-7 rounded-full' />;

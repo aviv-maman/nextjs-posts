@@ -1,15 +1,11 @@
 'use client';
 
-import { useEffect, useState } from 'react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Skeleton } from '@/components/ui/skeleton';
+import { useIsClient } from '@/hooks/use-is-client';
 
 const LanguageSelect: React.FC = () => {
-  const [isClient, setIsClient] = useState(false);
-
-  useEffect(() => {
-    setIsClient(() => true);
-  }, []);
+  const isClient = useIsClient();
 
   if (!isClient) {
     return <Skeleton className='h-10 w-full rounded-md' />;

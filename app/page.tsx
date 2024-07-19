@@ -1,8 +1,6 @@
 'use server';
 
 import { Suspense } from 'react';
-//import { validateProtectedRoute } from '@/lib/actions';
-import ProfileBlock from './profile-block';
 import { AccordionDemo } from '@/components/examples/AccordionDemo';
 import { AlertDemo } from '@/components/examples/AlertDemo';
 import { AlertDialogDemo } from '@/components/examples/AlertDialogDemo';
@@ -51,6 +49,8 @@ import { ToastDemo } from '@/components/examples/ToastDemo';
 import { ToggleDemo } from '@/components/examples/ToggleDemo';
 import { ToggleGroupDemo } from '@/components/examples/ToggleGroupDemo';
 import { TooltipDemo } from '@/components/examples/TooltipDemo';
+//import { validateProtectedRoute } from '@/lib/actions';
+import ProfileBlock from '@/components/profile-block';
 
 export default async function HomePage() {
   //const { session, user, accounts, isLoading, error } = useAuth();
