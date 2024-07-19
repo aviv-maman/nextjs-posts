@@ -30,6 +30,7 @@ import Home from './Home';
 import ID from './ID';
 import Italic from './Italic';
 import Keyboard from './Keyboard';
+import Languages from './Languages';
 import LifeBuoy from './LifeBuoy';
 import LinkedIn from './LinkedIn';
 import LinkedIn2 from './LinkedIn2';
@@ -49,6 +50,7 @@ import Settings from './Settings';
 import Slash from './Slash';
 import Smile from './Smile';
 import Sun from './Sun';
+import SunMoon from './SunMoon';
 import Underline from './Underline';
 import User from './User';
 import UserPen from './UserPen';
@@ -116,4 +118,6 @@ export {
   UserPentagon,
   ID,
   CalendarClock,
+  SunMoon,
+  Languages,
 };

@@ -1,8 +1,8 @@
 'use client';
 
 import Link from 'next/link';
-import { useAuth } from './auth-provider';
 import { CalendarClock, CalendarDays, ID, Mail, UserPen, UserPentagon } from '@/assets/icons';
+import { useAuth } from '@/components/auth-provider';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
@@ -17,7 +17,7 @@ const UserProfileCard: React.FC = () => {
     <Card className='overflow-hidden'>
       <CardHeader className='flex flex-row items-start bg-muted/50 p-4 sm:p-6'>
         <div className='grid gap-0.5'>
-          <CardTitle className='group flex items-center gap-2 text-lg'>{user?.name}</CardTitle>
+          <CardTitle className='group flex items-center gap-2 text-xl md:text-2xl'>{user?.name}</CardTitle>
           <CardDescription>{capitalizeFirstLetter(user?.role || 'user')}</CardDescription>
         </div>
         <div className='ml-auto flex items-center gap-1'>
