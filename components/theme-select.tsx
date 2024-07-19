@@ -1,8 +1,10 @@
 'use client';
 
 import { useTheme } from 'next-themes';
+import { useEffect, useState } from 'react';
 import { Computer, Moon, Sun } from '@/assets/icons';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Skeleton } from '@/components/ui/skeleton';
 
 const ThemeSelect: React.FC = () => {
   const items = [
@@ -12,6 +14,15 @@ const ThemeSelect: React.FC = () => {
   ];
 
   const { setTheme, theme } = useTheme();
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(() => true);
+  }, []);
+
+  if (!isClient) {
+    return <Skeleton className='h-10 w-full rounded-md' />;
+  }
 
   return (
     <Select onValueChange={(value) => setTheme(value)} defaultValue={theme || 'system'}>

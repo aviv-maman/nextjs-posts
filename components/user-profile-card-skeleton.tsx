@@ -1,31 +1,15 @@
-'use client';
-
-import Link from 'next/link';
-import UserProfileCardSkeleton from './user-profile-card-skeleton';
-import { CalendarClock, CalendarDays, ID, Mail, UserPen, UserPentagon } from '@/assets/icons';
-import { useAuth } from '@/components/auth-provider';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { CalendarClock, CalendarDays, ID, Mail, UserPentagon } from '@/assets/icons';
+import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
-import { capitalizeFirstLetter } from '@/lib/utils';
+import { Skeleton } from '@/components/ui/skeleton';
 
-const UserProfileCard: React.FC = () => {
-  const { isLoading, user } = useAuth();
-
-  return isLoading ? (
-    <UserProfileCardSkeleton />
-  ) : (
+const UserProfileCardSkeleton: React.FC = () => {
+  return (
     <Card className='overflow-hidden'>
       <CardHeader className='flex flex-row items-start bg-muted/50 p-4 sm:p-6'>
-        <div className='grid gap-0.5'>
-          <CardTitle className='group flex items-center gap-2 text-xl md:text-2xl'>{user?.name}</CardTitle>
-          <CardDescription>{capitalizeFirstLetter(user?.role || 'user')}</CardDescription>
-        </div>
-        <div className='ml-auto flex items-center gap-1'>
-          <Button size='sm' variant='outline' className='h-8 min-w-8 gap-1 p-0 sm:px-2'>
-            <UserPen className='size-4' />
-            <span className='sr-only sm:not-sr-only xl:whitespace-nowrap'>Edit</span>
-          </Button>
+        <div className='w-full space-y-2'>
+          <Skeleton className='h-6 w-2/5 rounded-md' />
+          <Skeleton className='h-[18px] w-16 rounded-md' />
         </div>
       </CardHeader>
       <CardContent className='p-6 text-sm'>
@@ -36,7 +20,9 @@ const UserProfileCard: React.FC = () => {
               <dt className='flex items-center gap-1 text-muted-foreground'>
                 <ID className='size-4' /> Full Name
               </dt>
-              <dd>{user?.name}</dd>
+              <dd>
+                <Skeleton className='h-4 w-32 rounded-md' />
+              </dd>
             </div>
             <div className='flex items-center justify-between'>
               <dt className='flex items-center gap-1 text-muted-foreground'>
@@ -44,14 +30,16 @@ const UserProfileCard: React.FC = () => {
                 Email
               </dt>
               <dd>
-                <Link href={`mailto:${user?.email}`}>{user?.email}</Link>
+                <Skeleton className='h-4 w-40 rounded-md' />
               </dd>
             </div>
             <div className='flex items-center justify-between'>
               <dt className='flex items-center gap-1 text-muted-foreground'>
                 <UserPentagon className='size-4' /> Username
               </dt>
-              <dd>@{user?.username}</dd>
+              <dd>
+                <Skeleton className='h-4 w-24 rounded-md' />
+              </dd>
             </div>
           </dl>
         </div>
@@ -63,24 +51,28 @@ const UserProfileCard: React.FC = () => {
               <dt className='flex items-center gap-1 text-muted-foreground'>
                 <CalendarClock className='size-4' /> Last Login
               </dt>
-              <dd>{String(user?.lastLogin)}</dd>
+              <dd>
+                <Skeleton className='h-4 w-32 rounded-md' />
+              </dd>
             </div>
             <div className='flex items-center justify-between'>
               <dt className='flex items-center gap-1 text-muted-foreground'>
                 <CalendarDays className='size-4' /> Member Since
               </dt>
-              <dd>{String(user?.createdAt)}</dd>
+              <dd>
+                <Skeleton className='h-4 w-32 rounded-md' />
+              </dd>
             </div>
           </dl>
         </div>
       </CardContent>
       <CardFooter className='flex flex-row items-center border-t bg-muted/50 px-4 py-3 sm:px-6'>
-        <div className='text-xs text-muted-foreground'>
-          Last Update at <time dateTime='2024-01-01'>{String(user?.updatedAt)}</time>
+        <div className='flex min-h-4 items-center text-xs text-muted-foreground'>
+          <Skeleton className='h-3 w-52 rounded-md' />
         </div>
       </CardFooter>
     </Card>
   );
 };
 
-export default UserProfileCard;
+export default UserProfileCardSkeleton;
