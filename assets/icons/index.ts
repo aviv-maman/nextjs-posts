@@ -5,6 +5,7 @@ import BellRing from './BellRing';
 import Bitbucket from './Bitbucket';
 import Bold from './Bold';
 import Calculator from './Calculator';
+import CalendarClock from './CalendarClock';
 import CalendarDays from './CalendarDays';
 import Check from './Check';
 import ChevronDown from './ChevronDown';
@@ -26,6 +27,7 @@ import GitLab from './GitLab';
 import Google from './Google';
 import GripVertical from './GripVertical';
 import Home from './Home';
+import ID from './ID';
 import Italic from './Italic';
 import Keyboard from './Keyboard';
 import LifeBuoy from './LifeBuoy';
@@ -49,6 +51,8 @@ import Smile from './Smile';
 import Sun from './Sun';
 import Underline from './Underline';
 import User from './User';
+import UserPen from './UserPen';
+import UserPentagon from './UserPentagon';
 import UserPlus from './UserPlus';
 import Users from './Users';
 import X from './X';
@@ -108,4 +112,8 @@ export {
   Dot,
   ArrowLeft,
   ArrowRight,
+  UserPen,
+  UserPentagon,
+  ID,
+  CalendarClock,
 };
