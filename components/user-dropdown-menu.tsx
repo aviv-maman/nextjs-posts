@@ -37,13 +37,17 @@ export function UserDropdownMenu() {
         <DropdownMenuLabel>My Account</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          <DropdownMenuItem className='cursor-pointer'>
-            <CircleUser className='mr-2 size-4' />
-            <span>Profile</span>
+          <DropdownMenuItem asChild className='cursor-pointer'>
+            <Link href='/profile' aria-label='profile' className='flex items-center'>
+              <CircleUser className='mr-2 size-4' />
+              <span>Profile</span>
+            </Link>
           </DropdownMenuItem>
-          <DropdownMenuItem className='cursor-pointer'>
-            <Settings className='mr-2 size-4' />
-            <span>Settings</span>
+          <DropdownMenuItem asChild className='cursor-pointer'>
+            <Link href='/profile/settings' aria-label='settings' className='flex items-center'>
+              <Settings className='mr-2 size-4' />
+              <span>Settings</span>
+            </Link>
           </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />

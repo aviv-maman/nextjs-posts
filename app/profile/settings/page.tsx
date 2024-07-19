@@ -5,9 +5,5 @@ export const metadata: Metadata = {
 };
 
 export default async function SettingsPage() {
-  return (
-    <main>
-      <div>Settings Page</div>
-    </main>
-  );
+  return <div>Settings Page</div>;
 }
