@@ -7,8 +7,8 @@ export const metadata: Metadata = {
 
 export default async function SettingsPage() {
   return (
-    <div className='flex flex-col'>
-      <main className='flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6'>
+    <div className='flex w-full flex-col self-center sm:container sm:max-w-3xl'>
+      <main className='flex flex-1 flex-col gap-4 p-4'>
         <div className='flex items-center'>
           <h1 className='text-2xl font-semibold'>Settings</h1>
         </div>
