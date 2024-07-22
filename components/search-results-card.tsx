@@ -4,7 +4,7 @@ import Image from 'next/image';
 import { User } from '@/assets/icons';
 import { AspectRatio } from '@/components/ui/aspect-ratio';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardHeader, CardTitle } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
 
 export type GenericItem = {
@@ -29,37 +29,34 @@ interface SearchResultsCardProps extends React.ComponentProps<typeof Card> {
 
 const SearchResultsCard: React.FC<SearchResultsCardProps> = ({ value, ...props }) => {
   return (
-    <Card className={cn('w-full', props.className)} {...props}>
+    <Card className={cn('flex w-full flex-col gap-y-4 p-4', props.className)} {...props}>
       <CardHeader className='p-0'>
-        <AspectRatio ratio={16 / 9} className='rounded-t-md'>
-          <Image src={value.images?.[0] || '/1.jpg'} alt='Photo 1' fill className='rounded-t-md object-cover' />
-        </AspectRatio>
+        <div className='flex items-center space-x-2 text-base'>
+          <Avatar>
+            <AvatarImage src={value.owner_picture || undefined} />
+            <AvatarFallback>
+              <User className='size-5' />
+            </AvatarFallback>
+          </Avatar>
+          <div className='flex flex-col'>
+            <span className='line-clamp-1'>{value.owner_name || 'Guest'}</span>
+            <span className='text-xs'>{new Date(value.created_at).toLocaleString() || 'Not Available'}</span>
+          </div>
+        </div>
       </CardHeader>
-      <div className='flex items-center space-x-2 border-t p-4 text-base'>
-        <Avatar>
-          <AvatarImage src={value.owner_picture || undefined} />
-          <AvatarFallback>
-            <User className='size-5' />
-          </AvatarFallback>
-        </Avatar>
-        <div className='flex flex-col'>
-          <span className='line-clamp-1'>{value.owner_name || 'Guest'}</span>
-          <span className='text-xs'>{new Date(value.created_at).toLocaleString() || 'Not Available'}</span>
-        </div>
+      <AspectRatio ratio={16 / 9} className='rounded-md'>
+        <Image src={value.images?.[0] || '/1.jpg'} alt='Photo 1' fill className='rounded-md object-cover' />
+      </AspectRatio>
+      <CardTitle className='line-clamp-2 min-h-16 content-center text-lg'>{value.title}</CardTitle>
+      <div className='flex flex-wrap gap-2'>
+        {value.tags?.map((tag, index) => (
+          <span
+            key={index}
+            className='inline-flex items-center rounded-md bg-muted px-2 py-1 text-xs font-medium text-muted-foreground'>
+            {tag}
+          </span>
+        ))}
       </div>
-      <div className='space-y-2 p-4 pt-0'>
-        <CardTitle className='line-clamp-3 min-h-24 content-center text-xl'>{value.title}</CardTitle>
-        <CardContent className='line-clamp-[10] min-h-[200px] space-x-4 p-0 text-sm text-muted-foreground'>
-          {value.content}
-        </CardContent>
-      </div>
-      <CardFooter className='h-auto w-full border-t p-4'>
-        <div className='flex h-full flex-col justify-between space-y-4'>
-          <CardDescription className='text-xs'>
-            Updated at {new Date(value.updated_at).toLocaleString()}
-          </CardDescription>
-        </div>
-      </CardFooter>
     </Card>
   );
 };
