@@ -4,15 +4,18 @@ import { Fragment, useEffect, useRef, useState } from 'react';
 import GenericCard from '@/components/generic-card';
 import type { GenericItem } from '@/components/generic-card';
 import { useIntersectionObserver } from '@/hooks/use-intersection-observer';
+import { useIsClient } from '@/hooks/use-is-client';
 
 const FeedBlock: React.FC<{ data: GenericItem[] }> = ({ data }) => {
-  const observerTarget = useRef<HTMLDivElement | null>(null);
+  const observerTarget = useRef<HTMLDivElement>(null);
   const observer = useIntersectionObserver(observerTarget, {});
+  const isClient = useIsClient();
+
   const [items, setItems] = useState(data);
 
   useEffect(() => {
     let ignore = false;
-    if (!observer?.isIntersecting || !observerTarget.current || !window.location.origin) return;
+    if (!observer?.isIntersecting || !observerTarget.current || !isClient) return;
     fetch(`${process.env.BASE_URL}/api/external/feed`).then((response) => {
       response.json().then((response) => {
         const { data } = response as { total: number; data: GenericItem[]; message: string };
@@ -24,7 +27,7 @@ const FeedBlock: React.FC<{ data: GenericItem[] }> = ({ data }) => {
     return () => {
       ignore = true;
     };
-  }, [observer?.isIntersecting]);
+  }, [observer?.isIntersecting, isClient]);
 
   return (
     <Fragment>

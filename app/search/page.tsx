@@ -15,7 +15,7 @@ export default async function SearchPage({ searchParams }: { searchParams?: { qu
   const { data: totalPages } = await fetchGenericItemsPages(1);
 
   return (
-    <section className='container relative flex min-h-[calc(100vh-150px)] flex-col items-center justify-between gap-y-6 p-6 sm:min-h-[calc(100vh-142px)] sm:px-8'>
+    <section className='container relative flex min-h-[calc(100vh-146px)] flex-col items-center justify-between gap-y-6 p-6 sm:min-h-[calc(100vh-138px)] sm:px-8'>
       <div className='flex w-full flex-col gap-y-6'>
         <h2
           title='Infinite Feed'

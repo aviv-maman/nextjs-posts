@@ -15,7 +15,7 @@ export default async function ItemPage({ params }: { params: { id: string } }) {
   return (
     <section className='container relative flex min-h-[calc(100vh-146px)] flex-col items-center justify-between gap-y-6 p-6 sm:min-h-[calc(100vh-138px)] sm:px-8'>
       <Suspense fallback={<div>Loading Item...</div>}>
-        <Card id='card_root-item' className='w-full sm:max-w-5xl'>
+        <Card id='card_root-item' className='w-full border-none sm:max-w-5xl'>
           <CardHeader className='flex gap-y-2'>
             <h1 className='text-xl font-bold sm:text-3xl'>{mockItem.title}</h1>
             <div className='flex space-x-2 text-base'>
@@ -47,7 +47,7 @@ export default async function ItemPage({ params }: { params: { id: string } }) {
               ))}
             </div>
           </CardContent>
-          <CardFooter id='item-footer' className='h-auto w-full border-t p-4'>
+          <CardFooter id='item-footer' className='h-auto w-full p-4'>
             <div className='flex h-full flex-col justify-between space-y-4'>
               <CardDescription className='text-xs'>
                 Updated at {new Date(mockItem.updated_at).toLocaleString()}
