@@ -35,7 +35,7 @@ const SearchDialogAndDrawer: React.FC<{ placeholder?: string }> = ({ placeholder
   const { replace } = useRouter();
 
   const handleSearch = useCallback(
-    (term: string) => {
+    (term?: string) => {
       const params = new URLSearchParams(searchParams);
       params.set('page', '1');
       if (term) {
@@ -51,7 +51,7 @@ const SearchDialogAndDrawer: React.FC<{ placeholder?: string }> = ({ placeholder
     [replace, pathname, searchParams],
   );
 
-  const [query, setQuery] = useState('');
+  const [query, setQuery] = useState(searchParams.get('query')?.toString());
 
   useEffect(() => {
     const down = (e: KeyboardEvent) => {
