@@ -14,6 +14,7 @@ import ChevronRight from './ChevronRight';
 import ChevronUp from './ChevronUp';
 import ChevronsUpDown from './ChevronsUpDown';
 import Circle from './Circle';
+import CircleFilled from './CircleFilled';
 import CircleUser from './CircleUser';
 import Cloud from './Cloud';
 import Computer from './Computer';
@@ -120,4 +121,5 @@ export {
   CalendarClock,
   SunMoon,
   Languages,
+  CircleFilled,
 };

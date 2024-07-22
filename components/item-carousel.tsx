@@ -47,6 +47,7 @@ const ItemCarousel: React.FC<ItemCarouselProps> = ({ images }) => {
               key={index}
               onClick={() => onDotButtonClick(index)}
               className={cn('text-muted-foreground/70', { 'text-current': index === selectedIndex })}
+              selectedIndex={index === selectedIndex}
             />
           ))}
         </div>

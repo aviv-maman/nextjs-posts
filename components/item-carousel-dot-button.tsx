@@ -1,6 +1,6 @@
 import type { EmblaCarouselType } from 'embla-carousel';
 import { forwardRef, useCallback, useEffect, useState } from 'react';
-import { Circle } from '@/assets/icons';
+import { Circle, CircleFilled } from '@/assets/icons';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 
@@ -45,20 +45,21 @@ export const useDotButton = (emblaApi: EmblaCarouselType | undefined): UseDotBut
   };
 };
 
-export const DotButton = forwardRef<HTMLButtonElement, React.ComponentProps<typeof Button>>(
-  ({ className, variant = 'outline', size = 'icon', ...props }, ref) => {
-    return (
-      <Button
-        ref={ref}
-        variant={variant}
-        size={size}
-        className={cn('size-8 rounded-full border-none hover:bg-background', className)}
-        type='button'
-        {...props}>
-        <Circle className='size-4' />
-        <span className='sr-only'>Previous slide</span>
-      </Button>
-    );
-  },
-);
+export const DotButton = forwardRef<
+  HTMLButtonElement,
+  React.ComponentProps<typeof Button> & { selectedIndex?: boolean }
+>(({ className, variant = 'outline', size = 'icon', selectedIndex, ...props }, ref) => {
+  return (
+    <Button
+      ref={ref}
+      variant={variant}
+      size={size}
+      className={cn('size-8 rounded-full border-none hover:bg-background', className)}
+      type='button'
+      {...props}>
+      {selectedIndex ? <CircleFilled className='size-4' /> : <Circle className='size-4' />}
+      <span className='sr-only'>Previous slide</span>
+    </Button>
+  );
+});
 DotButton.displayName = 'DotButton';
