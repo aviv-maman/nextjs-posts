@@ -8,8 +8,9 @@ import { fetchGenericItems, fetchGenericItemsPages } from '@/lib/items-actions';
 import mockData from '@/mock_data.json';
 
 export default async function SearchPage({ searchParams }: { searchParams?: { query?: string; page?: string } }) {
+  const query = searchParams?.query || '';
   const currentPage = Number(searchParams?.page) || 1;
-  const { data: genericItems } = await fetchGenericItems(1, currentPage);
+  const { data: genericItems } = await fetchGenericItems({ currentPage, query });
 
   // const mockItems = [...mockData];
   const { data: totalPages } = await fetchGenericItemsPages(1);
@@ -22,7 +23,7 @@ export default async function SearchPage({ searchParams }: { searchParams?: { qu
           className='w-fit self-center rounded border px-4 py-2 text-2xl font-bold tracking-tight'>
           Search Results
         </h2>
-        <Suspense fallback={<FeedWrapperSkeleton />}>
+        <Suspense key={query + currentPage} fallback={<FeedWrapperSkeleton />}>
           <div className='grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3'>
             {genericItems?.map((item, index) => <SearchResultsCard key={`${item.id}-${index}`} value={item} />)}
           </div>

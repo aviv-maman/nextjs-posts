@@ -47,7 +47,15 @@ export const addGenericItem = async (
   }
 };
 
-export const fetchGenericItems = async (perPage = 6, currentPage = 1) => {
+export const fetchGenericItems = async ({
+  perPage = 6,
+  currentPage = 1,
+  query = '',
+}: {
+  perPage?: number;
+  currentPage?: number;
+  query?: string;
+}) => {
   const offset = (currentPage - 1) * perPage;
   try {
     const rawExistingItems = db
