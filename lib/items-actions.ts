@@ -1,9 +1,8 @@
 'use server';
 
+import { neon } from '@neondatabase/serverless';
 import { generateId } from 'lucia';
 import { validateRequest } from './auth';
-import type { DatabaseGenericItem } from '@/lib/db';
-import { db } from '@/lib/db';
 
 export type AddGenericItemState =
   | {
@@ -19,10 +18,10 @@ export const addGenericItem = async (
   const rawFormData = Object.fromEntries(formData);
   const title = rawFormData['title'];
   const content = rawFormData['content'];
-  const tags = rawFormData['tags'];
+  const tags = rawFormData['tags'].toString().split(',');
   const website = rawFormData['website'];
   const images = formData.getAll('images').filter((image) => image instanceof File && image.name !== '');
-  const imageUrls = [] as string[];
+  const imageUrls = ['/1.jpg', '/2.jpg', '/3.jpg', '/4.jpg'] as string[];
 
   for (const imageFile of images) {
     if (typeof imageFile === 'string') {
@@ -43,9 +42,47 @@ export const addGenericItem = async (
     if (!user?.id) return { errors: { general: ['No user'] } };
     const itemId = generateId(15);
 
-    db.prepare(
-      'INSERT INTO generic_item (id, title, content, is_published, is_private, images, tags, website, owner_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)',
-    ).run(itemId, title, content, 1, 0, JSON.stringify(imageUrls), JSON.stringify(tags), website, user.id);
+    // db.prepare(
+    //   'INSERT INTO generic_item (id, title, content, is_published, is_private, images, tags, website, owner_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)',
+    // ).run(itemId, title, content, 1, 0, JSON.stringify(imageUrls), JSON.stringify(tags), website, user.id);
+
+    const sql = neon(process.env.DATABASE_URL!);
+
+    // await sql`CREATE TABLE IF NOT EXISTS generic_item
+    // (id TEXT NOT NULL PRIMARY KEY,
+    // title TEXT NOT NULL,
+    // content TEXT NOT NULL,
+    // is_published INTEGER NOT NULL,
+    // is_private INTEGER NOT NULL,
+    // images JSONB NOT NULL,
+    // tags JSONB NOT NULL,
+    // website VARCHAR(255),
+    // created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    // updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    // owner_id TEXT NOT NULL,
+    // FOREIGN KEY (owner_id) REFERENCES user(id)
+    // )`;
+
+    await sql`CREATE TABLE IF NOT EXISTS generic_item
+              (id TEXT NOT NULL PRIMARY KEY,
+              title TEXT NOT NULL,
+              content TEXT NOT NULL,
+              is_published INTEGER NOT NULL,
+              is_private INTEGER NOT NULL,
+              images JSONB NOT NULL,
+              tags JSONB NOT NULL,
+              website VARCHAR(255),
+              created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+              updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+              owner_id TEXT NOT NULL
+              )`;
+    await sql(
+      `
+      INSERT INTO generic_item (id, title, content, is_published, is_private, images, tags, website, owner_id)
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
+      `,
+      [itemId, title, content, 1, 0, JSON.stringify(imageUrls), JSON.stringify(tags), website, user.id],
+    );
 
     return { result: { success: true } };
   } catch (error) {
@@ -55,61 +92,3 @@ export const addGenericItem = async (
     };
   }
 };
-
-export const fetchGenericItems = async ({
-  perPage = 6,
-  currentPage = 1,
-  query = '',
-}: {
-  perPage?: number;
-  currentPage?: number;
-  query?: string;
-}) => {
-  const offset = (currentPage - 1) * perPage;
-  try {
-    const rawExistingItems = db
-      .prepare(
-        'SELECT * FROM generic_item LEFT JOIN user ON generic_item.owner_id = user.id ORDER BY generic_item.created_at DESC LIMIT ? OFFSET ?',
-      )
-      .all(perPage, offset) as DatabaseGenericItem[] | undefined;
-    const existingItems = rawExistingItems?.map((row) => ({
-      ...row,
-      images: row.images ? (JSON.parse(row.images) as string[]) : null,
-      tags: row.tags ? (JSON.parse(row.tags) as string[]) : null,
-    }));
-    //console.log(rawExistingItems);
-
-    return { data: existingItems };
-  } catch (error) {
-    console.error('Database Error in fetchGenericItemsPages:', error);
-    const err = error instanceof Error ? error.message : 'Something went wrong';
-    return { data: [], error: err };
-  }
-};
-
-export const fetchGenericItemsPages = async (perPage = 6, query?: string) => {
-  try {
-    const count = db
-      .prepare(`SELECT COUNT(*) FROM generic_item JOIN user ON generic_item.owner_id = user.id`)
-      .get() as { 'COUNT(*)': number };
-    const totalPages = Math.ceil(Number(count['COUNT(*)']) / perPage);
-    return { data: totalPages };
-  } catch (error) {
-    console.error('Database Error in fetchGenericItemsPages:', error);
-    const err = error instanceof Error ? error.message : 'Something went wrong';
-    return { data: 0, error: err };
-  }
-};
-
-// const getGenericItem = async (id: string) => {
-//   //db.exec(`DROP TABLE IF EXISTS generic_item`);
-//   const rawExistingPermissions = db.prepare('SELECT * FROM generic_item WHERE user_id = ?').all(userId) as
-//     | DatabasePermission[]
-//     | undefined;
-//   const existingPermissions = rawExistingPermissions?.map((row) => ({
-//     ...row,
-//     actions: JSON.parse(row.actions),
-//     conditions: JSON.parse(row.conditions),
-//   }));
-//   console.log(existingPermissions);
-// };

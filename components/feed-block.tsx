@@ -2,27 +2,26 @@
 
 import { Fragment, useEffect, useRef, useState } from 'react';
 import GenericCard from '@/components/generic-card';
-import type { GenericItem } from '@/components/generic-card';
 import { useIntersectionObserver } from '@/hooks/use-intersection-observer';
 import { useIsClient } from '@/hooks/use-is-client';
+import { fetchGenericItems } from '@/lib/items-data';
 
-const FeedBlock: React.FC<{ data: GenericItem[] }> = ({ data }) => {
+const FeedBlock: React.FC<{ data: Awaited<ReturnType<typeof fetchGenericItems>>['data'] }> = ({ data }) => {
   const observerTarget = useRef<HTMLDivElement>(null);
   const observer = useIntersectionObserver(observerTarget, {});
   const isClient = useIsClient();
 
-  const [items, setItems] = useState(data);
+  const [items, setItems] = useState(data || []);
+  const [currentPage, setCurrentPage] = useState(2);
 
   useEffect(() => {
     let ignore = false;
     if (!observer?.isIntersecting || !observerTarget.current || !isClient) return;
-    fetch(`${process.env.BASE_URL}/api/external/feed`).then((response) => {
-      response.json().then((response) => {
-        const { data } = response as { total: number; data: GenericItem[]; message: string };
-        if (!ignore) {
-          setItems((prevState) => [...prevState, ...data]);
-        }
-      });
+    fetchGenericItems({ currentPage }).then((response) => {
+      if (!ignore && response.data) {
+        setItems((prevState) => [...prevState, ...response.data]);
+        setCurrentPage((prevState) => prevState + 1);
+      }
     });
     return () => {
       ignore = true;

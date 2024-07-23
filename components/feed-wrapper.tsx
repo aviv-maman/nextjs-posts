@@ -1,11 +1,10 @@
 'use server';
 
 import FeedBlock from '@/components/feed-block';
-import type { GenericItem } from '@/components/generic-card';
+import { fetchGenericItems } from '@/lib/items-data';
 
 const FeedWrapper: React.FC = async () => {
-  const response = await fetch(`${process.env.BASE_URL}/api/external/feed`, { cache: 'no-cache' });
-  const { data } = (await response.json()) as { total: number; data: GenericItem[]; message: string };
+  const { data } = await fetchGenericItems({});
 
   return data ? (
     <div id='feed-block' className='flex w-full max-w-96 flex-col sm:max-w-md'>

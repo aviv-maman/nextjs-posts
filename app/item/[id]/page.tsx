@@ -9,6 +9,7 @@ import ItemCarousel from '@/components/item-carousel';
 import { AspectRatio } from '@/components/ui/aspect-ratio';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader } from '@/components/ui/card';
+import { fetchGenericItemById } from '@/lib/items-data';
 import mockData from '@/mock_data.json';
 
 type MetadataProps = {
@@ -20,16 +21,15 @@ export async function generateMetadata(
   { params, searchParams }: MetadataProps,
   parent: ResolvingMetadata,
 ): Promise<Metadata> {
-  //const { data: item } = await fetchItemById(params.id);
-  const item = mockData[1];
+  const { data: item } = await fetchGenericItemById(params.id);
+
   return {
     title: `${item?.title}`,
   };
 }
 
 export default async function ItemPage({ params }: { params: { id: string } }) {
-  //const item = fetchItemById(params.id)
-  const item = mockData[1];
+  const { data: item } = await fetchGenericItemById(params.id);
 
   if (!item) {
     notFound();
@@ -56,7 +56,7 @@ export default async function ItemPage({ params }: { params: { id: string } }) {
           </CardHeader>
           <CardContent className='space-y-6'>
             <AspectRatio ratio={16 / 9} className='rounded-md'>
-              <Image src={item.images[0] || '/1.jpg'} alt='Photo 1' fill className='rounded-md object-cover' />
+              <Image src={item?.images?.[0] || '/1.jpg'} alt='Photo 1' fill className='rounded-md object-cover' />
             </AspectRatio>
             <ItemCarousel images={item?.images} />
             <p>{item.content}</p>

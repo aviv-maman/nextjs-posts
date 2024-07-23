@@ -109,9 +109,9 @@ export interface DatabaseGenericItem {
   content: string;
   is_published: boolean;
   is_private: boolean;
-  images: string | null; //string[] | null
+  images: string[] | null;
   /**Tags to describe the content */
-  tags: string | null; //string[] | null
+  tags: string[] | null;
   website: string | null;
   created_at: Date;
   updated_at: Date;

@@ -12,10 +12,15 @@ import {
 } from '@/components/ui/pagination';
 import { cn, generatePagination } from '@/lib/utils';
 
-export default function SearchResultsPagination({ totalPages }: { totalPages: number }) {
+export default function SearchResultsPagination({
+  totalPages,
+  currentPage,
+}: {
+  totalPages: number;
+  currentPage: number;
+}) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const currentPage = Number(searchParams.get('page')) || 1;
 
   const createPageURL = (pageNumber: number | string) => {
     const params = new URLSearchParams(searchParams);

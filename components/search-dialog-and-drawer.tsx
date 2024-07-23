@@ -44,7 +44,7 @@ const SearchDialogAndDrawer: React.FC<{ placeholder?: string }> = ({ placeholder
         params.delete('query');
       }
       const newPath = pathname.includes('/search')
-        ? `${pathname}?${params.toString()}`
+        ? `/${pathname}?${params.toString()}`
         : `/search${pathname}?${params.toString()}`;
       replace(newPath);
     },

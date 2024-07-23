@@ -11,7 +11,7 @@ import '@/styles/embla.css';
 // import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
 
 interface ItemCarouselProps {
-  images?: string[];
+  images?: string[] | null;
 }
 
 const ItemCarousel: React.FC<ItemCarouselProps> = ({ images }) => {

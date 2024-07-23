@@ -5,26 +5,11 @@ import { User } from '@/assets/icons';
 import { AspectRatio } from '@/components/ui/aspect-ratio';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Card, CardHeader, CardTitle } from '@/components/ui/card';
+import type { DatabaseGenericItem } from '@/lib/db';
 import { cn } from '@/lib/utils';
 
-export type GenericItem = {
-  id: string;
-  title: string;
-  content: string;
-  is_published: boolean;
-  is_private: boolean;
-  images: string[] | null;
-  tags: string[] | null;
-  website: string | null;
-  created_at: string | Date;
-  updated_at: string | Date;
-  owner_id?: string | null;
-  owner_email?: string | null;
-  owner_name?: string | null;
-  owner_picture?: string | null;
-};
 interface SearchResultsCardProps extends React.ComponentProps<typeof Card> {
-  value: GenericItem;
+  value: DatabaseGenericItem;
 }
 
 const SearchResultsCard: React.FC<SearchResultsCardProps> = ({ value, ...props }) => {
@@ -33,13 +18,13 @@ const SearchResultsCard: React.FC<SearchResultsCardProps> = ({ value, ...props }
       <CardHeader className='p-0'>
         <div className='flex items-center space-x-2 text-base'>
           <Avatar>
-            <AvatarImage src={value.owner_picture || undefined} />
+            <AvatarImage src={undefined} />
             <AvatarFallback>
               <User className='size-5' />
             </AvatarFallback>
           </Avatar>
           <div className='flex flex-col'>
-            <span className='line-clamp-1'>{value.owner_name || 'Guest'}</span>
+            <span className='line-clamp-1'>{'Guest'}</span>
             <span className='text-xs'>{new Date(value.created_at).toLocaleString() || 'Not Available'}</span>
           </div>
         </div>
