@@ -130,10 +130,10 @@ export function CreateItemForm() {
                 <MultiSelectorItem value={'Spring'}>Spring</MultiSelectorItem>
                 <MultiSelectorItem value={'Autumn'}>Autumn</MultiSelectorItem>
                 <MultiSelectorItem value={'Europe'}>Europe</MultiSelectorItem>
-                <MultiSelectorItem value={'Europe'}>US</MultiSelectorItem>
-                <MultiSelectorItem value={'Europe'}>Middle-East</MultiSelectorItem>
+                <MultiSelectorItem value={'US'}>US</MultiSelectorItem>
+                <MultiSelectorItem value={'Middle-East'}>Middle-East</MultiSelectorItem>
                 <MultiSelectorItem value={'Trip'}>Trip</MultiSelectorItem>
-                <MultiSelectorItem value={'Trip'}>Views</MultiSelectorItem>
+                <MultiSelectorItem value={'Views'}>Views</MultiSelectorItem>
               </MultiSelectorList>
             </MultiSelectorContent>
           </MultiSelector>
