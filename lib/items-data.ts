@@ -51,7 +51,6 @@ export const fetchGenericItemsPages = async ({ perPage = 6, query }: { perPage?:
 };
 
 export const fetchGenericItemById = async (id: string) => {
-  noStore();
   try {
     const sql = neon(process.env.DATABASE_URL!);
     const res = await sql`SELECT * FROM generic_item WHERE generic_item.id = ${id}`;

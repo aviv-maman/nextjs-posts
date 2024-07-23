@@ -1,5 +1,3 @@
-'use server';
-
 import type { Metadata, ResolvingMetadata } from 'next';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
@@ -10,7 +8,8 @@ import { AspectRatio } from '@/components/ui/aspect-ratio';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader } from '@/components/ui/card';
 import { fetchGenericItemById } from '@/lib/items-data';
-import mockData from '@/mock_data.json';
+
+export const revalidate = 36;
 
 type MetadataProps = {
   params: { id: string };
