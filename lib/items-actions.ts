@@ -19,6 +19,25 @@ export const addGenericItem = async (
   const rawFormData = Object.fromEntries(formData);
   const title = rawFormData['title'];
   const content = rawFormData['content'];
+  const tags = rawFormData['tags'];
+  const website = rawFormData['website'];
+  const images = formData.getAll('images').filter((image) => image instanceof File && image.name !== '');
+  const imageUrls = [] as string[];
+
+  for (const imageFile of images) {
+    if (typeof imageFile === 'string') {
+      // Handle the case where image is a string.
+      continue;
+    }
+    const imageBuffer = await imageFile.arrayBuffer();
+    const imageArray = Array.from(new Uint8Array(imageBuffer));
+    const imageData = Buffer.from(imageArray);
+    // Convert the image data to base64
+    const imageBase64 = imageData.toString('base64');
+    // const result = await uploadImage();
+    // imageUrls.push(result);
+  }
+
   try {
     const { user } = await validateRequest();
     if (!user?.id) return { errors: { general: ['No user'] } };
@@ -26,17 +45,7 @@ export const addGenericItem = async (
 
     db.prepare(
       'INSERT INTO generic_item (id, title, content, is_published, is_private, images, tags, website, owner_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)',
-    ).run(
-      itemId,
-      title,
-      content,
-      0,
-      0,
-      JSON.stringify(['/1.jpg', '/2.jpg', '/3.jpg', '/4.jpg']),
-      JSON.stringify(['Europe', 'Summer']),
-      'http://www.website.com',
-      user.id,
-    );
+    ).run(itemId, title, content, 1, 0, JSON.stringify(imageUrls), JSON.stringify(tags), website, user.id);
 
     return { result: { success: true } };
   } catch (error) {
