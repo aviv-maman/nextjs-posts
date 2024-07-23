@@ -9,7 +9,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader } from '@/components/ui/card';
 import { fetchGenericItemById } from '@/lib/items-data';
 
-export const revalidate = 36;
+//export const revalidate = 36;
 
 type MetadataProps = {
   params: { id: string };
