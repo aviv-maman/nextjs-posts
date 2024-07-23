@@ -18,11 +18,14 @@ export const fetchGenericItems = async ({
   try {
     const sql = neon(process.env.DATABASE_URL!);
     const existingItems = (await sql`
-      SELECT *
-      FROM generic_item
-      ORDER BY generic_item.created_at DESC
-      LIMIT ${perPage}
-      OFFSET ${offset}
+        SELECT *
+        FROM generic_item
+        WHERE
+        generic_item.title ILIKE ${`%${query}%`} OR
+        generic_item.content ILIKE ${`%${query}%`}
+        ORDER BY generic_item.created_at DESC
+        LIMIT ${perPage}
+        OFFSET ${offset}
     `) as DatabaseGenericItem[] | [];
 
     return { data: existingItems };
