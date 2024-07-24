@@ -43,6 +43,7 @@ import Mail from './Mail';
 import Menu from './Menu';
 import MessageSquare from './MessageSquare';
 import Moon from './Moon';
+import Paperclip from './PaperClip';
 import Plus from './Plus';
 import PlusCircle from './PlusCircle';
 import Search from './Search';
@@ -122,4 +123,5 @@ export {
   SunMoon,
   Languages,
   CircleFilled,
+  Paperclip,
 };

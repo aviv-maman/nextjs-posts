@@ -1,8 +1,10 @@
 'use client';
 
+import Image from 'next/image';
 import { useState } from 'react';
 import { useFormState } from 'react-dom';
 import { z } from 'zod';
+import { Paperclip } from '@/assets/icons';
 import { Button } from '@/components/ui/button';
 import {
   FormControl,
@@ -25,16 +27,8 @@ import {
 } from '@/components/ui/multi-select';
 import { addGenericItem } from '@/lib/items-actions';
 
-const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  const { length } = e.target.files || [];
-  if (length > 4) {
-    e.target.value = '';
-    //toast.error('You can select up to 4 images in total.');
-  }
-};
-
 export const genericItemSchema = z.object({
-  title: z.string().trim().min(1, 'Zod: Please provide a title'),
+  title: z.string().trim().min(1, { message: 'Zod: Please provide a title' }),
   content: z
     .string()
     .trim()
@@ -73,6 +67,32 @@ export function CreateItemForm() {
   const [actionState, formAction] = useFormState(addGenericItem, undefined);
 
   const [tags, setTags] = useState([] as string[]);
+  const [files, setFiles] = useState<File[] | null>(null);
+  const [previewUrls, setPreviewUrls] = useState<string[] | null>(null);
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const fileList = e.target.files;
+    if (!fileList) {
+      return setPreviewUrls(() => null);
+    }
+    if (fileList.length > 4) {
+      e.target.value = '';
+      //toast.error('You can select up to 4 images in total.');
+      return;
+    }
+    const files = Array.from({ length: fileList.length })
+      .map((_, index) => fileList.item(index))
+      .filter((file) => file !== null);
+
+    setFiles(() => files);
+    if (previewUrls) {
+      previewUrls.forEach((url) => {
+        URL.revokeObjectURL(url);
+      });
+    }
+    const urls = files.map((file) => URL.createObjectURL(file));
+    setPreviewUrls(() => urls);
+  };
 
   return (
     <div className='flex flex-col space-y-2'>
@@ -148,6 +168,35 @@ export function CreateItemForm() {
           </FormControl>
           <FormDescription>Your images</FormDescription>
         </FormField>
+
+        <label className='flex rounded-md border p-2'>
+          <Paperclip
+            className='size-5 transform-gpu text-neutral-500 transition-all hover:cursor-pointer active:scale-75'
+            aria-label='attach media'
+          />
+          <input
+            className='hidden flex-1 border-none bg-transparent outline-none'
+            name='media'
+            type='file'
+            accept='image/jpeg,image/png,image/webp,image/gif,video/mp4,video/webm'
+            multiple
+            onChange={handleFileChange}
+          />
+        </label>
+
+        <div className='grid w-full grid-cols-1 gap-2 md:grid-cols-2'>
+          {previewUrls?.map((url, index) => {
+            return (
+              <div key={index}>
+                {files?.[index].type.startsWith('image/') ? (
+                  <Image src={url} alt='Selected File' width={320} height={180} className='aspect-video' />
+                ) : files?.[index].type.startsWith('video/') ? (
+                  <video src={url} controls />
+                ) : null}
+              </div>
+            );
+          })}
+        </div>
 
         {/* Website Field */}
         <FormField name='website'>

@@ -1,7 +1,6 @@
 'use client';
 
 import { Command as CommandPrimitive } from 'cmdk';
-import type { KeyboardEvent } from 'react';
 import { createContext, forwardRef, useCallback, useContext, useState } from 'react';
 import { Check, X } from '@/assets/icons';
 import { Badge } from '@/components/ui/badge';
@@ -9,13 +8,13 @@ import { Command, CommandEmpty, CommandItem, CommandList } from '@/components/ui
 import { cn } from '@/lib/utils';
 
 type MultiSelectorProps = {
-  values: string[];
+  values?: string[] | null;
   onValuesChange: (value: string[]) => void;
   loop?: boolean;
 } & React.ComponentPropsWithoutRef<typeof CommandPrimitive>;
 
 interface MultiSelectContextProps {
-  value: string[];
+  value?: string[] | null;
   onValueChange: (value: any) => void;
   open: boolean;
   setOpen: (value: boolean) => void;
@@ -50,10 +49,12 @@ const MultiSelector = ({
 
   const onValueChangeHandler = useCallback(
     (val: string) => {
-      if (value.includes(val)) {
+      if (value?.includes(val)) {
         onValueChange(value.filter((item) => item !== val));
-      } else {
+      } else if (value) {
         onValueChange([...value, val]);
+      } else {
+        onValueChange([val]);
       }
     },
     [value],
@@ -62,18 +63,18 @@ const MultiSelector = ({
   // TODO : change from else if use to switch case statement
 
   const handleKeyDown = useCallback(
-    (e: KeyboardEvent<HTMLDivElement>) => {
+    (e: React.KeyboardEvent<HTMLDivElement>) => {
       const moveNext = () => {
         const nextIndex = activeIndex + 1;
-        setActiveIndex(nextIndex > value.length - 1 ? (loop ? 0 : -1) : nextIndex);
+        setActiveIndex(nextIndex > (value?.length || 0) - 1 ? (loop ? 0 : -1) : nextIndex);
       };
 
       const movePrev = () => {
         const prevIndex = activeIndex - 1;
-        setActiveIndex(prevIndex < 0 ? value.length - 1 : prevIndex);
+        setActiveIndex(prevIndex < 0 ? (value?.length || 0) - 1 : prevIndex);
       };
 
-      if ((e.key === 'Backspace' || e.key === 'Delete') && value.length > 0) {
+      if ((e.key === 'Backspace' || e.key === 'Delete') && value && value.length > 0) {
         if (inputValue.length === 0) {
           if (activeIndex !== -1 && activeIndex < value.length) {
             onValueChange(value.filter((item) => item !== value[activeIndex]));
@@ -145,7 +146,7 @@ const MultiSelectorTrigger = forwardRef<HTMLDivElement, React.HTMLAttributes<HTM
         ref={ref}
         className={cn('flex flex-wrap gap-1 rounded-lg border border-muted bg-background p-1 py-2', className)}
         {...props}>
-        {value.map((item, index) => (
+        {value?.map((item, index) => (
           <Badge
             key={item}
             className={cn(
@@ -241,7 +242,7 @@ const MultiSelectorItem = forwardRef<
     e.stopPropagation();
   }, []);
 
-  const isIncluded = Options.includes(value);
+  const isIncluded = Options?.includes(value);
   return (
     <CommandItem
       ref={ref}
