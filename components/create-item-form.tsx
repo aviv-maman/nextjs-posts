@@ -103,7 +103,7 @@ export function CreateItemForm() {
           <FormControl>
             <Input placeholder='Enter your title' required />
           </FormControl>
-          <FormDescription>Your title</FormDescription>
+          <FormDescription>The title of the new item</FormDescription>
           <div className='flex flex-col'>
             <FormMessage match='valueMissing'>valueMissing: Please provide a valid title.</FormMessage>
             <FormMessage match={(value, formData) => customFormValidation({ field: 'title', value, formData })}>
@@ -123,7 +123,7 @@ export function CreateItemForm() {
               </FormControl>
             )}
           </FormValidityState>
-          <FormDescription>Your Content</FormDescription>
+          <FormDescription>The content of the new item</FormDescription>
           <div className='flex flex-col'>
             <FormMessage match='valueMissing'>valueMissing: Please provide a valid content.</FormMessage>
             <FormMessage match={(value, formData) => customFormValidation({ field: 'content', value, formData })}>
@@ -157,32 +157,33 @@ export function CreateItemForm() {
               </MultiSelectorList>
             </MultiSelectorContent>
           </MultiSelector>
-          <FormDescription>Your tags</FormDescription>
+          <FormDescription>Select tags to describe the item content</FormDescription>
         </FormField>
 
         {/* Image File Selection */}
-        <FormField name='images'>
-          <FormLabel>Images</FormLabel>
-          <FormControl>
-            <Input type='file' placeholder='select your images' accept='image/*' multiple />
-          </FormControl>
-          <FormDescription>Your images</FormDescription>
-        </FormField>
-
-        <label className='flex rounded-md border p-2'>
-          <Paperclip
-            className='size-5 transform-gpu text-neutral-500 transition-all hover:cursor-pointer active:scale-75'
-            aria-label='attach media'
-          />
-          <input
-            className='hidden flex-1 border-none bg-transparent outline-none'
-            name='media'
-            type='file'
-            accept='image/jpeg,image/png,image/webp,image/gif,video/mp4,video/webm'
-            multiple
-            onChange={handleFileChange}
-          />
-        </label>
+        <div className='flex flex-col space-y-2'>
+          <label htmlFor='media' className='text-sm'>
+            Images
+          </label>
+          <label className='flex rounded-md border p-2'>
+            <Paperclip
+              className='size-5 transform-gpu text-neutral-500 transition-all hover:cursor-pointer active:scale-75'
+              aria-label='attach media'
+            />
+            <input
+              className='hidden flex-1 border-none bg-transparent outline-none'
+              id='media'
+              name='media'
+              type='file'
+              accept='image/jpeg,image/png,image/webp,image/gif,video/mp4,video/webm'
+              multiple
+              onChange={handleFileChange}
+            />
+          </label>
+          <label htmlFor='media' className='text-sm text-muted-foreground'>
+            Select images for the new item
+          </label>
+        </div>
 
         <div className='grid w-full grid-cols-1 gap-2 md:grid-cols-2'>
           {previewUrls?.map((url, index) => {
