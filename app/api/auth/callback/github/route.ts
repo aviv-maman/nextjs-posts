@@ -1,8 +1,7 @@
 import { OAuth2RequestError } from 'arctic';
-import { generateId, generateIdFromEntropySize } from 'lucia';
 import { cookies } from 'next/headers';
 import { github, lucia } from '@/lib/auth';
-import { db } from '@/lib/db';
+import { sql } from '@/lib/db';
 import type { DatabaseAccount, DatabaseUser } from '@/lib/db';
 
 const getMainEmail = async (accessToken: string) => {
@@ -53,13 +52,16 @@ export async function GET(request: Request): Promise<Response> {
       });
     }
 
-    const existingAccount = db
-      .prepare('SELECT * FROM oauth_account WHERE provider_name = ? AND provider_user_id = ?')
-      .get('github', githubUser.id) as DatabaseAccount | undefined;
+    const existingAccount = (await sql`
+      SELECT * FROM oauth_accounts
+      WHERE provider_name = 'github' AND provider_user_id = ${githubUser.id}`) as DatabaseAccount[] | undefined;
 
-    if (existingAccount) {
-      db.prepare('UPDATE user SET last_login = CURRENT_TIMESTAMP WHERE id = ?').run(existingAccount.user_id);
-      const session = await lucia.createSession(existingAccount.user_id, {});
+    if (existingAccount?.[0]) {
+      await sql`
+      UPDATE users
+      SET last_login = CURRENT_TIMESTAMP
+      WHERE id = ${existingAccount?.[0].user_id}`;
+      const session = await lucia.createSession(existingAccount?.[0].user_id, {});
       const sessionCookie = lucia.createSessionCookie(session.id);
       cookies().set(sessionCookie.name, sessionCookie.value, sessionCookie.attributes);
       return new Response(null, {
@@ -70,44 +72,34 @@ export async function GET(request: Request): Promise<Response> {
       });
     }
 
-    const existingUser = (await db.prepare('SELECT * FROM user WHERE email = ?').get(githubUser.email)) as
-      | DatabaseUser
-      | undefined;
+    const existingUser = (await sql`
+    SELECT * FROM users
+    WHERE email = ${githubUser.email}`) as DatabaseUser[] | undefined;
 
-    const userId = existingUser ? existingUser.id : generateIdFromEntropySize(15);
+    let userId = existingUser?.[0] ? existingUser?.[0].id : '';
 
-    if (!existingUser) {
+    if (!existingUser?.[0]) {
       const mainEmail = await getMainEmail(tokens.accessToken);
       if (mainEmail) {
         githubUser.email = mainEmail.email;
         githubUser.email_verified = mainEmail.verified ?? false;
       }
 
-      db.prepare(
-        'INSERT INTO user (id, username, name, email, email_verified, image_url) VALUES (?, ?, ?, ?, ?, ?)',
-      ).run(
-        userId,
-        githubUser.login,
-        githubUser.name,
-        githubUser.email,
-        githubUser.email_verified ? 1 : 0,
-        githubUser.avatar_url,
-      );
+      const idRecord = await sql`INSERT INTO users (username, name, email, email_verified, image_url)
+      VALUES (${githubUser.login}, ${githubUser.name}, ${githubUser.email}, ${githubUser.email_verified}, ${githubUser.avatar_url})
+      RETURNING id`;
 
-      db.prepare('INSERT INTO oauth_account (provider_name, provider_user_id, user_id) VALUES (?, ?, ?)').run(
-        'github',
-        String(githubUser.id),
-        userId,
-      );
+      userId = idRecord?.[0].id;
 
-      db.prepare('INSERT INTO permission (role, user_id) VALUES (?, ?)').run('user', userId);
+      await sql`INSERT INTO oauth_accounts (provider_name, provider_user_id, user_id)
+      VALUES ('github', ${String(githubUser.id)}, ${userId})`;
+
+      await sql`INSERT INTO permissions (role, user_id)
+      VALUES ('user', ${userId})`;
     } else {
-      if (existingUser.email_verified) {
-        db.prepare('INSERT INTO oauth_account (provider_name, provider_user_id, user_id) VALUES (?, ?, ?)').run(
-          'github',
-          githubUser.id,
-          existingUser.id,
-        );
+      if (existingUser?.[0].email_verified) {
+        await sql`INSERT INTO oauth_accounts (provider_name, provider_user_id, user_id)
+        VALUES ('github', ${String(githubUser.id)}, ${existingUser?.[0].id})`;
       } else {
         const mainEmail = await getMainEmail(tokens.accessToken);
         if (mainEmail) {
@@ -117,7 +109,9 @@ export async function GET(request: Request): Promise<Response> {
       }
 
       if (githubUser.email_verified) {
-        db.prepare('UPDATE user SET email_verified = ? WHERE id = ?').run(1, existingUser.id);
+        await sql`UPDATE users
+        SET email_verified = ${true}
+        WHERE id = ${existingUser?.[0].id}`;
       } else {
         return new Response('Unverified email', {
           status: 400,

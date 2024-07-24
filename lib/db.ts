@@ -1,33 +1,6 @@
-import sqlite3 from 'better-sqlite3';
+import { neon } from '@neondatabase/serverless';
 
-export const db = new sqlite3('main.db');
-
-db.exec(`CREATE TABLE IF NOT EXISTS user (
-    id TEXT NOT NULL PRIMARY KEY,
-    username TEXT NOT NULL,
-    name VARCHAR(255),
-    email VARCHAR(100),
-    email_verified INTEGER,
-    image_url TEXT,
-    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-    last_login TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
-)`);
-
-db.exec(`CREATE TABLE IF NOT EXISTS session (
-    id TEXT NOT NULL PRIMARY KEY,
-    expires_at INTEGER NOT NULL,
-    user_id TEXT NOT NULL,
-    FOREIGN KEY (user_id) REFERENCES user(id)
-)`);
-
-db.exec(`CREATE TABLE IF NOT EXISTS oauth_account (
-  provider_name TEXT NOT NULL,
-  provider_user_id TEXT NOT NULL,
-  user_id TEXT NOT NULL,
-  PRIMARY KEY (provider_name, provider_user_id),
-  FOREIGN KEY (user_id) REFERENCES user(id)
-)`);
+export const sql = neon(process.env.DATABASE_URL!);
 
 // db.exec(`CREATE TABLE IF NOT EXISTS email_verification_code (
 //   id TEXT NOT NULL,
@@ -46,28 +19,6 @@ db.exec(`CREATE TABLE IF NOT EXISTS oauth_account (
 //   PRIMARY KEY (subject, user_id),
 //   FOREIGN KEY (user_id) REFERENCES user(id)
 // )`);
-
-db.exec(`CREATE TABLE IF NOT EXISTS permission (
-  role TEXT NOT NULL,
-  user_id TEXT NOT NULL,
-  PRIMARY KEY (role, user_id),
-  FOREIGN KEY (user_id) REFERENCES user(id)
-)`);
-
-db.exec(`CREATE TABLE IF NOT EXISTS generic_item (
-  id TEXT NOT NULL PRIMARY KEY,
-  title TEXT NOT NULL,
-  content TEXT NOT NULL,
-  is_published INTEGER NOT NULL,
-  is_private INTEGER NOT NULL,
-  images JSONB NOT NULL,
-  tags JSONB NOT NULL,
-  website VARCHAR(255),
-  created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-  updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-  owner_id TEXT NOT NULL,
-  FOREIGN KEY (owner_id) REFERENCES user(id)
-)`);
 
 /**A record (row) in the `user` table */
 export interface DatabaseUser {

@@ -1,15 +1,15 @@
-import { BetterSqlite3Adapter } from '@lucia-auth/adapter-sqlite';
+import { NeonHTTPAdapter } from '@lucia-auth/adapter-postgresql';
 import { GitHub } from 'arctic';
 import { Lucia } from 'lucia';
 import type { User as LuciaUser, Session } from 'lucia';
 import { cookies } from 'next/headers';
 import { cache } from 'react';
-import { db } from './db';
-import type { DatabaseAccount, DatabasePermission, DatabaseUser } from './db';
+import { sql } from '@/lib/db';
+import type { DatabaseAccount, DatabasePermission, DatabaseUser } from '@/lib/db';
 
-const adapter = new BetterSqlite3Adapter(db, {
-  user: 'user',
-  session: 'session',
+const adapter = new NeonHTTPAdapter(sql, {
+  user: 'users',
+  session: 'sessions',
 });
 
 export const lucia = new Lucia(adapter, {
@@ -104,16 +104,14 @@ export const validateRequest = cache(
     };
 
     try {
-      const existingAccounts = db
-        .prepare('SELECT provider_name, user_id FROM oauth_account WHERE user_id = ?')
-        .all(validationResult?.session?.userId) as Account[] | undefined;
+      const existingAccounts = (await sql`
+        SELECT provider_name, user_id FROM oauth_accounts
+        WHERE user_id = ${validationResult?.session?.userId}`) as Account[] | undefined;
       requestResult.accounts = existingAccounts || null;
-
-      const permission = db
-        .prepare('SELECT role FROM permission WHERE user_id = ?')
-        .get(validationResult?.session?.userId) as Permission | undefined;
-      requestResult.user.role = permission?.role || 'user';
-
+      const permissions = (await sql`
+      SELECT role FROM permissions
+      WHERE user_id = ${validationResult?.session?.userId}`) as Permission[] | undefined;
+      requestResult.user.role = permissions?.[0].role || 'user';
       if (validationResult.session && validationResult.session.fresh) {
         const sessionCookie = lucia.createSessionCookie(validationResult.session.id);
         cookies().set(sessionCookie.name, sessionCookie.value, sessionCookie.attributes);

@@ -62,7 +62,7 @@ export function UserDropdownMenu() {
     </Link>
   ) : (
     <Link aria-label='login' href='/login' passHref legacyBehavior>
-      <span className='flex size-8 items-center justify-center rounded-md border bg-transparent hover:bg-muted'>
+      <span className='flex size-8 cursor-pointer items-center justify-center rounded-md border bg-transparent hover:bg-muted'>
         <LogIn className='size-4' />
       </span>
     </Link>
