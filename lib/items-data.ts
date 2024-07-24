@@ -1,8 +1,7 @@
 'use server';
 
-import { neon } from '@neondatabase/serverless';
 import { unstable_noStore as noStore } from 'next/cache';
-import type { DatabaseGenericItem } from './db';
+import { type DatabaseGenericItem, sql } from '@/lib/db';
 
 export const fetchGenericItems = async ({
   perPage = 6,
@@ -16,7 +15,6 @@ export const fetchGenericItems = async ({
   noStore();
   const offset = (currentPage - 1) * perPage;
   try {
-    const sql = neon(process.env.DATABASE_URL!);
     const existingItems = (await sql`
         SELECT *
         FROM generic_item
@@ -39,7 +37,6 @@ export const fetchGenericItems = async ({
 export const fetchGenericItemsPages = async ({ perPage = 6, query }: { perPage?: number; query?: string }) => {
   noStore();
   try {
-    const sql = neon(process.env.DATABASE_URL!);
     const res = (await sql`SELECT COUNT(*) FROM generic_item`) as [{ count: string }];
     const totalPages = Math.ceil(Number(res[0].count) / perPage);
     return { data: totalPages };
@@ -52,7 +49,6 @@ export const fetchGenericItemsPages = async ({ perPage = 6, query }: { perPage?:
 
 export const fetchGenericItemById = async (id: string) => {
   try {
-    const sql = neon(process.env.DATABASE_URL!);
     const res = await sql`SELECT * FROM generic_item WHERE generic_item.id = ${id}`;
     return { data: res[0] as DatabaseGenericItem | undefined };
   } catch (error) {

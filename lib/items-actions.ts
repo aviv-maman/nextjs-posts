@@ -1,7 +1,7 @@
 'use server';
 
-import { neon } from '@neondatabase/serverless';
 import { validateRequest } from '@/lib/auth';
+import { sql } from '@/lib/db';
 
 export type AddGenericItemState =
   | {
@@ -39,8 +39,6 @@ export const addGenericItem = async (
   try {
     const { user } = await validateRequest();
     if (!user?.id) return { errors: { general: ['No user'] } };
-
-    const sql = neon(process.env.DATABASE_URL!);
 
     const record = await sql(
       `INSERT INTO generic_item (title, content, is_published, is_private, images, tags, website, owner_id)
