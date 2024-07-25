@@ -31,7 +31,7 @@ export default async function ItemPage({ params }: { params: { id: string } }) {
   }
 
   return (
-    <section className='container relative flex min-h-[calc(100vh-146px)] flex-col items-center justify-between gap-y-6 p-6 sm:min-h-[calc(100vh-138px)] sm:px-8'>
+    <section className='container relative flex min-h-[calc(100vh-146px)] flex-col items-center justify-between gap-y-6 sm:min-h-[calc(100vh-138px)] sm:px-8'>
       <Suspense fallback={<ItemCardSkeleton />}>
         <ItemCard id={params.id} />
       </Suspense>
