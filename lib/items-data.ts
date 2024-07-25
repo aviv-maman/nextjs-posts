@@ -16,7 +16,10 @@ export const fetchGenericItems = async ({
   try {
     await artificialDelay(2000);
     const existingItems = (await sql`
-        SELECT *
+        SELECT generic_items.id, generic_items.title, generic_items.content, generic_items.is_published,
+        generic_items.is_private, generic_items.images, generic_items.tags, generic_items.website,
+        generic_items.created_at, generic_items.updated_at, generic_items.owner_id, users.name AS owner_name,
+        users.image_url AS owner_image
         FROM generic_items
         JOIN users ON users.id = generic_items.owner_id
         WHERE
@@ -50,11 +53,15 @@ export const fetchGenericItemsPages = async ({ perPage = 6, query }: { perPage?:
 export const fetchGenericItemById = async (id: string) => {
   try {
     const res = await sql`
-    SELECT * FROM generic_items
+    SELECT generic_items.id, generic_items.title, generic_items.content, generic_items.is_published,
+    generic_items.is_private, generic_items.images, generic_items.tags, generic_items.website,
+    generic_items.created_at, generic_items.updated_at, generic_items.owner_id, users.name AS owner_name,
+    users.image_url AS owner_image
+    FROM generic_items
     JOIN users ON users.id = generic_items.owner_id
     WHERE generic_items.id = ${id}
     `;
-    return { data: res[0] as (DatabaseGenericItem & { name?: string; image_url?: string }) | undefined };
+    return { data: res[0] as (DatabaseGenericItem & { owner_name?: string; owner_image?: string }) | undefined };
   } catch (error) {
     console.error('Database Error in fetchGenericItem:', error);
     const err = error instanceof Error ? error.message : 'Something went wrong';

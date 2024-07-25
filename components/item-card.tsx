@@ -15,13 +15,13 @@ const ItemCard: React.FC<{ id: string }> = async ({ id }) => {
         <h1 className='text-xl font-bold sm:text-3xl'>{item?.title}</h1>
         <div className='flex space-x-2 text-base'>
           <Avatar>
-            <AvatarImage src={item?.image_url} />
+            <AvatarImage src={item?.owner_image} />
             <AvatarFallback>
               <User className='size-5' />
             </AvatarFallback>
           </Avatar>
           <div className='flex flex-col'>
-            <span>{item?.name || 'Guest'}</span>
+            <span>{item?.owner_name || 'Guest'}</span>
             <span className='text-xs'>{new Date(item?.created_at || 0).toLocaleString() || 'Not Available'}</span>
           </div>
         </div>

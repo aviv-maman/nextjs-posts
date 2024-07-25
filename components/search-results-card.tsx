@@ -18,13 +18,13 @@ const SearchResultsCard: React.FC<SearchResultsCardProps> = ({ value, ...props }
       <CardHeader className='p-0'>
         <div className='flex items-center space-x-2 text-base'>
           <Avatar>
-            <AvatarImage src={value?.image_url} />
+            <AvatarImage src={value?.owner_image} />
             <AvatarFallback>
               <User className='size-5' />
             </AvatarFallback>
           </Avatar>
           <div className='flex flex-col'>
-            <span className='line-clamp-1'>{value?.name || 'Guest'}</span>
+            <span className='line-clamp-1'>{value?.owner_name || 'Guest'}</span>
             <span className='text-xs'>{new Date(value?.created_at || 0).toLocaleString() || 'Not Available'}</span>
           </div>
         </div>

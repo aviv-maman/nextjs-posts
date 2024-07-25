@@ -22,13 +22,13 @@ const GenericCard: React.FC<GenericCardProps> = ({ value, ...props }) => {
       </CardHeader>
       <div className='flex items-center space-x-2 border-t p-4 text-base'>
         <Avatar>
-          <AvatarImage src={value?.image_url} />
+          <AvatarImage src={value?.owner_image} />
           <AvatarFallback>
             <User className='size-5' />
           </AvatarFallback>
         </Avatar>
         <div className='flex flex-col'>
-          <span>{value?.name || 'Guest'}</span>
+          <span>{value?.owner_name || 'Guest'}</span>
           <span className='text-xs'>{new Date(value?.created_at || 0).toLocaleString() || 'Not Available'}</span>
         </div>
       </div>
