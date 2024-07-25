@@ -41,3 +41,7 @@ export const generatePagination = (currentPage: number, totalPages: number) => {
 export function capitalizeFirstLetter(text: string) {
   return text.charAt(0).toUpperCase() + text.slice(1);
 }
+
+export function toBase64(str: string) {
+  return typeof window === 'undefined' ? Buffer.from(str).toString('base64') : window.btoa(str);
+}

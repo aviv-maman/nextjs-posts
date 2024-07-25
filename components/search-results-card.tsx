@@ -2,6 +2,7 @@
 
 import Image from 'next/image';
 import { User } from '@/assets/icons';
+import { PlaceholderBase64 } from '@/assets/images';
 import { AspectRatio } from '@/components/ui/aspect-ratio';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Card, CardHeader, CardTitle } from '@/components/ui/card';
@@ -30,7 +31,14 @@ const SearchResultsCard: React.FC<SearchResultsCardProps> = ({ value, ...props }
         </div>
       </CardHeader>
       <AspectRatio ratio={16 / 9} className='rounded-md'>
-        <Image src={value?.images?.[0] || '/1.jpg'} alt='Photo 1' fill className='rounded-md object-cover' />
+        <Image
+          src={value?.images?.[value?.images.length - 1] || '/placeholder.svg'}
+          alt='Main Photo'
+          fill
+          className='rounded-md object-cover'
+          quality={100}
+          placeholder={`data:image/svg+xml;base64,${PlaceholderBase64}`}
+        />
       </AspectRatio>
       <CardTitle className='line-clamp-2 min-h-16 content-center text-lg'>{value?.title}</CardTitle>
       <div className='flex flex-wrap gap-2'>

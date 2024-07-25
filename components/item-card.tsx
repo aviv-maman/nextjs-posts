@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import { User } from '@/assets/icons';
+import { PlaceholderBase64 } from '@/assets/images';
 import ItemCarousel from '@/components/item-carousel';
 import { AspectRatio } from '@/components/ui/aspect-ratio';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -28,7 +29,14 @@ const ItemCard: React.FC<{ id: string }> = async ({ id }) => {
       </CardHeader>
       <CardContent className='space-y-6 px-0'>
         <AspectRatio ratio={16 / 9} className='rounded-md'>
-          <Image src={item?.images?.[0] || '/1.jpg'} alt='Photo 1' fill className='rounded-md object-cover' />
+          <Image
+            src={item?.images?.[item?.images.length - 1] || '/placeholder.svg'}
+            alt='Main Photo'
+            fill
+            className='rounded-md object-cover'
+            quality={100}
+            placeholder={`data:image/svg+xml;base64,${PlaceholderBase64}`}
+          />
         </AspectRatio>
         <ItemCarousel images={item?.images} />
         <p>{item?.content}</p>

@@ -2,6 +2,7 @@
 
 import Image from 'next/image';
 import { User } from '@/assets/icons';
+import { PlaceholderBase64 } from '@/assets/images';
 import { AspectRatio } from '@/components/ui/aspect-ratio';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
@@ -17,7 +18,14 @@ const GenericCard: React.FC<GenericCardProps> = ({ value, ...props }) => {
     <Card className={cn('w-full', props.className)} {...props}>
       <CardHeader className='p-0'>
         <AspectRatio ratio={16 / 9} className='rounded-t-md'>
-          <Image src={value?.images?.[0] || '/1.jpg'} alt='Photo 1' fill className='rounded-t-md object-cover' />
+          <Image
+            src={value?.images?.[value?.images.length - 1] || '/placeholder.svg'}
+            alt='Main Photo'
+            fill
+            className='rounded-t-md object-cover'
+            quality={100}
+            placeholder={`data:image/svg+xml;base64,${PlaceholderBase64}`}
+          />
         </AspectRatio>
       </CardHeader>
       <div className='flex items-center space-x-2 border-t p-4 text-base'>
