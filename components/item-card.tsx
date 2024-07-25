@@ -11,7 +11,7 @@ const ItemCard: React.FC<{ id: string }> = async ({ id }) => {
 
   return (
     <Card id='card_root-item' className='w-full border-none sm:max-w-5xl'>
-      <CardHeader className='flex gap-y-2'>
+      <CardHeader className='flex gap-y-2 px-0'>
         <h1 className='text-xl font-bold sm:text-3xl'>{item?.title}</h1>
         <div className='flex space-x-2 text-base'>
           <Avatar>
@@ -26,7 +26,7 @@ const ItemCard: React.FC<{ id: string }> = async ({ id }) => {
           </div>
         </div>
       </CardHeader>
-      <CardContent className='space-y-6'>
+      <CardContent className='space-y-6 px-0'>
         <AspectRatio ratio={16 / 9} className='rounded-md'>
           <Image src={item?.images?.[0] || '/1.jpg'} alt='Photo 1' fill className='rounded-md object-cover' />
         </AspectRatio>
@@ -42,7 +42,7 @@ const ItemCard: React.FC<{ id: string }> = async ({ id }) => {
           ))}
         </div>
       </CardContent>
-      <CardFooter id='item-footer' className='h-auto w-full p-4'>
+      <CardFooter id='item-footer' className='h-auto w-full px-0 py-4'>
         <div className='flex h-full flex-col justify-between space-y-4'>
           <CardDescription className='text-xs'>
             Updated at {new Date(item?.updated_at || 0).toLocaleString()}

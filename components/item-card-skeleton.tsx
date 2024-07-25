@@ -4,7 +4,7 @@ import { cn } from '@/lib/utils';
 const ItemCardSkeleton: React.FC<React.ComponentPropsWithoutRef<'div'>> = (props) => {
   return (
     <div id='card_root-item' className={cn('w-full border-none sm:max-w-5xl', props.className)} {...props}>
-      <div className='flex flex-col gap-y-2 space-y-1.5 p-6'>
+      <div className='flex flex-col gap-y-2 space-y-1.5 py-6'>
         <Skeleton className='h-7 sm:h-9' />
         <div className='flex items-center space-x-2 text-base'>
           <Skeleton className='size-10 rounded-full' />
@@ -14,7 +14,7 @@ const ItemCardSkeleton: React.FC<React.ComponentPropsWithoutRef<'div'>> = (props
           </div>
         </div>
       </div>
-      <div className='space-y-6 p-6 pt-0'>
+      <div className='space-y-6 pb-6'>
         <Skeleton className='aspect-video size-full rounded-md' />
         <div className='flex flex-col gap-y-2'>
           <div className='flex w-full max-w-[70rem] gap-x-8 gap-y-2'>
@@ -49,7 +49,7 @@ const ItemCardSkeleton: React.FC<React.ComponentPropsWithoutRef<'div'>> = (props
           ))}
         </div>
       </div>
-      <div className='p-4'>
+      <div className='py-4'>
         <Skeleton className='h-4 w-52 rounded-md' />
       </div>
     </div>
