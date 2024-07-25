@@ -1,30 +1,36 @@
 import Image from 'next/image';
 import { User } from '@/assets/icons';
 import { PlaceholderBase64 } from '@/assets/images';
+import DeleteItemDialog from '@/components/delete-item-dialog';
 import ItemCarousel from '@/components/item-carousel';
 import { AspectRatio } from '@/components/ui/aspect-ratio';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader } from '@/components/ui/card';
+import { getSession } from '@/lib/actions';
 import { fetchGenericItemById } from '@/lib/items-data';
 
 const ItemCard: React.FC<{ id: string }> = async ({ id }) => {
-  const { data: item } = await fetchGenericItemById(id);
+  const [{ data: item }, { session, user }] = await Promise.all([fetchGenericItemById(id), getSession()]);
+  const [isOwner, isAdmin] = [item?.owner_id === session?.userId, user?.role === 'admin'];
 
   return (
     <Card id='card_root-item' className='w-full border-none sm:max-w-5xl'>
       <CardHeader className='flex gap-y-2 px-0'>
         <h1 className='text-xl font-bold sm:text-3xl'>{item?.title}</h1>
-        <div className='flex space-x-2 text-base'>
-          <Avatar>
-            <AvatarImage src={item?.owner_image} />
-            <AvatarFallback>
-              <User className='size-5' />
-            </AvatarFallback>
-          </Avatar>
-          <div className='flex flex-col'>
-            <span>{item?.owner_name || 'Guest'}</span>
-            <span className='text-xs'>{new Date(item?.created_at || 0).toLocaleString() || 'Not Available'}</span>
+        <div className='flex items-center justify-between text-base'>
+          <div className='flex space-x-2'>
+            <Avatar>
+              <AvatarImage src={item?.owner_image} />
+              <AvatarFallback>
+                <User className='size-5' />
+              </AvatarFallback>
+            </Avatar>
+            <div className='flex flex-col'>
+              <span>{item?.owner_name || 'Guest'}</span>
+              <span className='text-xs'>{new Date(item?.created_at || 0).toLocaleString() || 'Not Available'}</span>
+            </div>
           </div>
+          {(isOwner || isAdmin) && <DeleteItemDialog id={id} />}
         </div>
       </CardHeader>
       <CardContent className='space-y-6 px-0'>

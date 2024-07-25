@@ -2,9 +2,11 @@
 
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
+import { getSession } from '@/lib/actions';
 import { validateRequest } from '@/lib/auth';
 import cloudinary from '@/lib/cloudinary';
 import { sql } from '@/lib/db';
+import { artificialDelay } from '@/lib/utils';
 
 export type AddGenericItemState = {
   errors?: { title?: string[]; content?: string[]; general?: string[] };
@@ -61,4 +63,27 @@ export const addGenericItem = async (
   revalidatePath('/feed');
   revalidatePath('/search');
   redirect(`/item/${newId}`);
+};
+
+export type DeleteGenericItemState = {
+  errors?: { general?: string };
+} | void;
+
+export const deleteGenericItem = async (id: string, prevState: DeleteGenericItemState) => {
+  if (!id) return { errors: { general: 'ID is required.' } };
+  try {
+    const { session, user } = await getSession();
+    if (!session) return { errors: { general: 'Authorization error.' } };
+    const record = await sql`SELECT owner_id from generic_items WHERE id = ${id}`;
+    const [isOwner, isAdmin] = [record[0].owner_id === user.id, user.role === 'admin'];
+    if (!isOwner && !isAdmin) return { errors: { general: 'Authorization error.' } };
+    await artificialDelay(1000);
+    await sql`DELETE FROM generic_items WHERE id = ${id}`;
+    revalidatePath('/feed');
+    revalidatePath('/search');
+  } catch (error) {
+    const err = error instanceof Error ? error.message : 'Failed to delete item.';
+    return { errors: { general: err } };
+  }
+  redirect('/');
 };

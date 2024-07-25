@@ -53,6 +53,9 @@ import Slash from './Slash';
 import Smile from './Smile';
 import Sun from './Sun';
 import SunMoon from './SunMoon';
+import Trash from './Trash';
+import Trash2 from './Trash2';
+import TriangleAlert from './TriangleAlert';
 import Underline from './Underline';
 import User from './User';
 import UserPen from './UserPen';
@@ -124,4 +127,7 @@ export {
   Languages,
   CircleFilled,
   Paperclip,
+  Trash,
+  Trash2,
+  TriangleAlert,
 };
