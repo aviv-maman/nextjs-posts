@@ -52,6 +52,7 @@ export const fetchGenericItemsPages = async ({ perPage = 6, query }: { perPage?:
 
 export const fetchGenericItemById = async (id: string) => {
   try {
+    await artificialDelay(2000);
     const res = await sql`
     SELECT generic_items.id, generic_items.title, generic_items.content, generic_items.is_published,
     generic_items.is_private, generic_items.images, generic_items.tags, generic_items.website,
