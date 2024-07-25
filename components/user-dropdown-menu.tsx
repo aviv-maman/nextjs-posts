@@ -16,7 +16,7 @@ import { useIsClient } from '@/hooks/use-is-client';
 import { useMediaQuery } from '@/hooks/use-media-query';
 
 export function UserDropdownMenu() {
-  const { isLoading, session } = useAuth();
+  const { isLoading, session, logout } = useAuth();
   const isDesktop = useMediaQuery('(min-width: 640px)');
   const isClient = useIsClient();
 
@@ -47,7 +47,7 @@ export function UserDropdownMenu() {
           </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
-        <DropdownMenuItem className='cursor-pointer'>
+        <DropdownMenuItem className='cursor-pointer' onClick={logout} disabled={isLoading} aria-disabled={isLoading}>
           <LogOut className='mr-2 size-4' />
           <span>Log Out</span>
         </DropdownMenuItem>
