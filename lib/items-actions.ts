@@ -1,15 +1,14 @@
 'use server';
 
+import { revalidatePath } from 'next/cache';
+import { redirect } from 'next/navigation';
 import { validateRequest } from '@/lib/auth';
 import cloudinary from '@/lib/cloudinary';
 import { sql } from '@/lib/db';
 
-export type AddGenericItemState =
-  | {
-      errors?: { title?: string[]; content?: string[] } & { general?: string[] };
-      result?: { success: boolean; id: string };
-    }
-  | undefined;
+export type AddGenericItemState = {
+  errors?: { title?: string[]; content?: string[]; general?: string[] };
+} | void;
 
 export const addGenericItem = async (
   prevState: AddGenericItemState,
@@ -23,6 +22,7 @@ export const addGenericItem = async (
   const images = formData.getAll('images').filter((image) => image instanceof File && image.name !== '');
   const imageUrls = [] as string[];
 
+  let newId = '';
   try {
     const { user } = await validateRequest();
     if (!user?.id) return { errors: { general: ['No user'] } };
@@ -50,12 +50,15 @@ export const addGenericItem = async (
       RETURNING id`,
       [title, content, 1, 0, JSON.stringify(imageUrls), JSON.stringify(tags), website, user.id],
     );
-
-    return { result: { success: true, id: record[0]?.id } };
+    newId = record[0].id;
   } catch (error) {
     const err = error instanceof Error ? error.message : 'Something went wrong';
     return {
       errors: { general: [err] },
     };
   }
+  // Revalidate the cache for the relevant pages and redirect the user
+  revalidatePath('/feed');
+  revalidatePath('/search');
+  redirect(`/item/${newId}`);
 };
