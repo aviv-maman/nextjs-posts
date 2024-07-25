@@ -1,6 +1,5 @@
 'use server';
 
-import { unstable_noStore as noStore } from 'next/cache';
 import { type DatabaseGenericItem, sql } from '@/lib/db';
 
 export const fetchGenericItems = async ({
@@ -12,19 +11,19 @@ export const fetchGenericItems = async ({
   currentPage?: number;
   query?: string;
 }) => {
-  noStore();
   const offset = (currentPage - 1) * perPage;
   try {
     const existingItems = (await sql`
         SELECT *
-        FROM generic_item
+        FROM generic_items
+        JOIN users ON users.id = generic_items.owner_id
         WHERE
-        generic_item.title ILIKE ${`%${query}%`} OR
-        generic_item.content ILIKE ${`%${query}%`}
-        ORDER BY generic_item.created_at DESC
+        generic_items.title ILIKE ${`%${query}%`} OR
+        generic_items.content ILIKE ${`%${query}%`}
+        ORDER BY generic_items.created_at DESC
         LIMIT ${perPage}
         OFFSET ${offset}
-    `) as DatabaseGenericItem[] | [];
+    `) as (DatabaseGenericItem & { name?: string; image_url?: string })[] | [] | undefined;
 
     return { data: existingItems };
   } catch (error) {
@@ -35,9 +34,8 @@ export const fetchGenericItems = async ({
 };
 
 export const fetchGenericItemsPages = async ({ perPage = 6, query }: { perPage?: number; query?: string }) => {
-  noStore();
   try {
-    const res = (await sql`SELECT COUNT(*) FROM generic_item`) as [{ count: string }];
+    const res = (await sql`SELECT COUNT(*) FROM generic_items`) as [{ count: string }];
     const totalPages = Math.ceil(Number(res[0].count) / perPage);
     return { data: totalPages };
   } catch (error) {
@@ -49,8 +47,12 @@ export const fetchGenericItemsPages = async ({ perPage = 6, query }: { perPage?:
 
 export const fetchGenericItemById = async (id: string) => {
   try {
-    const res = await sql`SELECT * FROM generic_item WHERE generic_item.id = ${id}`;
-    return { data: res[0] as DatabaseGenericItem | undefined };
+    const res = await sql`
+    SELECT * FROM generic_items
+    JOIN users ON users.id = generic_items.owner_id
+    WHERE generic_items.id = ${id}
+    `;
+    return { data: res[0] as (DatabaseGenericItem & { name?: string; image_url?: string }) | undefined };
   } catch (error) {
     console.error('Database Error in fetchGenericItem:', error);
     const err = error instanceof Error ? error.message : 'Something went wrong';

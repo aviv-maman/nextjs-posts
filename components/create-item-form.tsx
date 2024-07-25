@@ -34,7 +34,7 @@ export const genericItemSchema = z.object({
     .trim()
     .min(1, 'Zod: Content is required')
     .min(6, 'Zod: Content must be at least 6 characters')
-    .max(32, 'Zod: Content must be less than 32 characters'),
+    .max(2000, 'Zod: Content must be less than 32 characters'),
 });
 export type GenericItemSchemaErrors = z.inferFlattenedErrors<typeof genericItemSchema>;
 export type GenericItemSchemaKeys = keyof z.infer<typeof genericItemSchema>;
@@ -162,27 +162,26 @@ export function CreateItemForm() {
 
         {/* Image File Selection */}
         <div className='flex flex-col space-y-2'>
-          <label htmlFor='media' className='text-sm'>
+          <label htmlFor='images' className='text-sm'>
             Images
           </label>
           <label className='flex rounded-md border p-2'>
             <Paperclip
               className='size-5 transform-gpu text-neutral-500 transition-all hover:cursor-pointer active:scale-75'
-              aria-label='attach media'
+              aria-label='attach images'
             />
             <input
               className='hidden flex-1 border-none bg-transparent outline-none'
-              id='media'
-              name='media'
+              id='images'
+              name='images'
               type='file'
-              accept='image/jpeg,image/png,image/webp,image/gif,video/mp4,video/webm'
+              // accept='image/jpeg,image/png,image/webp,image/gif,video/mp4,video/webm'
+              accept='image/*'
               multiple
               onChange={handleFileChange}
             />
           </label>
-          <label htmlFor='media' className='text-sm text-muted-foreground'>
-            Select images for the new item
-          </label>
+          <span className='text-sm text-muted-foreground'>Select images for the new item</span>
         </div>
 
         <div className='grid w-full grid-cols-1 gap-2 md:grid-cols-2'>

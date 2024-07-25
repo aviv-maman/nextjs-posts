@@ -9,7 +9,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader } from '@/components/ui/card';
 import { fetchGenericItemById } from '@/lib/items-data';
 
-//export const revalidate = 36;
+export const revalidate = 60;
 
 type MetadataProps = {
   params: { id: string };
@@ -42,13 +42,13 @@ export default async function ItemPage({ params }: { params: { id: string } }) {
             <h1 className='text-xl font-bold sm:text-3xl'>{item.title}</h1>
             <div className='flex space-x-2 text-base'>
               <Avatar>
-                <AvatarImage src={undefined} />
+                <AvatarImage src={item.image_url} />
                 <AvatarFallback>
                   <User className='size-5' />
                 </AvatarFallback>
               </Avatar>
               <div className='flex flex-col'>
-                <span>{'Guest'}</span>
+                <span>{item.name || 'Guest'}</span>
                 <span className='text-xs'>{new Date(item.created_at).toLocaleString() || 'Not Available'}</span>
               </div>
             </div>
