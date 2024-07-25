@@ -1,12 +1,10 @@
-import { AspectRatio } from '@/components/ui/aspect-ratio';
 import { Skeleton } from '@/components/ui/skeleton';
+import { cn } from '@/lib/utils';
 
 const GenericCardSkeleton: React.FC<React.ComponentPropsWithoutRef<'div'>> = (props) => {
   return (
-    <div className='w-full rounded-md' {...props}>
-      <AspectRatio ratio={16 / 9} className='rounded-t-md'>
-        <Skeleton className='size-full rounded-b-none' />
-      </AspectRatio>
+    <div className={cn('w-full rounded-md', props.className)} {...props}>
+      <Skeleton className='aspect-video size-full rounded-b-none rounded-t-md' />
       <div className='flex items-center space-x-2 border-x p-4 text-base'>
         <Skeleton className='size-10 rounded-full' />
         <div className='flex flex-col space-y-2'>

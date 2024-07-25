@@ -1,5 +1,5 @@
 import { type NextRequest, NextResponse } from 'next/server';
-import { fakeDelay } from '@/lib/utils';
+import { artificialDelay } from '@/lib/utils';
 import mockData from '@/mock_data.json';
 
 export const dynamic = 'force-dynamic';
@@ -10,7 +10,7 @@ export const GET = async (request: NextRequest) => {
     const pageSize = Number(request.nextUrl.searchParams.get('pageSize')) || 6;
     const skip = (page - 1) * pageSize;
     const total = 100;
-    const data = await fakeDelay(3000).then(async () => mockData);
+    const data = await artificialDelay(3000).then(async () => mockData);
     const result = { total, data, message: 'Success' };
     return NextResponse.json(result);
   } catch (error) {

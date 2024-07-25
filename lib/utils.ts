@@ -5,7 +5,13 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export const fakeDelay = (ms = 1000) => new Promise((resolve) => setTimeout(resolve, ms));
+/**
+ * Artificially delay a response for demo purposes.
+ * Don't do this in production :)
+ * @param ms
+ * @returns
+ */
+export const artificialDelay = (ms = 1000) => new Promise((resolve) => setTimeout(resolve, ms));
 
 export const generatePagination = (currentPage: number, totalPages: number) => {
   // If the total number of pages is 7 or less,

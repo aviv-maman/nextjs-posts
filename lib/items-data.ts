@@ -1,6 +1,7 @@
 'use server';
 
 import { type DatabaseGenericItem, sql } from '@/lib/db';
+import { artificialDelay } from '@/lib/utils';
 
 export const fetchGenericItems = async ({
   perPage = 6,
@@ -13,6 +14,7 @@ export const fetchGenericItems = async ({
 }) => {
   const offset = (currentPage - 1) * perPage;
   try {
+    await artificialDelay(2000);
     const existingItems = (await sql`
         SELECT *
         FROM generic_items

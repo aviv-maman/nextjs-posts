@@ -1,8 +1,8 @@
-'use server';
-
 import { Suspense } from 'react';
 import FeedWrapper from '@/components/feed-wrapper';
 import FeedWrapperSkeleton from '@/components/feed-wrapper-skeleton';
+
+export const revalidate = 60;
 
 export default async function FeedPage() {
   return (

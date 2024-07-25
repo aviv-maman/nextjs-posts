@@ -1,11 +1,11 @@
 'use server';
 
 import { getSession } from '@/lib/actions';
-import { fakeDelay } from '@/lib/utils';
+import { artificialDelay } from '@/lib/utils';
 
 const ProfileBlock: React.FC = async () => {
   //const { user, accounts } = await getSession();
-  const [{ user, accounts }, isLoaded] = await Promise.all([await getSession(), await fakeDelay(3000)]);
+  const [{ user, accounts }, isLoaded] = await Promise.all([await getSession(), await artificialDelay(3000)]);
   return user ? (
     <div>
       <h1>Hi, {user?.username}!</h1>
