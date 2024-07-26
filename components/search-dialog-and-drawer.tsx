@@ -92,7 +92,7 @@ const SearchDialogAndDrawer: React.FC<{ placeholder?: string }> = ({ placeholder
         <DialogDescription className='sr-only'>{placeholder}</DialogDescription>
         <CommandInput placeholder={placeholder} onValueChange={setQuery} value={query} />
         <Button asChild variant='secondary' className='rounded-none' type='button'>
-          <Link href={`/search?query=${debounced}`} onClick={() => setOpen(false)}>
+          <Link href={debounced ? `/search?query=${debounced}` : '/search'} onClick={() => setOpen(false)}>
             Search
           </Link>
         </Button>
@@ -123,7 +123,7 @@ const SearchDialogAndDrawer: React.FC<{ placeholder?: string }> = ({ placeholder
         </DrawerHeader>
         <Input placeholder={placeholder} onChange={(e) => setQuery(() => e.target.value)} value={query} />
         <Button asChild variant='secondary' className='my-4 w-32 self-center' type='button'>
-          <Link href={`/search?query=${debounced}`} onClick={() => setOpen(false)}>
+          <Link href={debounced ? `/search?query=${debounced}` : '/search'} onClick={() => setOpen(false)}>
             Search
           </Link>
         </Button>
