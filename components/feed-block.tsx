@@ -18,7 +18,7 @@ const FeedBlock: React.FC<{ data: Awaited<ReturnType<typeof fetchGenericItems>>[
     let ignore = false;
     if (!observer?.isIntersecting || !observerTarget.current || !isClient) return;
     fetchGenericItems({ currentPage }).then((response) => {
-      if (!ignore && response.data) {
+      if (!ignore && typeof response.data !== 'undefined') {
         setItems((prevState) => [...prevState, ...response.data]);
         setCurrentPage((prevState) => prevState + 1);
       }

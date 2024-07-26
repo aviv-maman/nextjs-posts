@@ -21,7 +21,7 @@ export const fetchGenericItems = async (args?: { perPage?: number; currentPage?:
         ORDER BY generic_items.created_at DESC
         LIMIT ${init.perPage}
         OFFSET ${offset}
-    `) as (DatabaseGenericItem & { name?: string; image_url?: string })[] | [] | undefined;
+    `) as (DatabaseGenericItem & { name?: string; image_url?: string })[] | [];
 
     return { data: existingItems };
   } catch (error) {
