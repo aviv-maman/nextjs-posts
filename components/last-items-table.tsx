@@ -1,3 +1,4 @@
+import { DataTableRowActions } from '@/components/data-table-row-actions';
 import {
   Table,
   TableBody,
@@ -17,18 +18,19 @@ export async function LastItemsTable({ userId, totalItems }: { userId: string; t
     <Table>
       <TableCaption>A list of your latest items.</TableCaption>
       <TableHeader>
-        <TableRow>
-          <TableHead className=''>ID</TableHead>
-          <TableHead className=''>Title</TableHead>
-          <TableHead className=''>Actions</TableHead>
+        <TableRow className='table-row'>
+          <TableHead className='text-center'>ID</TableHead>
+          <TableHead className='text-center'>Title</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
         {latestItems?.map((item) => (
           <TableRow key={item.id} className='table-row break-all'>
             <TableCell className='table-cell text-ellipsis font-medium'>{item.id}</TableCell>
-            <TableCell className='text-clip'>{item.title}</TableCell>
-            <TableCell className='text-clip'>AA</TableCell>
+            <TableCell className='table-cell text-clip'>{item.title}</TableCell>
+            <TableCell className='justify-center'>
+              <DataTableRowActions itemId={item.id} />
+            </TableCell>
           </TableRow>
         ))}
       </TableBody>
