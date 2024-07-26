@@ -40,7 +40,11 @@ export const fetchGenericItems = async ({
 
 export const fetchGenericItemsPages = async ({ perPage = 6, query }: { perPage?: number; query?: string }) => {
   try {
-    const res = (await sql`SELECT COUNT(*) FROM generic_items`) as [{ count: string }];
+    const res = (await sql`
+      SELECT COUNT(*)
+      FROM generic_items
+      WHERE generic_items.title ILIKE ${`%${query}%`} OR
+      generic_items.content ILIKE ${`%${query}%`}`) as [{ count: string }];
     const totalPages = Math.ceil(Number(res[0].count) / perPage);
     return { data: totalPages };
   } catch (error) {
