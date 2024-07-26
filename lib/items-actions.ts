@@ -123,7 +123,7 @@ export const editGenericItem = async (
     if (!user?.id) return { errors: { general: ['No user'] } };
     await sql`
       UPDATE generic_items
-      SET title = ${title}, content = ${content}, is_published = ${1}, is_private = ${0}, tags = ${JSON.stringify(tags)}, website = ${website}
+      SET title = ${title}, content = ${content}, is_published = ${1}, is_private = ${0}, tags = ${JSON.stringify(tags)}, website = ${website}, updated_at = CURRENT_TIMESTAMP
       WHERE id = ${id}`;
   } catch (error) {
     const err = error instanceof Error ? error.message : 'Something went wrong';
