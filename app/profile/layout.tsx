@@ -1,6 +1,11 @@
+import { redirect } from 'next/navigation';
 import SideNav from '@/components/side-nav';
+import { validateRequest } from '@/lib/auth';
 
-export default function Layout({ children }: { children: React.ReactNode }) {
+export default async function Layout({ children }: { children: React.ReactNode }) {
+  const { user } = await validateRequest();
+  if (!user) redirect('/');
+
   return (
     <div id='profile-layout' className='flex-row sm:flex'>
       <SideNav />

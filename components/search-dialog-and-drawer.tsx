@@ -75,7 +75,7 @@ const SearchDialogAndDrawer: React.FC<{ placeholder?: string }> = ({ placeholder
   useEffect(() => {
     let ignore = false;
     if (!ignore) {
-      fetchGenericItems({}).then((res) => {
+      fetchGenericItems().then((res) => {
         setSuggestionResults(() => res.data);
       });
     }

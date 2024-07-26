@@ -4,7 +4,7 @@ import FeedBlock from '@/components/feed-block';
 import { fetchGenericItems } from '@/lib/items-data';
 
 const FeedWrapper: React.FC = async () => {
-  const { data } = await fetchGenericItems({});
+  const { data } = await fetchGenericItems();
 
   return data ? (
     <div id='feed-block' className='flex w-full max-w-96 flex-col sm:max-w-md'>

@@ -2,14 +2,14 @@ import { Suspense } from 'react';
 import SearchResultsGrid from '@/components/search-results-grid';
 import SearchResultsGridSkeleton from '@/components/search-results-grid-skeleton';
 import SearchResultsPagination from '@/components/search-results-pagination';
-import { fetchGenericItemsPages } from '@/lib/items-data';
+import { fetchItemQuantity } from '@/lib/items-data';
 
 export const revalidate = 60;
 
 export default async function SearchPage({ searchParams }: { searchParams?: { query?: string; page?: string } }) {
   const query = searchParams?.query || '';
   const currentPage = Number(searchParams?.page) || 1;
-  const { data: totalPages } = await fetchGenericItemsPages({ query });
+  const { totalPages } = await fetchItemQuantity({ query });
 
   return (
     <section className='container relative flex min-h-[calc(100vh-146px)] flex-col items-center justify-between gap-y-6 p-6 sm:min-h-[calc(100vh-138px)] sm:px-8'>
@@ -23,7 +23,7 @@ export default async function SearchPage({ searchParams }: { searchParams?: { qu
           <SearchResultsGrid currentPage={currentPage} query={query} />
         </Suspense>
       </div>
-      <SearchResultsPagination totalPages={totalPages} />
+      <SearchResultsPagination totalPages={totalPages || 0} />
     </section>
   );
 }
