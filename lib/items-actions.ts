@@ -112,6 +112,8 @@ export const editGenericItem = async (
   prevState: EditGenericItemState,
   formData: FormData,
 ): Promise<EditGenericItemState> => {
+  if (!id) return { errors: { general: ['ID is required.'] } };
+
   const rawFormData = Object.fromEntries(formData);
   const title = rawFormData['title'];
   const content = rawFormData['content'];
@@ -119,8 +121,14 @@ export const editGenericItem = async (
   const website = rawFormData['website'];
 
   try {
-    const { user } = await validateRequest();
-    if (!user?.id) return { errors: { general: ['No user'] } };
+    const { session, user } = await validateRequest();
+
+    if (!session) return { errors: { general: ['Authorization error.'] } };
+
+    const record = await sql`SELECT images, owner_id from generic_items WHERE id = ${id}`;
+    const [isOwner, isAdmin] = [record[0].owner_id === user.id, user.role === 'admin'];
+    if (!isOwner && !isAdmin) return { errors: { general: ['Authorization error.'] } };
+
     await sql`
       UPDATE generic_items
       SET title = ${title}, content = ${content}, is_published = ${1}, is_private = ${0}, tags = ${JSON.stringify(tags)}, website = ${website}, updated_at = CURRENT_TIMESTAMP
