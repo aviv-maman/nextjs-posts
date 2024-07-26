@@ -81,6 +81,7 @@ export const deleteGenericItem = async (id: string, prevState: DeleteGenericItem
     await sql`DELETE FROM generic_items WHERE id = ${id}`;
     revalidatePath('/feed');
     revalidatePath('/search');
+    revalidatePath(`/item/${id}`);
   } catch (error) {
     const err = error instanceof Error ? error.message : 'Failed to delete item.';
     return { errors: { general: err } };
