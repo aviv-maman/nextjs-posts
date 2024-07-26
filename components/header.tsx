@@ -43,6 +43,24 @@ export const Header: React.FC = () => {
     },
   ];
 
+  const userNavItems = [
+    {
+      title: 'Feed',
+      href: '/feed',
+    },
+    {
+      title: 'New Item',
+      href: '/item/create',
+    },
+  ];
+
+  const guestNavItems = [
+    {
+      title: 'Feed',
+      href: '/feed',
+    },
+  ];
+
   if (isLoading) {
     return <div>Loading...</div>;
   }
@@ -97,18 +115,31 @@ export const Header: React.FC = () => {
                   </ul>
                 </NavigationMenuContent>
               </NavigationMenuItem>
-              <NavigationMenuItem>
-                <Link href='/feed' legacyBehavior passHref>
-                  <NavigationMenuLink className={navigationMenuTriggerStyle()}>Feed</NavigationMenuLink>
-                </Link>
-              </NavigationMenuItem>
+              {user
+                ? userNavItems?.map((item) => (
+                    <NavigationMenuItem key={item.title}>
+                      <Link href={item.href} legacyBehavior passHref>
+                        <NavigationMenuLink className={navigationMenuTriggerStyle()}>{item.title}</NavigationMenuLink>
+                      </Link>
+                    </NavigationMenuItem>
+                  ))
+                : guestNavItems?.map((item) => (
+                    <NavigationMenuItem key={item.title}>
+                      <Link href={item.href} legacyBehavior passHref>
+                        <NavigationMenuLink className={navigationMenuTriggerStyle()}>{item.title}</NavigationMenuLink>
+                      </Link>
+                    </NavigationMenuItem>
+                  ))}
             </NavigationMenuList>
           </NavigationMenu>
         </div>
 
         {/* MOBILE */}
         <div className='inline-flex h-9 items-center justify-center whitespace-nowrap rounded-md px-0 py-2 text-base font-medium transition-colors hover:bg-transparent hover:text-accent-foreground focus-visible:bg-transparent focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-ring focus-visible:ring-offset-0 disabled:pointer-events-none disabled:opacity-50 md:hidden'>
-          <HamburgerMenu components={user ? userComponents : guestComponents} />
+          <HamburgerMenu
+            components={user ? userComponents : guestComponents}
+            navItems={user ? userNavItems : guestNavItems}
+          />
           <span className='sr-only'>Toggle Menu</span>
         </div>
 

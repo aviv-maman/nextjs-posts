@@ -7,9 +7,10 @@ import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTr
 
 interface HamburgerMenuProps {
   components?: { title: string; href?: Route<string> | string; action?: () => void; description: string }[];
+  navItems?: { title: string; href: Route<string> | string }[];
 }
 
-export const HamburgerMenu: React.FC<HamburgerMenuProps> = ({ components }) => {
+export const HamburgerMenu: React.FC<HamburgerMenuProps> = ({ components, navItems }) => {
   return (
     <Sheet>
       <SheetTrigger className='flex size-8 items-center justify-center rounded-md hover:cursor-pointer hover:bg-accent hover:text-accent-foreground'>
@@ -47,9 +48,11 @@ export const HamburgerMenu: React.FC<HamburgerMenuProps> = ({ components }) => {
             )}
           </div>
           <div className='mt-2 flex flex-col border-t-2 pl-6'>
-            <Link href='/feed' className='mt-2 w-fit text-left text-sm text-muted-foreground'>
-              Feed
-            </Link>
+            {navItems?.map((item) => (
+              <Link key={item.title} href={item.href} className='mt-2 w-fit text-left text-sm text-muted-foreground'>
+                {item.title}
+              </Link>
+            ))}
           </div>
         </div>
       </SheetContent>
