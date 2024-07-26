@@ -2,9 +2,9 @@
 
 import Image from 'next/image';
 import { useState } from 'react';
-import { useFormState } from 'react-dom';
+import { useFormState, useFormStatus } from 'react-dom';
 import { z } from 'zod';
-import { Paperclip } from '@/assets/icons';
+import { LoaderCircle, Paperclip, Plus } from '@/assets/icons';
 import { Button } from '@/components/ui/button';
 import {
   FormControl,
@@ -214,9 +214,20 @@ export function CreateItemForm() {
 
         {/* Submit Button */}
         <FormSubmit asChild className='mt-2.5'>
-          <Button type='submit'>Submit</Button>
+          <SubmitButton />
         </FormSubmit>
       </FormRoot>
     </div>
   );
 }
+
+const SubmitButton: React.FC = () => {
+  const { pending } = useFormStatus();
+
+  return (
+    <Button type='submit' disabled={pending} aria-disabled={pending} variant='default' className='w-fit'>
+      {pending ? <LoaderCircle className='mr-2 size-4 animate-spin' /> : <Plus className='mr-2 size-4' />}
+      <span>Create</span>
+    </Button>
+  );
+};
