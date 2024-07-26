@@ -1,5 +1,7 @@
 import Image from 'next/image';
-import { User } from '@/assets/icons';
+import Link from 'next/link';
+import { buttonVariants } from './ui/button';
+import { Pencil, User } from '@/assets/icons';
 import { PlaceholderBase64 } from '@/assets/images';
 import DeleteItemDialog from '@/components/delete-item-dialog';
 import ItemCarousel from '@/components/item-carousel';
@@ -8,6 +10,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader } from '@/components/ui/card';
 import { getSession } from '@/lib/actions';
 import { fetchGenericItemById } from '@/lib/items-data';
+import { cn } from '@/lib/utils';
 
 const ItemCard: React.FC<{ id: string }> = async ({ id }) => {
   const [{ data: item }, { session, user }] = await Promise.all([fetchGenericItemById(id), getSession()]);
@@ -30,7 +33,16 @@ const ItemCard: React.FC<{ id: string }> = async ({ id }) => {
               <span className='text-xs'>{new Date(item?.created_at || 0).toLocaleString() || 'Not Available'}</span>
             </div>
           </div>
-          {(isOwner || isAdmin) && <DeleteItemDialog id={id} />}
+          {(isOwner || isAdmin) && (
+            <div className='flex gap-x-2'>
+              <DeleteItemDialog id={id} />
+              <Link
+                href={`/item/${id}/edit`}
+                className={cn(buttonVariants({ variant: 'default', size: 'icon' }), 'size-8')}>
+                <Pencil className='size-4' />
+              </Link>
+            </div>
+          )}
         </div>
       </CardHeader>
       <CardContent className='space-y-6 px-0'>

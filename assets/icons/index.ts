@@ -44,6 +44,7 @@ import Menu from './Menu';
 import MessageSquare from './MessageSquare';
 import Moon from './Moon';
 import Paperclip from './Paperclip';
+import Pencil from './Pencil';
 import Plus from './Plus';
 import PlusCircle from './PlusCircle';
 import Search from './Search';
@@ -130,4 +131,5 @@ export {
   Trash,
   Trash2,
   TriangleAlert,
+  Pencil,
 };
