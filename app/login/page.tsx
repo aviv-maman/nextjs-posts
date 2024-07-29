@@ -6,10 +6,10 @@ import { GitHub, Google, Mail } from '@/assets/icons';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
-import { validateRequest } from '@/lib/auth';
+import { authenticate } from '@/lib/auth/actions';
 
 export default async function Page() {
-  const { user } = await validateRequest();
+  const { user } = await authenticate();
   if (user) redirect('/');
 
   return (

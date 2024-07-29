@@ -1,15 +1,14 @@
 'use client';
 
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
-import { clearSession, getSession } from '@/lib/actions';
-import type { validateRequest } from '@/lib/auth';
+import { authenticate, revokeSession } from '@/lib/auth/actions';
 
 type AuthProviderState =
   | {
       isLoading: boolean;
-      session: Awaited<ReturnType<typeof validateRequest>>['session'];
-      user: Awaited<ReturnType<typeof validateRequest>>['user'];
-      accounts: Awaited<ReturnType<typeof validateRequest>>['accounts'];
+      session: Awaited<ReturnType<typeof authenticate>>['session'];
+      user: Awaited<ReturnType<typeof authenticate>>['user'];
+      accounts: Awaited<ReturnType<typeof authenticate>>['accounts'];
       error: Error | null;
       logout: () => Promise<void>;
     }
@@ -36,20 +35,10 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   const [contextState, setContextState] = useState(initialState);
 
-  // const getCachedSession = useCallback(async () => {
-  //   const newContextState = await getSession();
-  //   const { session, user, accounts } = newContextState;
-  //   setContextState((prevState) => ({ ...prevState, session, user, accounts }));
-  // }, []);
-
-  const getCachedSession = useCallback(async () => {
-    return await getSession();
-  }, []);
-
   const logout = useCallback(async () => {
     setContextState((prevState) => ({ ...prevState, isLoading: true, error: null }));
     try {
-      const res = await clearSession();
+      const res = await revokeSession();
       const err = res && res.error ? res.error : null;
       if (err) {
         setContextState((prevState) => ({ ...prevState, error: err }));
@@ -68,7 +57,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
     let ignore = false;
     setContextState((prevState) => ({ ...prevState, isLoading: true, error: null }));
     try {
-      getCachedSession().then((res) => {
+      authenticate().then((res) => {
+        
         const { session, user, accounts } = res;
         if (!ignore) {
           setContextState((prevState) => ({ ...prevState, session, user, accounts }));
@@ -83,7 +73,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
     return () => {
       ignore = true;
     };
-  }, [getCachedSession]);
+  }, []);
 
   const contextValue = useMemo(
     () => ({

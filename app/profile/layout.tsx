@@ -1,9 +1,9 @@
 import { redirect } from 'next/navigation';
 import SideNav from '@/components/side-nav';
-import { validateRequest } from '@/lib/auth';
+import { authenticate } from '@/lib/auth/actions';
 
 export default async function Layout({ children }: { children: React.ReactNode }) {
-  const { user } = await validateRequest();
+  const { user } = await authenticate();
   if (!user) redirect('/');
 
   return (

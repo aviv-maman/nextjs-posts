@@ -2,8 +2,7 @@
 
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
-import { getSession } from '@/lib/actions';
-import { validateRequest } from '@/lib/auth';
+import { authenticate } from '@/lib/auth/actions';
 import cloudinary from '@/lib/cloudinary';
 import { sql } from '@/lib/db';
 import { artificialDelay } from '@/lib/utils';
@@ -26,7 +25,7 @@ export const addGenericItem = async (
 
   let newId = '';
   try {
-    const { user } = await validateRequest();
+    const { user } = await authenticate();
     if (!user?.id) return { errors: { general: ['No user'] } };
 
     // Upload image(s)
@@ -72,7 +71,7 @@ export type DeleteGenericItemState = {
 export const deleteGenericItem = async (id: string, prevState: DeleteGenericItemState) => {
   if (!id) return { errors: { general: 'ID is required.' } };
   try {
-    const { session, user } = await getSession();
+    const { session, user } = await authenticate();
     if (!session) return { errors: { general: 'Authorization error.' } };
 
     const record = await sql`SELECT images, owner_id from generic_items WHERE id = ${id}`;
@@ -121,7 +120,7 @@ export const editGenericItem = async (
   const website = rawFormData['website'];
 
   try {
-    const { session, user } = await validateRequest();
+    const { session, user } = await authenticate();
 
     if (!session) return { errors: { general: ['Authorization error.'] } };
 

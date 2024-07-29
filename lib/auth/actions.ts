@@ -1,54 +1,14 @@
-import { NeonHTTPAdapter } from '@lucia-auth/adapter-postgresql';
-import { GitHub } from 'arctic';
-import { Lucia } from 'lucia';
-import type { User as LuciaUser, Session } from 'lucia';
+'use server';
+
+import type { Session } from 'lucia';
+import { revalidatePath } from 'next/cache';
 import { cookies } from 'next/headers';
+import { redirect } from 'next/navigation';
 import { cache } from 'react';
+import type { Account, Permission, User } from '@/lib/auth/config';
+import { lucia } from '@/lib/auth/config';
 import { sql } from '@/lib/db';
-import type { DatabaseAccount, DatabasePermission, DatabaseUser } from '@/lib/db';
 
-const adapter = new NeonHTTPAdapter(sql, {
-  user: 'users',
-  session: 'sessions',
-});
-
-export const lucia = new Lucia(adapter, {
-  sessionCookie: {
-    attributes: {
-      secure: process.env.NODE_ENV === 'production',
-    },
-  },
-  getUserAttributes: (attributes) => {
-    return {
-      username: attributes.username,
-      email: attributes.email,
-      emailVerified: attributes.email_verified,
-      name: attributes.name,
-      imageUrl: attributes.image_url,
-      createdAt: attributes.created_at,
-      lastLogin: attributes.last_login,
-      updatedAt: attributes.updated_at,
-    };
-  },
-});
-
-declare module 'lucia' {
-  interface Register {
-    Lucia: typeof lucia;
-    DatabaseUserAttributes: Omit<DatabaseUser, 'id'>;
-  }
-}
-
-export interface User extends LuciaUser {
-  // permissions: {
-  //subject: 'generic_item' | 'advanced_item';
-  //actions: { create?: 0 | 1; read: 0 | 1; update?: 0 | 1; delete?: 0 | 1 };
-  // };
-  role: Omit<DatabasePermission, 'user_id'>['role'];
-}
-export interface Account extends Omit<DatabaseAccount, 'provider_user_id'> {}
-
-interface Permission extends Omit<DatabasePermission, 'user_id'> {}
 /**`Server Only`
  *
  * Validates the current session and returns the associated user and its session if the session is valid. Otherwise, returns null for both.
@@ -56,10 +16,10 @@ interface Permission extends Omit<DatabasePermission, 'user_id'> {}
  * ##### Example:
  * ```ts
  * import { redirect } from 'next/navigation';
- * import { lucia, validateRequest } from '@/lib/auth';
+ * import { lucia, authenticate } from '@/lib/auth';
  *
  * export default async function Page() {
- *  const { user } = await validateRequest();
+ *  const { user } = await authenticate();
  *
  *  if (!user) {
  *    return redirect('/login');
@@ -80,7 +40,7 @@ interface Permission extends Omit<DatabasePermission, 'user_id'> {}
  * ```
  *
  * */
-export const validateRequest = cache(
+export const authenticate = cache(
   async (): Promise<
     | {
         user: User;
@@ -129,4 +89,34 @@ export const validateRequest = cache(
   },
 );
 
-export const github = new GitHub(process.env.GITHUB_CLIENT_ID!, process.env.GITHUB_CLIENT_SECRET!);
+export const revokeSession = async (): Promise<{ error: Error } | void> => {
+  const { session } = await authenticate();
+
+  if (!session) {
+    return { error: new Error('Unauthorized') };
+  }
+
+  await lucia.invalidateSession(session.id);
+  const sessionCookie = lucia.createBlankSessionCookie();
+  cookies().set(sessionCookie.name, sessionCookie.value, sessionCookie.attributes);
+  revalidatePath('/', 'layout');
+  redirect('/');
+};
+
+export const validateProtectedRoute = async ({
+  role,
+  redirectUrl,
+}: {
+  role: Omit<User, 'user_id'>['role'] | 'guest';
+  redirectUrl: string;
+}) => {
+  const res = await authenticate();
+  if (
+    (res.user && role === 'guest') ||
+    (!res.user && role !== 'guest') ||
+    (role === 'admin' && res.user?.role !== 'admin')
+  ) {
+    redirect(redirectUrl);
+  }
+  return res;
+};

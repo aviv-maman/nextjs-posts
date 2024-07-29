@@ -4,7 +4,7 @@ import { redirect } from 'next/navigation';
 import { LastItemsTable } from '@/components/last-items-table';
 import { buttonVariants } from '@/components/ui/button';
 import UserProfileCard from '@/components/user-profile-card';
-import { validateRequest } from '@/lib/auth';
+import { authenticate } from '@/lib/auth/actions';
 import { fetchItemQuantityByOwnerId } from '@/lib/items-data';
 import { cn } from '@/lib/utils';
 
@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 };
 
 export default async function ProfilePage() {
-  const { user } = await validateRequest();
+  const { user } = await authenticate();
   if (!user) redirect('/');
   const { totalItems } = await fetchItemQuantityByOwnerId({ ownerId: user.id });
 

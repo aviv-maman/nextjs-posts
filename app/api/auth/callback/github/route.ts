@@ -1,6 +1,6 @@
 import { OAuth2RequestError } from 'arctic';
 import { cookies } from 'next/headers';
-import { github, lucia } from '@/lib/auth';
+import { github, lucia } from '@/lib/auth/config';
 import { sql } from '@/lib/db';
 import type { DatabaseAccount, DatabaseUser } from '@/lib/db';
 
