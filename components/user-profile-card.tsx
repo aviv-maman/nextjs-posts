@@ -21,12 +21,12 @@ const UserProfileCard: React.FC = () => {
           <CardTitle className='group flex items-center gap-2 text-xl md:text-2xl'>{user?.name}</CardTitle>
           <CardDescription>{capitalizeFirstLetter(user?.role || 'user')}</CardDescription>
         </div>
-        <div className='ml-auto flex items-center gap-1'>
+        {/* <div className='ml-auto flex items-center gap-1'>
           <Button size='sm' variant='outline' className='h-8 min-w-8 gap-1 p-0 sm:px-2'>
             <UserPen className='size-4' />
             <span className='sr-only sm:not-sr-only xl:whitespace-nowrap'>Edit</span>
           </Button>
-        </div>
+        </div> */}
       </CardHeader>
       <CardContent className='p-6 text-sm'>
         <div className='grid gap-3'>

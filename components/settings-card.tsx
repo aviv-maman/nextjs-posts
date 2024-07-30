@@ -13,13 +13,13 @@ const SettingsCard: React.FC = () => {
       </CardHeader>
       <CardContent>
         <div className='grid gap-6 sm:grid-cols-3'>
-          <div className='grid gap-3'>
+          {/* <div className='grid gap-3'>
             <div className='flex items-center gap-x-2'>
               <Languages className='size-5' />
               <Label htmlFor='category'>Language</Label>
             </div>
             <LanguageSelect />
-          </div>
+          </div> */}
           <div className='grid gap-3'>
             <div className='flex items-center gap-x-2'>
               <SunMoon className='size-5' />
