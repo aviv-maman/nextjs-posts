@@ -8,6 +8,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import type { fetchGenericItemById } from '@/lib/items-data';
 import { cn } from '@/lib/utils';
+import Link from 'next/link';
 
 interface GenericCardProps extends React.ComponentProps<typeof Card> {
   value: Awaited<ReturnType<typeof fetchGenericItemById>>['data'];
@@ -15,6 +16,7 @@ interface GenericCardProps extends React.ComponentProps<typeof Card> {
 
 const GenericCard: React.FC<GenericCardProps> = ({ value, ...props }) => {
   return (
+    <Link href={`/item/${value?.id}`} passHref>
     <Card className={cn('w-full', props.className)} {...props}>
       <CardHeader className='p-0'>
         <AspectRatio ratio={16 / 9} className='rounded-t-md'>
@@ -52,6 +54,7 @@ const GenericCard: React.FC<GenericCardProps> = ({ value, ...props }) => {
         </div>
       </CardFooter>
     </Card>
+    </Link>
   );
 };
 

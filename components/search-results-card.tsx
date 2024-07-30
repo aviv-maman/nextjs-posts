@@ -8,6 +8,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Card, CardHeader, CardTitle } from '@/components/ui/card';
 import type { fetchGenericItemById } from '@/lib/items-data';
 import { cn } from '@/lib/utils';
+import Link from 'next/link';
 
 interface SearchResultsCardProps extends React.ComponentProps<typeof Card> {
   value: Awaited<ReturnType<typeof fetchGenericItemById>>['data'];
@@ -15,6 +16,7 @@ interface SearchResultsCardProps extends React.ComponentProps<typeof Card> {
 
 const SearchResultsCard: React.FC<SearchResultsCardProps> = ({ value, ...props }) => {
   return (
+    <Link href={`/item/${value?.id}`} passHref>
     <Card className={cn('flex w-full flex-col gap-y-4 p-4', props.className)} {...props}>
       <CardHeader className='p-0'>
         <div className='flex items-center space-x-2 text-base'>
@@ -51,6 +53,7 @@ const SearchResultsCard: React.FC<SearchResultsCardProps> = ({ value, ...props }
         ))}
       </div>
     </Card>
+    </Link>
   );
 };
 

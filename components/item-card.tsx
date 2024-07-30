@@ -8,12 +8,12 @@ import ItemCarousel from '@/components/item-carousel';
 import { AspectRatio } from '@/components/ui/aspect-ratio';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader } from '@/components/ui/card';
-import { getSession } from '@/lib/actions';
 import { fetchGenericItemById } from '@/lib/items-data';
 import { cn } from '@/lib/utils';
+import { authenticate } from '@/lib/auth/actions';
 
 const ItemCard: React.FC<{ id: string }> = async ({ id }) => {
-  const [{ data: item }, { session, user }] = await Promise.all([fetchGenericItemById(id), getSession()]);
+  const [{ data: item }, { session, user }] = await Promise.all([fetchGenericItemById(id), authenticate()]);
   const [isOwner, isAdmin] = [item?.owner_id === session?.userId, user?.role === 'admin'];
 
   return (
