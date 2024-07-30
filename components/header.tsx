@@ -18,10 +18,12 @@ import {
   navigationMenuTriggerStyle,
 } from '@/components/ui/navigation-menu';
 import { UserDropdownMenu } from '@/components/user-dropdown-menu';
+import { useIsClient } from '@/hooks/use-is-client';
 import { cn } from '@/lib/utils';
 
 export const Header: React.FC = () => {
-  const { user, isLoading, logout } = useAuth();
+  const { user, logout } = useAuth();
+  const isClient = useIsClient();
 
   const guestComponents: { title: string; href?: string; action?: () => void; description: string }[] = [
     {
@@ -61,11 +63,7 @@ export const Header: React.FC = () => {
     },
   ];
 
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
-
-  return (
+  return isClient ? (
     <header className='sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60'>
       <div className='container flex h-14 max-w-screen-2xl items-center justify-between px-4 md:px-8'>
         <div className='mr-4 hidden md:flex'>
@@ -162,7 +160,7 @@ export const Header: React.FC = () => {
         </div>
       </div>
     </header>
-  );
+  ) : null;
 };
 
 const ListItemA = forwardRef<React.ElementRef<'a'>, React.ComponentPropsWithoutRef<'a'>>(
