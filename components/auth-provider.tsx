@@ -1,7 +1,8 @@
 'use client';
 
-import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
-import { authenticate, revokeSession } from '@/lib/auth/actions';
+import { createContext, useCallback, useContext, useMemo, useState } from 'react';
+import type { authenticate } from '@/lib/auth/actions';
+import { revokeSession } from '@/lib/auth/actions';
 
 type AuthProviderState =
   | {
@@ -18,17 +19,18 @@ const AuthContext = createContext<AuthProviderState>(undefined);
 
 interface AuthProviderProps {
   children: Readonly<React.ReactNode>;
+  auth: Awaited<ReturnType<typeof authenticate>>;
 }
-export function AuthProvider({ children }: AuthProviderProps) {
+export function AuthProvider({ children, auth }: AuthProviderProps) {
   if (!AuthContext) {
     throw new Error('React Context is unavailable in Server Components');
   }
 
   const initialState: AuthProviderState = {
-    isLoading: false,
-    session: null,
-    user: null,
-    accounts: null,
+    isLoading: auth ? false : true,
+    session: auth.session,
+    user: auth.user,
+    accounts: auth.accounts,
     error: null,
     logout: async () => {},
   };
@@ -51,28 +53,6 @@ export function AuthProvider({ children }: AuthProviderProps) {
     } finally {
       setContextState((prevState) => ({ ...prevState, isLoading: false }));
     }
-  }, []);
-
-  useEffect(() => {
-    let ignore = false;
-    setContextState((prevState) => ({ ...prevState, isLoading: true, error: null }));
-    try {
-      authenticate().then((res) => {
-        
-        const { session, user, accounts } = res;
-        if (!ignore) {
-          setContextState((prevState) => ({ ...prevState, session, user, accounts }));
-        }
-      });
-    } catch (error) {
-      console.error((error as Error).name, (error as Error).message);
-      setContextState((prevState) => ({ ...prevState, error: error as Error }));
-    } finally {
-      setContextState((prevState) => ({ ...prevState, isLoading: false }));
-    }
-    return () => {
-      ignore = true;
-    };
   }, []);
 
   const contextValue = useMemo(
