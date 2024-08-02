@@ -10,10 +10,10 @@ import '@/styles/globals.css';
 
 export const metadata: Metadata = {
   title: {
-    default: 'Next.js Template',
-    template: '%s | Next.js Template',
+    default: 'Next.js Posts',
+    template: '%s | Next.js Posts',
   },
-  description: 'This is my Next.js Template',
+  description: 'A Next.js blog with a focus on performance and accessibility.',
   metadataBase: new URL(process.env.BASE_URL!),
 };
 
