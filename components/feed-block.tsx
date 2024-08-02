@@ -23,7 +23,7 @@ const FeedBlock: React.FC<{ data: Awaited<ReturnType<typeof fetchGenericItems>>[
         if (!ignore && typeof response.data !== 'undefined') {
           setItems((prevState) => [...prevState, ...response.data]);
           setCurrentPage((prevState) => prevState + 1);
-          response.data.length === 0 && setIsEnd(() => true);
+          if (response.data.length < 6) setIsEnd(() => true);
           setIsFetching(() => false);
         }
       });
