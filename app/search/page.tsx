@@ -2,7 +2,7 @@ import { Suspense } from 'react';
 import SearchResultsGrid from '@/components/search-results-grid';
 import SearchResultsGridSkeleton from '@/components/search-results-grid-skeleton';
 import SearchResultsPagination from '@/components/search-results-pagination';
-import { fetchItemQuantity } from '@/lib/items-data';
+import { fetchItemQuantity } from '@/lib/items/data';
 
 export const revalidate = 60;
 

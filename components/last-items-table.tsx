@@ -9,7 +9,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { fetchItemsByOwnerId } from '@/lib/items-data';
+import { fetchItemsByOwnerId } from '@/lib/items/data';
 
 export async function LastItemsTable({ userId, totalItems }: { userId: string; totalItems?: number }) {
   const { data: latestItems } = await fetchItemsByOwnerId({ ownerId: userId });

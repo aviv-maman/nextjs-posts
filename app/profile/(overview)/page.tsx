@@ -5,7 +5,7 @@ import { LastItemsTable } from '@/components/last-items-table';
 import { buttonVariants } from '@/components/ui/button';
 import UserProfileCard from '@/components/user-profile-card';
 import { authenticate } from '@/lib/auth/actions';
-import { fetchItemQuantityByOwnerId } from '@/lib/items-data';
+import { fetchItemQuantityByOwnerId } from '@/lib/items/data';
 import { cn } from '@/lib/utils';
 
 export const metadata: Metadata = {

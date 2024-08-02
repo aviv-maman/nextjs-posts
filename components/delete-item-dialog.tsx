@@ -13,7 +13,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
-import { deleteGenericItem } from '@/lib/items-actions';
+import { deleteGenericItem } from '@/lib/items/actions';
 
 interface DeleteItemDialogProps {
   id: string;

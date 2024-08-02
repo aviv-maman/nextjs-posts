@@ -24,8 +24,8 @@ import {
   MultiSelectorList,
   MultiSelectorTrigger,
 } from '@/components/ui/multi-select';
-import { editGenericItem } from '@/lib/items-actions';
-import type { fetchGenericItemById } from '@/lib/items-data';
+import { editGenericItem } from '@/lib/items/actions';
+import type { fetchGenericItemById } from '@/lib/items/data';
 
 export const genericItemSchema = z.object({
   title: z.string().trim().min(1, { message: 'Zod: Please provide a title' }),

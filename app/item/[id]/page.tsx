@@ -3,7 +3,7 @@ import { notFound } from 'next/navigation';
 import { Suspense } from 'react';
 import ItemCard from '@/components/item-card';
 import ItemCardSkeleton from '@/components/item-card-skeleton';
-import { fetchGenericItemById } from '@/lib/items-data';
+import { fetchGenericItemById } from '@/lib/items/data';
 
 export const revalidate = 60;
 

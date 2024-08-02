@@ -4,7 +4,7 @@ import { Fragment, useEffect, useRef, useState } from 'react';
 import FeedWrapperSkeleton from '@/components/feed-wrapper-skeleton';
 import GenericCard from '@/components/generic-card';
 import { useIntersectionObserver } from '@/hooks/use-intersection-observer';
-import { fetchGenericItems } from '@/lib/items-data';
+import { fetchGenericItems } from '@/lib/items/data';
 
 const FeedBlock: React.FC<{ data: Awaited<ReturnType<typeof fetchGenericItems>>['data'] }> = ({ data }) => {
   const observerTarget = useRef<HTMLDivElement>(null);

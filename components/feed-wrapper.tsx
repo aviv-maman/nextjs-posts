@@ -1,7 +1,7 @@
 'use server';
 
 import FeedBlock from '@/components/feed-block';
-import { fetchGenericItems } from '@/lib/items-data';
+import { fetchGenericItems } from '@/lib/items/data';
 
 const FeedWrapper: React.FC = async () => {
   const { data } = await fetchGenericItems();

@@ -8,9 +8,9 @@ import ItemCarousel from '@/components/item-carousel';
 import { AspectRatio } from '@/components/ui/aspect-ratio';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader } from '@/components/ui/card';
-import { fetchGenericItemById } from '@/lib/items-data';
-import { cn } from '@/lib/utils';
 import { authenticate } from '@/lib/auth/actions';
+import { fetchGenericItemById } from '@/lib/items/data';
+import { cn } from '@/lib/utils';
 
 const ItemCard: React.FC<{ id: string }> = async ({ id }) => {
   const [{ data: item }, { session, user }] = await Promise.all([fetchGenericItemById(id), authenticate()]);

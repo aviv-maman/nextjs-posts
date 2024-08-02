@@ -2,7 +2,7 @@ import type { Metadata, ResolvingMetadata } from 'next';
 import { notFound } from 'next/navigation';
 import { Suspense } from 'react';
 import { EditItemForm } from '@/components/edit-item-form';
-import { fetchGenericItemById } from '@/lib/items-data';
+import { fetchGenericItemById } from '@/lib/items/data';
 
 export const revalidate = 60;
 

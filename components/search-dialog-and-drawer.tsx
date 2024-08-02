@@ -21,7 +21,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { useDebounce } from '@/hooks/use-debounce';
 import { useMediaQuery } from '@/hooks/use-media-query';
-import { fetchGenericItems } from '@/lib/items-data';
+import { fetchGenericItems } from '@/lib/items/data';
 import { cn } from '@/lib/utils';
 
 const SearchDialogAndDrawer: React.FC<{ placeholder?: string }> = ({ placeholder = 'Search for anything...' }) => {

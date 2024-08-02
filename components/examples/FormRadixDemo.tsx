@@ -15,7 +15,7 @@ import {
   FormValidityState,
 } from '@/components/ui/form-radix';
 import { Input } from '@/components/ui/input';
-import { addGenericItem } from '@/lib/items-actions';
+import { addGenericItem } from '@/lib/items/actions';
 
 export const genericItemSchema = z.object({
   title: z.string().trim().min(1, 'Zod: Please provide a title'),

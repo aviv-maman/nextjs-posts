@@ -1,5 +1,5 @@
 import SearchResultsCard from '@/components/search-results-card';
-import { fetchGenericItems } from '@/lib/items-data';
+import { fetchGenericItems } from '@/lib/items/data';
 
 interface SearchResultsGridProps {
   query: string;

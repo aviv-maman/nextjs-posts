@@ -20,7 +20,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { deleteGenericItem } from '@/lib/items-actions';
+import { deleteGenericItem } from '@/lib/items/actions';
 
 export function DataTableRowActions({ itemId }: { itemId: string }) {
   return (
