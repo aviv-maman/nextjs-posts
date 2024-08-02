@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { Fragment, useCallback, useEffect, useState } from 'react';
 import SearchButton from '@/components/search-button';
+import SpinnerWave from '@/components/spinner-wave';
 import { Button, buttonVariants } from '@/components/ui/button';
 import { CommandDialog, CommandGroup, CommandInput, CommandItem, CommandList } from '@/components/ui/command';
 import { DialogDescription, DialogTitle } from '@/components/ui/dialog';
@@ -21,6 +22,7 @@ import { Input } from '@/components/ui/input';
 import { useDebounce } from '@/hooks/use-debounce';
 import { useMediaQuery } from '@/hooks/use-media-query';
 import { fetchGenericItems } from '@/lib/items-data';
+import { cn } from '@/lib/utils';
 
 const SearchDialogAndDrawer: React.FC<{ placeholder?: string }> = ({ placeholder = 'Search for anything...' }) => {
   const [open, setOpen] = useState(false);
@@ -50,6 +52,7 @@ const SearchDialogAndDrawer: React.FC<{ placeholder?: string }> = ({ placeholder
   const [query, setQuery] = useState(searchParams.get('query')?.toString());
   const debounced = useDebounce(query!, 1000);
   const [suggestionResults, setSuggestionResults] = useState<Awaited<ReturnType<typeof fetchGenericItems>>['data']>([]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const down = (e: KeyboardEvent) => {
@@ -75,8 +78,10 @@ const SearchDialogAndDrawer: React.FC<{ placeholder?: string }> = ({ placeholder
   useEffect(() => {
     let ignore = false;
     if (!ignore) {
-      fetchGenericItems().then((res) => {
+      setLoading(() => true);
+      fetchGenericItems({ perPage: 5 }).then((res) => {
         setSuggestionResults(() => res.data);
+        setLoading(() => false);
       });
     }
     return () => {
@@ -97,16 +102,25 @@ const SearchDialogAndDrawer: React.FC<{ placeholder?: string }> = ({ placeholder
           </Link>
         </Button>
         <CommandList>
-          <CommandGroup heading='Last 6 Items'>
-            {suggestionResults?.map((item, index) => {
-              return (
-                <CommandItem key={`${index}-${item.id}`} asChild className='cursor-pointer'>
-                  <Link onClick={() => setOpen(false)} href={`/item/${item.id}`}>
-                    {item.title}
-                  </Link>
-                </CommandItem>
-              );
-            })}
+          <CommandGroup heading='Last 5 Items'>
+            {loading ? (
+              <CommandItem className='content-center justify-center'>
+                <SpinnerWave />
+              </CommandItem>
+            ) : (
+              suggestionResults?.map((item, index) => {
+                return (
+                  <CommandItem
+                    key={`${index}-${item.id}`}
+                    asChild
+                    className='line-clamp-2 h-fit cursor-pointer text-wrap'>
+                    <Link onClick={() => setOpen(false)} href={`/item/${item.id}`}>
+                      {item.title}
+                    </Link>
+                  </CommandItem>
+                );
+              })
+            )}
           </CommandGroup>
         </CommandList>
       </CommandDialog>
@@ -116,7 +130,7 @@ const SearchDialogAndDrawer: React.FC<{ placeholder?: string }> = ({ placeholder
       <DrawerTrigger asChild>
         <SearchButton id='search-btn-mob' isIconOnly />
       </DrawerTrigger>
-      <DrawerContent className='h-3/4 p-3'>
+      <DrawerContent className='h-5/6 p-3'>
         <DrawerHeader>
           <DrawerTitle className='sr-only'>Search</DrawerTitle>
           <DrawerDescription className='sr-only'>{placeholder}</DrawerDescription>
@@ -128,20 +142,30 @@ const SearchDialogAndDrawer: React.FC<{ placeholder?: string }> = ({ placeholder
           </Link>
         </Button>
         <div className='flex flex-col gap-y-4'>
-          <span className='text-center text-sm text-foreground'>Last 6 Items</span>
-          {suggestionResults
-            ?.filter((v) => v.title.toLowerCase().includes(query!))
-            .map((item, index) => {
-              return (
-                <Link
-                  key={`m-${index}-${item.id}`}
-                  onClick={() => setOpen(false)}
-                  href={`/item/${item.id}`}
-                  className={buttonVariants({ variant: 'secondary' })}>
-                  {item.title}
-                </Link>
-              );
-            })}
+          <span className='text-center text-sm text-foreground'>Last 5 Items</span>
+          {loading ? (
+            <SpinnerWave className='h-48 content-center self-center' />
+          ) : (
+            <ul className='flex flex-col gap-y-2'>
+              {suggestionResults
+                ?.filter((v) => v.title.toLowerCase().includes(query ? query.toLowerCase() : ''))
+                .map((item, index) => {
+                  return (
+                    <li key={`m-${index}-${item.id}`} className=''>
+                      <Link
+                        onClick={() => setOpen(false)}
+                        href={`/item/${item.id}`}
+                        className={cn(
+                          buttonVariants({ variant: 'secondary' }),
+                          'line-clamp-2 h-fit text-wrap px-2 py-1',
+                        )}>
+                        {item.title}
+                      </Link>
+                    </li>
+                  );
+                })}
+            </ul>
+          )}
         </div>
         <DrawerFooter className='items-center p-0 pt-3'>
           <DrawerClose asChild className='p-2'>
