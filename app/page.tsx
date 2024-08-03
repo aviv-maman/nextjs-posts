@@ -11,7 +11,7 @@ export default async function HomePage() {
     <section className='container relative flex min-h-[calc(100vh-146px)] flex-col items-center justify-center gap-6 p-2 sm:min-h-[calc(100vh-138px)] sm:px-8'>
       <div className='flex w-full flex-col justify-between gap-x-6 sm:flex-row'>
         <div className='flex w-full flex-col gap-y-6 place-self-center lg:col-span-7'>
-          <div className='gap-x-4 lg:col-span-5 lg:flex'>
+          <div className='justify-between gap-x-4 lg:col-span-5 lg:flex'>
             <div>
               <h1 className='mb-4 text-4xl font-extrabold leading-none tracking-tight md:text-5xl xl:text-6xl'>
                 Next.js Posts
@@ -20,9 +20,7 @@ export default async function HomePage() {
                 Explore features like pagination, infinite scrolling, and search.
               </p>
             </div>
-            <div className='flex justify-center'>
-              <Image src='/text-editor-dark.svg' alt='main' width={384} height={384} />
-            </div>
+            <Image src='/text-editor-dark.svg' alt='main' width={384} height={384} />
           </div>
           <h1 className='text-center text-xl font-extrabold leading-none tracking-tight md:text-2xl xl:text-3xl'>
             Features

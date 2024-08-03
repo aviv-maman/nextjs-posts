@@ -3,7 +3,15 @@
 import type { Route } from 'next';
 import Link from 'next/link';
 import { Logo, Menu } from '@/assets/icons';
-import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
+import {
+  Sheet,
+  SheetClose,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from '@/components/ui/sheet';
 
 interface HamburgerMenuProps {
   components?: { title: string; href?: Route<string> | string; action?: () => void; description: string }[];
@@ -18,10 +26,12 @@ export const HamburgerMenu: React.FC<HamburgerMenuProps> = ({ components, navIte
       </SheetTrigger>
       <SheetContent side='left'>
         <SheetHeader className='items-start'>
-          <SheetTitle className='flex items-center gap-x-2' asChild>
+          <SheetTitle asChild>
             <Link href='/'>
-              <Logo className='size-5' />
-              <span className='font-bold'>FeedZ</span>
+              <SheetClose className='flex items-center gap-x-2'>
+                <Logo className='size-5' />
+                <span className='font-bold'>FeedZ</span>
+              </SheetClose>
             </Link>
           </SheetTitle>
           <SheetDescription className='sr-only'>Choose a page you would like to navigate to.</SheetDescription>
@@ -35,14 +45,14 @@ export const HamburgerMenu: React.FC<HamburgerMenuProps> = ({ components, navIte
                   key={component.title}
                   href={component.href as Route}
                   className='mt-2 w-fit text-left text-sm text-muted-foreground'>
-                  {component.title}
+                  <SheetClose>{component.title}</SheetClose>
                 </Link>
               ) : (
                 <span
                   key={component.title}
                   onClick={component.action}
                   className='mt-2 w-fit cursor-pointer text-left text-sm text-muted-foreground'>
-                  {component.title}
+                  <SheetClose>{component.title}</SheetClose>
                 </span>
               ),
             )}
@@ -50,7 +60,7 @@ export const HamburgerMenu: React.FC<HamburgerMenuProps> = ({ components, navIte
           <div className='mt-2 flex flex-col border-t-2 pl-6'>
             {navItems?.map((item) => (
               <Link key={item.title} href={item.href} className='mt-2 w-fit text-left text-sm text-muted-foreground'>
-                {item.title}
+                <SheetClose>{item.title}</SheetClose>
               </Link>
             ))}
           </div>
