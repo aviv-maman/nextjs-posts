@@ -28,12 +28,12 @@ export default async function Page() {
                   <span>Continue with GitHub</span>
                 </Link>
               </Button>
-              <Button type='button' variant='default' className='bg-red-600 hover:bg-red-400'>
+              {/* <Button type='button' variant='default' className='bg-red-600 hover:bg-red-400'>
                 <Google className='mr-2 size-5' />
                 <span>Continue with Google</span>
-              </Button>
+              </Button> */}
             </div>
-            <div className='flex items-center space-x-2 text-xs text-muted-foreground'>
+            {/* <div className='flex items-center space-x-2 text-xs text-muted-foreground'>
               <div className='w-full border-b' />
               <span>OR</span>
               <div className='w-full border-b' />
@@ -44,7 +44,7 @@ export default async function Page() {
                 <Mail className='mr-2 size-5' />
                 <span>Continue with Email</span>
               </Button>
-            </div>
+            </div> */}
           </div>
         </CardContent>
       </Card>

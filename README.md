@@ -1,4 +1,5 @@
 A full-stack application built with Next.js, PostgreSQL, and Lucia Auth. It allows users to create, read, update, and delete posts, as well as search for posts, and upload images. The application is responsive and features infinite scrolling and pagination. Users can sign up and log in with GitHub and create posts with images.
+
 ![](https://raw.githubusercontent.com/aviv-maman/nextjs-posts/master/public/preview.jpeg)
 
 ## Features
