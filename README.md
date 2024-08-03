@@ -1,36 +1,49 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+A full-stack application built with Next.js, PostgreSQL, and Lucia Auth. It allows users to create, read, update, and delete posts, as well as search for posts, and upload images. The application is responsive and features infinite scrolling and pagination. Users can sign up and log in with GitHub and create posts with images.
+![](https://raw.githubusercontent.com/aviv-maman/nextjs-posts/master/public/preview.jpeg)
 
-## Getting Started
+## Features
 
-First, run the development server:
+- **Responsive Design**
+- **User Authentication with GitHub & Lucia Auth**
+- **CRUD Operations**
+- **Server Actions**
+- **Search Functionality**
+- **Pagination**
+- **Infinite Scrolling**
+- **Image Upload**
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Built with
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- [React](https://react.dev)
+- [Next.js](https://nextjs.org)
+- PostgreSQL via [Neon](https://neon.tech)
+- [Lucia Auth](https://lucia-auth.com)
+- [Cloudinary](https://cloudinary.com)
+- [ShadCN/UI](https://ui.shadcn.com)
+- [Tailwind CSS](https://tailwindcss.com)
+- Deployed on [Vercel](https://vercel.com)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Usage
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+1. Clone the repository
 
-## Learn More
+   ```
+   git clone https://github.com/aviv-maman/nextjs-posts
+   ```
 
-To learn more about Next.js, take a look at the following resources:
+2. Rename the `.env.example` file to `.env.local` and fill in the required environment variables according to the next steps.
+3. Sign Up on [GitHub](https://github.com) and go to Settings => Developer Settings => OAuth Apps and click on New OAuth App. Add the following details: Name: any name, Homepage URL: http://localhost:3000, Authorization callback URL: http://localhost:3000/api/auth/callback/github. Copy your Client ID and Client Secret and paste them into `GITHUB_CLIENT_ID` and `GITHUB_CLIENT_SECRET`.
+4. Sign Up on [Neon](https://neon.tech), create a new project, copy and paste your connection string into `DATABASE_URL`.
+5. Sign Up on [Cloudinary](https://cloudinary.com) to get your Cloudinary cloud name, API key, and API secret from your Cloudinary account and add them to `CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_API_KEY`, and `CLOUDINARY_API_SECRET`.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+6. Install dependencies
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+   ```
+   npm install
+   ```
 
-## Deploy on Vercel
+7. Run the development server
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+   ```
+   npm run dev
+   ```
