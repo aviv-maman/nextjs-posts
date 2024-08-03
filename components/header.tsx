@@ -144,7 +144,7 @@ export const Header: React.FC = () => {
         <div className='flex items-center gap-x-2'>
           <SearchDialogAndDrawer />
           <div className='flex'>
-            <Link href='https://github.com/aviv-maman' target='_blank' referrerPolicy='no-referrer'>
+            <Link href='https://github.com/aviv-maman/nextjs-posts' target='_blank' referrerPolicy='no-referrer'>
               <Button aria-label='github' variant='ghost' size='icon' className='size-8 bg-transparent'>
                 <GitHub className='size-4' />
               </Button>
