@@ -5,7 +5,7 @@ import { forwardRef } from 'react';
 import { GitHub, LinkedIn, Logo } from '@/assets/icons';
 import { useAuth } from '@/components/auth-provider';
 import { HamburgerMenu } from '@/components/hamburger-menu';
-import SearchDialogAndDrawer from '@/components/search-dialog-and-drawer';
+import SearchDialog from '@/components/search-dialog';
 import { ThemeToggle } from '@/components/theme-toggle';
 import { Button } from '@/components/ui/button';
 import {
@@ -142,7 +142,7 @@ export const Header: React.FC = () => {
         </div>
 
         <div className='flex items-center gap-x-2'>
-          <SearchDialogAndDrawer />
+          <SearchDialog />
           <div className='flex'>
             <Link href='https://github.com/aviv-maman/nextjs-posts' target='_blank' referrerPolicy='no-referrer'>
               <Button aria-label='github' variant='ghost' size='icon' className='size-8 bg-transparent'>
