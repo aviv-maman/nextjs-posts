@@ -147,23 +147,21 @@ const SearchDialogAndDrawer: React.FC<{ placeholder?: string }> = ({ placeholder
             <SpinnerWave className='h-48 content-center self-center' />
           ) : (
             <ul className='flex flex-col gap-y-2'>
-              {suggestionResults
-                ?.filter((v) => v.title.toLowerCase().includes(query ? query.toLowerCase() : ''))
-                .map((item, index) => {
-                  return (
-                    <li key={`m-${index}-${item.id}`} className=''>
-                      <Link
-                        onClick={() => setOpen(false)}
-                        href={`/item/${item.id}`}
-                        className={cn(
-                          buttonVariants({ variant: 'secondary' }),
-                          'line-clamp-2 h-fit text-wrap px-2 py-1',
-                        )}>
-                        {item.title}
-                      </Link>
-                    </li>
-                  );
-                })}
+              {suggestionResults?.map((item, index) => {
+                return (
+                  <li key={`m-${index}-${item.id}`} className=''>
+                    <Link
+                      onClick={() => setOpen(false)}
+                      href={`/item/${item.id}`}
+                      className={cn(
+                        buttonVariants({ variant: 'secondary' }),
+                        'line-clamp-2 h-fit text-wrap px-2 py-1',
+                      )}>
+                      {item.title}
+                    </Link>
+                  </li>
+                );
+              })}
             </ul>
           )}
         </div>
