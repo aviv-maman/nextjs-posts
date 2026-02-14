@@ -1,7 +1,6 @@
 'use client';
 
 import { DayPicker } from 'react-day-picker';
-import { ChevronLeft, ChevronRight } from '@/assets/icons';
 import { buttonVariants } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 
@@ -40,10 +39,6 @@ function Calendar({ className, classNames, showOutsideDays = true, ...props }: C
         day_range_middle: 'aria-selected:bg-accent aria-selected:text-accent-foreground',
         day_hidden: 'invisible',
         ...classNames,
-      }}
-      components={{
-        IconLeft: ({ ...props }) => <ChevronLeft className='size-4' {...props} />,
-        IconRight: ({ ...props }) => <ChevronRight className='size-4' {...props} />,
       }}
       {...props}
     />
