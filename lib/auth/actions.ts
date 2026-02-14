@@ -50,7 +50,7 @@ export const authenticate = cache(
     | { user: User; session: Session; accounts: null }
     | { user: null; session: null; accounts: null }
   > => {
-    const sessionId = cookies().get(lucia.sessionCookieName)?.value ?? null;
+    const sessionId = (await cookies()).get(lucia.sessionCookieName)?.value ?? null;
 
     if (!sessionId) {
       return { user: null, session: null, accounts: null };
@@ -74,11 +74,11 @@ export const authenticate = cache(
       requestResult.user.role = permissions?.[0].role || 'user';
       if (validationResult.session && validationResult.session.fresh) {
         const sessionCookie = lucia.createSessionCookie(validationResult.session.id);
-        cookies().set(sessionCookie.name, sessionCookie.value, sessionCookie.attributes);
+        (await cookies()).set(sessionCookie.name, sessionCookie.value, sessionCookie.attributes);
       }
       if (!validationResult.session) {
         const sessionCookie = lucia.createBlankSessionCookie();
-        cookies().set(sessionCookie.name, sessionCookie.value, sessionCookie.attributes);
+        (await cookies()).set(sessionCookie.name, sessionCookie.value, sessionCookie.attributes);
       }
     } catch (error) {
       // Next.js throws an error when you attempt to set a cookie upon page rendering
@@ -98,7 +98,7 @@ export const revokeSession = async (): Promise<{ error: Error } | void> => {
 
   await lucia.invalidateSession(session.id);
   const sessionCookie = lucia.createBlankSessionCookie();
-  cookies().set(sessionCookie.name, sessionCookie.value, sessionCookie.attributes);
+  (await cookies()).set(sessionCookie.name, sessionCookie.value, sessionCookie.attributes);
   revalidatePath('/', 'layout');
   redirect('/');
 };
