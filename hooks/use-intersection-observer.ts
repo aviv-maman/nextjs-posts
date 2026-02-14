@@ -9,7 +9,7 @@ interface IntersectionObserverArgs extends IntersectionObserverInit {
  * Returns an IntersectionObserver that checks if the provided ref is visible in the window.
  */
 export function useIntersectionObserver(
-  elementRef: RefObject<Element>,
+  elementRef: RefObject<Element | null>,
   { threshold = 0, root = null, rootMargin = '0%', freezeOnceVisible = false }: IntersectionObserverArgs,
 ): IntersectionObserverEntry | undefined {
   const [entry, setEntry] = useState<IntersectionObserverEntry>();
